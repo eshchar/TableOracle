@@ -222,8 +222,9 @@ tests/                42 tests, no API keys required
 
 ## Corpus and license
 
-This project's **code** is MIT licensed. The **corpus** is not this project's
-work: it is the D&D 5e SRD 5.1, used under CC-BY-4.0.
+This project's **code** is MIT licensed (`LICENSE`). That covers the code
+only — the **corpus** is not this project's work: it is the D&D 5e SRD 5.1,
+used under CC-BY-4.0.
 
 > This work includes material taken from the System Reference Document 5.1
 > ("SRD 5.1") by Wizards of the Coast LLC and available at
