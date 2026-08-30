@@ -1,0 +1,7 @@
+# Citation anchors are character offsets into these files, so their line
+# endings must be identical on every platform. A CRLF checkout would shift
+# every offset past the first newline by one byte per preceding line.
+# The loader normalizes CRLF defensively as well; this makes it moot.
+* text=auto eol=lf
+corpus/** text eol=lf
+*.png binary

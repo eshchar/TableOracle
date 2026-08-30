@@ -1,0 +1,5 @@
+source_repo:   https://github.com/oldmanumby/dnd.srd.5.1
+source_commit: cecde944c90b50e630aad031b76af35933805013
+retrieved_utc: 2026-08-30T16:42:31Z
+license:       CC-BY-4.0 (see LICENSE-SRD.md, Legal.md)
+files_copied:  markdown only; repo images and .github/ omitted

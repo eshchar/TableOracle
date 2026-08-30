@@ -1,0 +1,115 @@
+# Table Oracle evaluation set
+#
+# STATUS: M1 defines this format and seeds it. M3 grows it to ~60 questions and
+# adds the scorer behind `make eval`.
+#
+# Every `expected_chunks` anchor below was taken from a real built index, not
+# invented -- `tableoracle search "<question>"` prints the anchor of any result,
+# which is how new entries should be written.
+#
+# ---------------------------------------------------------------------------
+# Field reference
+#
+#   id                       stable identifier; never reuse or renumber
+#   question                 asked verbatim, exactly as a user would type it
+#   expected_chunks          anchors that SHOULD be retrieved. Scores
+#                            retrieval@k (is any expected anchor in the top k)
+#                            and citation accuracy (do the citations the model
+#                            actually emitted resolve to these).
+#   expected_answer_contains substrings/claims a correct answer must make.
+#                            Feeds the deterministic half of correctness.
+#   should_abstain           true when the corpus genuinely cannot answer.
+#                            These are the honesty tests and matter as much as
+#                            the answerable ones -- a system that never abstains
+#                            has not solved grounding, it has hidden the problem.
+#   tags                     for slicing results by rules area and difficulty
+#
+# Two scores are computed per question in M3, deliberately:
+#   - exact citation match: deterministic, free, and the honest number
+#   - LLM judge: covers whether the prose answer is actually correct
+# Reporting only the judge would be unfalsifiable; only exact matching would
+# miss answers that cite correctly and still reason badly.
+# ---------------------------------------------------------------------------
+
+- id: disengage-and-cast
+  question: Can I cast a spell and disengage in the same turn?
+  expected_chunks:
+    - gameplay/order-of-combat/actions-in-combat
+  expected_answer_contains:
+    - Disengage
+    - action
+  should_abstain: false
+  tags: [combat, actions, multi-hop]
+
+- id: opportunity-attack-trigger
+  question: What triggers an opportunity attack?
+  expected_chunks:
+    - gameplay/order-of-combat/making-an-attack-melee-attacks
+  expected_answer_contains:
+    - reach
+    - reaction
+  should_abstain: false
+  tags: [combat, reactions]
+
+- id: death-saving-throws
+  question: How many death saving throws do I need to fail before I die?
+  expected_chunks:
+    - gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws
+  expected_answer_contains:
+    - three
+  should_abstain: false
+  tags: [combat, death, lookup]
+
+- id: grapple-escape
+  question: How does a creature escape a grapple?
+  expected_chunks:
+    - gameplay/order-of-combat/making-an-attack-melee-attacks-grappling
+  expected_answer_contains:
+    - Athletics
+    - Acrobatics
+  should_abstain: false
+  tags: [combat, contests]
+
+- id: ring-of-swimming-speed
+  question: What swimming speed does a Ring of Swimming give you?
+  expected_chunks:
+    - magic-items/magic-items-each/ring-of-swimming/ring-of-swimming
+  expected_answer_contains:
+    - "40"
+  should_abstain: false
+  tags: [magic-items, lookup, rare-token]
+
+- id: cover-bonus
+  question: How much does half cover add to AC?
+  expected_chunks:
+    - gameplay/order-of-combat/making-an-attack-cover
+  expected_answer_contains:
+    - "2"
+  should_abstain: false
+  tags: [combat, lookup]
+
+# --- Honesty cases: the corpus cannot support an answer, so it must decline ---
+
+- id: abstain-out-of-scope-edition
+  question: What changed about the Weapon Mastery rules in the 2024 Player's Handbook?
+  expected_chunks: []
+  expected_answer_contains: []
+  should_abstain: true
+  tags: [abstention, out-of-corpus]
+
+- id: abstain-not-in-srd
+  question: What are the rules for the Bladesinger wizard subclass?
+  expected_chunks: []
+  expected_answer_contains: []
+  should_abstain: true
+  # The SRD ships only one subclass per class; Bladesinger is not in it. This is
+  # the sharpest honesty test in the set, because the model plainly knows the
+  # answer from training and must decline anyway.
+  tags: [abstention, model-knows-but-corpus-does-not]
+
+- id: abstain-non-rules
+  question: Who was the lead designer of fifth edition?
+  expected_chunks: []
+  expected_answer_contains: []
+  should_abstain: true
+  tags: [abstention, not-a-rules-question]

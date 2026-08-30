@@ -1,0 +1,167 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Table Oracle</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #fbfaf8; --fg: #1a1a1a; --muted: #6b6b6b; --line: #e3e0da;
+    --accent: #7a2e2e; --card: #ffffff; --warn: #8a6d1f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16161a; --fg: #eceae6; --muted: #9a978f; --line: #2e2e35;
+      --accent: #d98b8b; --card: #1e1e24; --warn: #d6b45c;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 16px/1.6 ui-serif, Georgia, "Times New Roman", serif;
+  }
+  main { max-width: 44rem; margin: 0 auto; padding: 2.5rem 1.25rem 5rem; }
+  h1 { font-size: 1.6rem; margin: 0 0 .25rem; letter-spacing: -.01em; }
+  .sub { color: var(--muted); font-size: .9rem; margin: 0 0 1.75rem; }
+  form { display: flex; gap: .5rem; margin-bottom: 1.5rem; }
+  input[type=text] {
+    flex: 1; padding: .7rem .85rem; font: inherit; font-size: .95rem;
+    background: var(--card); color: var(--fg);
+    border: 1px solid var(--line); border-radius: 6px;
+  }
+  input[type=text]:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  button {
+    padding: .7rem 1.1rem; font: inherit; font-size: .95rem; cursor: pointer;
+    background: var(--accent); color: #fff; border: 0; border-radius: 6px;
+  }
+  button:disabled { opacity: .5; cursor: default; }
+  #answer { white-space: pre-wrap; min-height: 2rem; }
+  .meta {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .72rem; color: var(--muted);
+    border-top: 1px solid var(--line); padding-top: .6rem; margin-top: 1.5rem;
+  }
+  .cite {
+    display: block; background: var(--card); border: 1px solid var(--line);
+    border-left: 3px solid var(--accent); border-radius: 4px;
+    padding: .6rem .8rem; margin: .5rem 0; font-size: .85rem;
+    color: inherit; text-decoration: none;
+  }
+  .cite:hover { border-left-width: 6px; }
+  .cite .path {
+    font-family: ui-monospace, monospace; font-size: .7rem;
+    color: var(--accent); display: block; margin-bottom: .3rem;
+  }
+  .cite .loc { color: var(--muted); font-size: .7rem; }
+  h2 { font-size: .8rem; text-transform: uppercase; letter-spacing: .08em;
+       color: var(--muted); margin: 2rem 0 .5rem; font-weight: 600; }
+  .warn { color: var(--warn); font-size: .85rem; margin-top: 1rem; }
+  .err { color: var(--accent); }
+</style>
+
+<main>
+  <h1>Table Oracle</h1>
+  <p class="sub">Rules answers grounded in the D&amp;D 5e SRD 5.1. Every claim cites a passage you can open and check.</p>
+
+  <form id="f">
+    <input type="text" id="q" autocomplete="off"
+           placeholder="Can I cast a spell and disengage in the same turn?"
+           value="Can I cast a spell and disengage in the same turn?">
+    <button id="go" type="submit">Ask</button>
+  </form>
+
+  <div id="answer"></div>
+  <div id="warnings"></div>
+  <div id="cites"></div>
+  <div class="meta" id="meta"></div>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+
+$("f").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const question = $("q").value.trim();
+  if (!question) return;
+
+  $("answer").textContent = "";
+  $("cites").innerHTML = "";
+  $("warnings").innerHTML = "";
+  $("meta").textContent = "retrieving…";
+  $("go").disabled = true;
+
+  const seen = new Set();
+  try {
+    const res = await fetch("/ask", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ question }),
+    });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+
+    // Minimal SSE parser: /ask is a POST, so EventSource is not an option.
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const frames = buffer.split("\n\n");
+      buffer = frames.pop();
+      for (const frame of frames) {
+        let type = "message", data = "";
+        for (const line of frame.split("\n")) {
+          if (line.startsWith("event:")) type = line.slice(6).trim();
+          else if (line.startsWith("data:")) data += line.slice(5).trim();
+        }
+        if (!data) continue;
+        handle(type, JSON.parse(data), seen);
+      }
+    }
+  } catch (err) {
+    $("answer").innerHTML += `<span class="err">\n\n[stream failed: ${err.message}]</span>`;
+  } finally {
+    $("go").disabled = false;
+  }
+});
+
+function handle(type, d, seen) {
+  if (type === "token") {
+    $("answer").textContent += d.text;
+  } else if (type === "retrieval") {
+    $("meta").textContent =
+      `retrieved ${d.chunks.length} chunks in ${d.retrieval_ms}ms · best distance ${
+        d.best_vector_distance === null ? "n/a" : d.best_vector_distance.toFixed(4)}`;
+  } else if (type === "citation") {
+    if (seen.has(d.anchor + d.source_start)) return;
+    seen.add(d.anchor + d.source_start);
+    if (!$("cites").children.length) {
+      $("cites").insertAdjacentHTML("beforebegin", "");
+      $("cites").innerHTML = "<h2>Sources</h2>";
+    }
+    const a = document.createElement("a");
+    a.className = "cite";
+    a.href = "/source/" + d.anchor;
+    a.target = "_blank";
+    a.innerHTML =
+      `<span class="path">${escapeHtml(d.section_path)}</span>` +
+      `${escapeHtml(d.cited_text)}` +
+      `<span class="loc"><br>${escapeHtml(d.source_file)} [${d.source_start}:${d.source_end}]</span>`;
+    $("cites").appendChild(a);
+  } else if (type === "warning") {
+    $("warnings").innerHTML += `<p class="warn">⚠ ${escapeHtml(d.message)}</p>`;
+  } else if (type === "usage") {
+    $("meta").textContent =
+      `${d.input_tokens} in / ${d.output_tokens} out · $${d.cost_usd.toFixed(5)} · ` +
+      `ttft ${d.ttft_ms ?? "–"}ms · total ${d.total_ms}ms · ${d.citations} citations` +
+      (d.cache_read_tokens ? ` · ${d.cache_read_tokens} cached` : "");
+  } else if (type === "error") {
+    $("answer").innerHTML += `<span class="err">\n\n[${escapeHtml(d.message)}]</span>`;
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"]/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+}
+</script>

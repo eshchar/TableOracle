@@ -1,0 +1,32 @@
+[project]
+name = "tableoracle"
+version = "0.1.0"
+description = "A grounded rules assistant for tabletop RPGs: cited answers over an openly-licensed rules corpus."
+requires-python = ">=3.11"
+dependencies = [
+    "anthropic>=1.2",
+    "openai>=3.0",
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "sse-starlette>=2.1",
+    "sqlite-vec>=0.1.9",
+    "pydantic-settings>=2.4",
+    "pyyaml>=6.0",
+    "tiktoken>=0.7",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "httpx>=0.27"]
+
+[project.scripts]
+tableoracle = "tableoracle.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["tableoracle*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
