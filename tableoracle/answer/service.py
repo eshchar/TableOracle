@@ -86,7 +86,7 @@ class AnswerService:
         conn = None
 
         try:
-            conn = db.connect(settings, read_only=True)
+            conn = db.connect(settings)
             db.assert_index_usable(conn, settings)
 
             retrieval_timer = Stopwatch()
@@ -243,7 +243,7 @@ def resolve_source(anchor: str, settings: Settings | None = None) -> dict | None
     to prove the stored text and the committed corpus still agree.
     """
     settings = settings or get_settings()
-    conn = db.connect(settings, read_only=True)
+    conn = db.connect(settings)
     try:
         row = conn.execute(
             "SELECT anchor, source_file, section_path, heading, text, source_start,"

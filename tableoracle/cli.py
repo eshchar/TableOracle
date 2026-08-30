@@ -26,7 +26,7 @@ def cmd_status(args: argparse.Namespace) -> int:
     from tableoracle.store import db
 
     settings = get_settings()
-    conn = db.connect(settings, read_only=True)
+    conn = db.connect(settings)
     try:
         status = db.index_status(conn)
         print(f"database     {settings.db_path}")
@@ -50,7 +50,7 @@ def cmd_search(args: argparse.Namespace) -> int:
     from tableoracle.store import db, search
 
     settings = get_settings()
-    conn = db.connect(settings, read_only=True)
+    conn = db.connect(settings)
     try:
         db.assert_index_usable(conn, settings)
         provider = get_provider(settings)

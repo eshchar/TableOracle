@@ -40,7 +40,7 @@ def get_service() -> AnswerService:
 @app.get("/healthz", response_model=HealthResponse)
 def healthz() -> HealthResponse:
     settings = get_settings()
-    conn = db.connect(settings, read_only=True)
+    conn = db.connect(settings)
     try:
         status = db.index_status(conn)
         ready, detail = True, None
@@ -66,7 +66,7 @@ def healthz() -> HealthResponse:
 def search_endpoint(request: SearchRequest) -> SearchResponse:
     settings = get_settings()
     service = get_service()
-    conn = db.connect(settings, read_only=True)
+    conn = db.connect(settings)
     try:
         db.assert_index_usable(conn, settings)
         timer = Stopwatch()

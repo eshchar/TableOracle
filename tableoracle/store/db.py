@@ -23,8 +23,14 @@ def unpack_vector(blob: bytes) -> list[float]:
     return list(struct.unpack(f"{len(blob) // 4}f", blob))
 
 
-def connect(settings: Settings | None = None, *, read_only: bool = False) -> sqlite3.Connection:
-    """Open the index, with the sqlite-vec extension loaded and schema applied."""
+def connect(settings: Settings | None = None) -> sqlite3.Connection:
+    """Open the index, with the sqlite-vec extension loaded and schema applied.
+
+    The schema is always applied, including on read paths. It is a handful of
+    ``CREATE ... IF NOT EXISTS`` statements, and applying it unconditionally
+    means a clone that has not been ingested yet answers "no completed ingest"
+    from `/healthz` instead of raising `no such table: chunks`.
+    """
     settings = settings or get_settings()
     settings.db_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -37,8 +43,7 @@ def connect(settings: Settings | None = None, *, read_only: bool = False) -> sql
 
     conn.execute("PRAGMA foreign_keys = ON")
     conn.execute("PRAGMA journal_mode = WAL")
-    if not read_only:
-        migrate(conn, settings)
+    migrate(conn, settings)
     return conn
 
 

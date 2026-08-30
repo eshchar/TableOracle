@@ -119,3 +119,20 @@ def test_verify_offsets_catches_corruption(tmp_settings):
     broken = chunks[0].__class__(**{**chunks[0].__dict__, "source_start": chunks[0].source_start + 3})
     with pytest.raises(ValueError, match="Offset mismatch"):
         verify_offsets([broken], tmp_settings)
+
+
+def test_fresh_clone_reports_missing_index_rather_than_crashing(tmp_settings):
+    """A clone that has not been ingested must explain itself, not raise.
+
+    `connect()` applies the schema on every open for exactly this reason: the
+    tables have to exist before anything can report that they are empty.
+    """
+    conn = db.connect(tmp_settings)
+    try:
+        status = db.index_status(conn)
+        assert status["chunks"] == 0
+        assert status["last_ingest"] is None
+        with pytest.raises(db.StaleIndexError, match="make ingest"):
+            db.assert_index_usable(conn, tmp_settings)
+    finally:
+        conn.close()
