@@ -67,7 +67,14 @@ class Settings(BaseSettings):
     # --- models ---
     # Local by default: Table Oracle then needs only ANTHROPIC_API_KEY.
     embed_model: str = "bge-small-en-v1.5"
-    answer_model: str = "claude-opus-5"
+    # Sonnet by default rather than Opus. The task here is constrained --
+    # read the supplied passages, answer only from them, cite -- which is
+    # faithful extraction and synthesis rather than open-ended reasoning, and
+    # that is where Opus's headroom earns least. It also makes M3's eval suite
+    # 2.5x cheaper to re-run, which matters more than a marginal quality edge
+    # when the whole point is to iterate on measurements. M3 reports all three
+    # models against the eval set; if Sonnet loses there, this changes.
+    answer_model: str = "claude-sonnet-5"
     answer_effort: str = "medium"
     answer_max_tokens: int = 4096
 

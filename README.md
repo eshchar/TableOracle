@@ -77,6 +77,9 @@ first ingest). So the only credential is:
 |---|---|
 | `ANTHROPIC_API_KEY` | generating the grounded, cited answer |
 
+An *identity-linked* Console key additionally needs `ANTHROPIC_WORKSPACE_ID`;
+the API rejects it with a 400 otherwise. Ordinary keys can ignore this.
+
 Anthropic [does not offer an embedding model](https://platform.claude.com/docs/en/build-with-claude/embeddings),
 so vectors have to come from somewhere. Running them locally means embeddings
 are free and offline, re-ingesting costs nothing, and M3's eval harness can
@@ -114,7 +117,7 @@ corpus/srd-5.1/*.md
    top 5 chunks ──► one `document` block each, citations enabled
       │
       ▼
-   Claude Opus 5 ──► streamed text + `citations_delta` events
+   Claude Sonnet 5 ─► streamed text + `citations_delta` events
       │
       ▼
    char offsets in the answer ──► offsets in a file you can open
