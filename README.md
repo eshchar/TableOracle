@@ -1,5 +1,7 @@
 # Table Oracle
 
+[![tests](https://github.com/eshchar/TableOracle/actions/workflows/tests.yml/badge.svg)](https://github.com/eshchar/TableOracle/actions/workflows/tests.yml)
+
 A grounded rules assistant for tabletop RPGs. Ask a rules question in plain
 English, get an answer where **every claim cites a passage you can open and
 read yourself** — file, character offsets, and all.
@@ -58,9 +60,12 @@ make ask Q="How does grappling work?"
 make dev                         # http://127.0.0.1:8000 for the browser UI
 ```
 
-`make test` runs the full unit suite and **needs no API keys at all** — the
-chunker, fusion, citation resolver, and storage layer are all tested against an
-offline deterministic embedding provider.
+`make test` runs the full suite and **needs no API keys at all** — the chunker,
+fusion, citation resolver, and storage layer are tested against an offline
+deterministic embedding provider, and the offset invariant is checked across
+every chunk of the real corpus. CI runs it on Linux and Windows, Python 3.11
+and 3.13, because citation offsets have to survive both line-ending
+conventions.
 
 ### Two keys
 
@@ -199,7 +204,7 @@ tableoracle/
   api/                FastAPI app, SSE, single-page UI
   obs/                cost and latency logging
 evals/questions.yaml  eval format, seeded (scorer lands in M3)
-tests/                42 tests, no API keys required
+tests/                52 tests, no API keys required
 ```
 
 ---

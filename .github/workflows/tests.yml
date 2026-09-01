@@ -1,0 +1,49 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    # Both platforms on purpose: citation anchors are character offsets, and a
+    # Windows checkout may be CRLF where Linux is LF. The offsets must be
+    # identical either way, so both are exercised rather than assumed.
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.11", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Check sqlite-vec and FTS5 are available
+        # sqlite-vec needs SQLite extension loading, which some Python builds
+        # compile out. Fail here with a clear message rather than inside a test.
+        run: |
+          python -c "
+          import sqlite3, sqlite_vec
+          c = sqlite3.connect(':memory:')
+          c.enable_load_extension(True); sqlite_vec.load(c)
+          print('sqlite', sqlite3.sqlite_version, '| vec', c.execute('select vec_version()').fetchone()[0])
+          c.execute('create virtual table t using fts5(x)'); print('fts5 ok')
+          "
+
+      - name: Test
+        # No API keys: the suite runs against an offline deterministic
+        # embedding provider, including the full real corpus.
+        run: pytest -q
