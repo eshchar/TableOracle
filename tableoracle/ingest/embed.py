@@ -1,9 +1,13 @@
 """Embedding providers.
 
-Anthropic ships no embeddings endpoint, so this is the one place the project
-depends on a second vendor. It is kept behind a narrow protocol for that exact
-reason: swapping to a local sentence-transformers model, or to Voyage, means
-adding one class here and changing no caller.
+Anthropic ships no embeddings endpoint (its own docs say so and point to
+Voyage AI), so vectors have to come from somewhere else. The default here is a
+local ONNX model, which means the project needs no embedding key at all and
+runs on a single ANTHROPIC_API_KEY.
+
+Everything sits behind a narrow protocol so the choice stays reversible:
+OpenAI and a deterministic offline provider are also implemented, and adding
+Voyage would mean one more class and no caller changes.
 
 Every embedding is cached on disk, keyed by (model, text). Re-ingesting an
 unchanged corpus then costs nothing, which matters because the eval harness in
@@ -24,7 +28,14 @@ from tableoracle.store.db import pack_vector, unpack_vector
 
 
 class EmbeddingProvider(Protocol):
-    """Anything that can turn text into vectors."""
+    """Anything that can turn text into vectors.
+
+    `embed` is for corpus passages; `embed_query` is for a user's question.
+    They are separate because several retrieval models are *asymmetric*: they
+    expect a short instruction prefixed to queries but not to documents, and
+    embedding a question as though it were a passage measurably degrades
+    recall. Providers with no such distinction just delegate one to the other.
+    """
 
     @property
     def model(self) -> str: ...
@@ -33,6 +44,8 @@ class EmbeddingProvider(Protocol):
     def dims(self) -> int: ...
 
     def embed(self, texts: Sequence[str]) -> list[list[float]]: ...
+
+    def embed_query(self, text: str) -> list[float]: ...
 
 
 class EmbeddingCache:
@@ -178,12 +191,123 @@ class OpenAIEmbeddingProvider:
             raise RuntimeError(f"{len(missing)} texts were never embedded")
         return [r for r in results if r is not None]
 
+    def embed_query(self, text: str) -> list[float]:
+        # text-embedding-3-* are symmetric: queries and documents are embedded
+        # the same way, so no instruction prefix is applied.
+        return self.embed([text])[0]
+
     @property
     def cost_usd(self) -> float:
         from tableoracle.config import PRICING_USD_PER_MTOK
 
         rate = PRICING_USD_PER_MTOK.get(self.model, {}).get("input", 0.0)
         return self.tokens_used / 1_000_000 * rate
+
+
+class LocalEmbeddingProvider:
+    """Local ONNX embeddings via fastembed. No API key, no network at query time.
+
+    This is what lets the whole project run on a single Anthropic key: Claude
+    answers, and retrieval is handled entirely on this machine. It also makes
+    M3's eval harness free to re-run, which matters when calibrating retrieval.
+
+    The model is downloaded once (~67MB for bge-small-en-v1.5) and cached by
+    fastembed thereafter.
+    """
+
+    # BGE models are trained asymmetrically: queries carry this instruction,
+    # passages do not. Omitting it costs real recall, so it is not optional.
+    QUERY_INSTRUCTION = "Represent this sentence for searching relevant passages: "
+
+    # Small on purpose. Throughput on CPU is dominated by sequence length, not
+    # batch size, so a big batch buys nothing and costs memory: an early run
+    # embedding all ~1900 chunks in one call reached ~9GB RSS. 64 keeps the
+    # working set small and gives progress output that actually moves.
+    BATCH_SIZE = 64
+
+    # config name -> (fastembed repo id, dimensions)
+    MODELS = {
+        "bge-small-en-v1.5": ("BAAI/bge-small-en-v1.5", 384),
+        "bge-base-en-v1.5": ("BAAI/bge-base-en-v1.5", 768),
+    }
+
+    def __init__(self, settings: Settings | None = None, cache: EmbeddingCache | None = None):
+        self._settings = settings or get_settings()
+        if self._settings.embed_model not in self.MODELS:
+            raise ValueError(
+                f"{self._settings.embed_model!r} is not a known local model; "
+                f"choose one of {sorted(self.MODELS)}"
+            )
+        self._repo_id, self._dims = self.MODELS[self._settings.embed_model]
+        self._cache = (
+            cache if cache is not None else EmbeddingCache(self._settings.embed_cache_path)
+        )
+        self._model = None
+        self.tokens_used = 0
+        self.cost_usd = 0.0  # local inference is free; kept for a uniform interface
+
+    @property
+    def model(self) -> str:
+        return self._settings.embed_model
+
+    @property
+    def dims(self) -> int:
+        return self._dims
+
+    def _ensure_model(self):
+        if self._model is None:
+            from fastembed import TextEmbedding
+
+            # First construction downloads the weights; later runs use the cache.
+            self._model = TextEmbedding(model_name=self._repo_id)
+        return self._model
+
+    def embed(self, texts: Sequence[str], *, progress: bool = False) -> list[list[float]]:
+        results: list[list[float] | None] = [None] * len(texts)
+        cached = self._cache.get_many(self.model, texts)
+        for index, vector in cached.items():
+            results[index] = vector
+
+        pending = [(i, t) for i, t in enumerate(texts) if results[i] is None]
+        if progress and cached:
+            print(f"  {len(cached)}/{len(texts)} embeddings served from cache")
+        if pending:
+            if progress:
+                print(
+                    f"  embedding {len(pending)} chunks locally ({self._repo_id});"
+                    " first run downloads the model",
+                    flush=True,
+                )
+            model = self._ensure_model()
+            # Batched rather than one call over everything: CPU inference on the
+            # full corpus takes minutes, and a run that prints nothing for that
+            # long is indistinguishable from a hang. Batching also means an
+            # interrupted ingest keeps the work it already paid for, since each
+            # batch is written to the cache as it completes.
+            done = 0
+            for start in range(0, len(pending), self.BATCH_SIZE):
+                batch = pending[start : start + self.BATCH_SIZE]
+                vectors = [v.tolist() for v in model.embed([t for _, t in batch])]
+                for (index, _), vector in zip(batch, vectors, strict=True):
+                    if len(vector) != self._dims:
+                        raise ValueError(
+                            f"{self.model} returned {len(vector)} dims, expected {self._dims}"
+                        )
+                    results[index] = vector
+                self._cache.put_many(
+                    self.model, [(t, v) for (_, t), v in zip(batch, vectors, strict=True)]
+                )
+                done += len(batch)
+                if progress:
+                    print(f"  embedded {done}/{len(pending)}", flush=True)
+
+        missing = [i for i, r in enumerate(results) if r is None]
+        if missing:
+            raise RuntimeError(f"{len(missing)} texts were never embedded")
+        return [r for r in results if r is not None]
+
+    def embed_query(self, text: str) -> list[float]:
+        return self.embed([self.QUERY_INSTRUCTION + text])[0]
 
 
 class HashingEmbeddingProvider:
@@ -231,12 +355,17 @@ class HashingEmbeddingProvider:
             vectors.append([v / norm for v in vec])
         return vectors
 
+    def embed_query(self, text: str) -> list[float]:
+        return self.embed([text])[0]
+
 
 def get_provider(settings: Settings | None = None) -> EmbeddingProvider:
     """Build the configured embedding provider."""
     settings = settings or get_settings()
     if settings.embed_model.startswith("text-embedding-"):
         return OpenAIEmbeddingProvider(settings)
+    if settings.embed_model in LocalEmbeddingProvider.MODELS:
+        return LocalEmbeddingProvider(settings)
     if settings.embed_model.startswith("hashing-offline"):
         return HashingEmbeddingProvider(dims=settings.embed_dims, model=settings.embed_model)
     raise ValueError(f"No provider knows how to serve embed_model={settings.embed_model!r}")

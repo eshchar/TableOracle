@@ -54,7 +54,7 @@ def cmd_search(args: argparse.Namespace) -> int:
     try:
         db.assert_index_usable(conn, settings)
         provider = get_provider(settings)
-        vector = provider.embed([args.query])[0]
+        vector = provider.embed_query(args.query)
         retrieval = search.search(
             conn,
             args.query,

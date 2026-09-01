@@ -55,7 +55,7 @@ cd TableOracle
 make install                     # or: python -m venv .venv && .venv/bin/pip install -e ".[dev]"
 
 cp .env.example .env             # then add your keys (see "Two keys" below)
-make ingest                      # ~1900 chunks, about 1 cent of embeddings
+make ingest                      # ~1900 chunks; downloads a 67MB model, then free
 make ask Q="How does grappling work?"
 make dev                         # http://127.0.0.1:8000 for the browser UI
 ```
@@ -67,23 +67,31 @@ every chunk of the real corpus. CI runs it on Linux and Windows, Python 3.11
 and 3.13, because citation offsets have to survive both line-ending
 conventions.
 
-### Two keys
+### One key
 
-Anthropic does not ship an embeddings endpoint, so this project needs two:
+Claude answers the questions. **Retrieval needs no key at all** — embeddings run
+locally on `bge-small-en-v1.5` (~67MB, ONNX via `fastembed`, downloaded once on
+first ingest). So the only credential is:
 
-| Key | Used for | Needed when |
-|---|---|---|
-| `ANTHROPIC_API_KEY` | generating answers (Claude Opus 5) | asking questions |
-| `OPENAI_API_KEY` | embeddings (`text-embedding-3-small`) | ingesting **and** asking |
+| Key | Used for |
+|---|---|
+| `ANTHROPIC_API_KEY` | generating the grounded, cited answer |
 
-The query has to be embedded with the same model as the corpus, so the OpenAI
-key is needed at query time too, not just at ingest. Embeddings are cached on
-disk, so re-ingesting an unchanged corpus is free.
+Anthropic [does not offer an embedding model](https://platform.claude.com/docs/en/build-with-claude/embeddings),
+so vectors have to come from somewhere. Running them locally means embeddings
+are free and offline, re-ingesting costs nothing, and M3's eval harness can
+re-run retrieval as many times as calibration needs without a bill.
 
-If one key matters more than embedding quality, `tableoracle/ingest/embed.py`
-defines a three-method `EmbeddingProvider` protocol — a local
-`sentence-transformers` provider drops in there and removes the OpenAI
-dependency entirely, with no changes to any caller.
+`tableoracle/ingest/embed.py` defines the `EmbeddingProvider` protocol, so
+swapping in a hosted model is a config change: an OpenAI provider ships in the
+box (`TABLEORACLE_EMBED_MODEL=text-embedding-3-small` plus `OPENAI_API_KEY`),
+and Voyage — Anthropic's own recommendation — would be one more class.
+
+One detail worth naming: BGE models are trained *asymmetrically*, so queries get
+the instruction prefix `"Represent this sentence for searching relevant
+passages: "` and passages do not. Embedding a question as though it were a
+passage measurably costs recall, which is why the protocol separates
+`embed_query` from `embed`.
 
 ---
 
@@ -98,7 +106,7 @@ corpus/srd-5.1/*.md
       │   └─ embed_text (breadcrumb + text) ───► embedded
       │      source_file + [start:end] ────────► how a citation is checked
       ▼
-  SQLite ├── chunk_vec  (sqlite-vec, cosine, 1536d)
+  SQLite ├── chunk_vec  (sqlite-vec, cosine, 384d)
          └── chunks_fts (FTS5, BM25)
       │
       │  query ── both legs, 30 candidates each ── Reciprocal Rank Fusion
@@ -211,8 +219,19 @@ tests/                52 tests, no API keys required
 
 ## Known limitations
 
-- **No quality numbers yet.** M3's job. Retrieval quality has been verified
-  structurally, not measured.
+- **No quality numbers yet.** M3's job. Retrieval quality has been spot-checked,
+  not measured.
+- **Packed chunks embed poorly, and it shows.** The 498-token "Actions in
+  Combat" chunk averages ~10 unrelated actions into one vector, so the dense
+  leg ranks it ~#100 for *"can I cast a spell and disengage in the same turn?"*
+  while BM25 ranks it #1. It still reaches the model at rank 5, carried
+  entirely by the keyword leg — which works, but on a one-slot margin from a
+  single retriever. The packing that helps BM25 and helps the model read the
+  rule in context is the same packing that dilutes the embedding.
+  The fix is small-to-big retrieval: embed each leaf section separately and
+  return the packed parent for context. Deferred deliberately until M3 can
+  measure whether it helps, rather than tuned now against a handful of
+  questions chosen by the person doing the tuning.
 - **Abstention is not calibrated.** The prompt instructs the model to decline
   when the excerpts do not cover the question, and `best_vector_distance` is
   logged and returned on every request — but no threshold acts on it yet. That

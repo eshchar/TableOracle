@@ -60,7 +60,7 @@ class AnswerService:
     def retrieve(self, conn, question: str, k: int | None = None) -> tuple[search.Retrieval, float]:
         """Embed the question and run hybrid retrieval."""
         timer = Stopwatch()
-        query_vector = self.provider.embed([question])[0]
+        query_vector = self.provider.embed_query(question)
         embed_ms = timer.elapsed_ms()
         retrieval = search.search(
             conn,

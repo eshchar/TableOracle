@@ -23,6 +23,9 @@ PRICING_USD_PER_MTOK: dict[str, dict[str, float]] = {
 EMBED_DIMS: dict[str, int] = {
     "text-embedding-3-small": 1536,
     "text-embedding-3-large": 3072,
+    # Local ONNX models: no API key, no per-token cost.
+    "bge-small-en-v1.5": 384,
+    "bge-base-en-v1.5": 768,
     # Offline, deterministic, not semantic. Tests and keyless smoke runs only.
     "hashing-offline-v1": 1536,
 }
@@ -59,7 +62,8 @@ class Settings(BaseSettings):
     embed_cache_path: Path = REPO_ROOT / "data" / "embed_cache.sqlite"
 
     # --- models ---
-    embed_model: str = "text-embedding-3-small"
+    # Local by default: Table Oracle then needs only ANTHROPIC_API_KEY.
+    embed_model: str = "bge-small-en-v1.5"
     answer_model: str = "claude-opus-5"
     answer_effort: str = "medium"
     answer_max_tokens: int = 4096
