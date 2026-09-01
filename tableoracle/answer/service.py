@@ -54,7 +54,14 @@ class AnswerService:
                     "ANTHROPIC_API_KEY is not set; the answer endpoint needs it. "
                     "See .env.example."
                 )
-            self._client = anthropic.Anthropic(api_key=self.settings.anthropic_api_key)
+            headers = {}
+            if self.settings.anthropic_workspace_id:
+                # Required for identity-linked keys, harmless for the rest.
+                headers["anthropic-workspace-id"] = self.settings.anthropic_workspace_id
+            self._client = anthropic.Anthropic(
+                api_key=self.settings.anthropic_api_key,
+                default_headers=headers or None,
+            )
         return self._client
 
     def retrieve(self, conn, question: str, k: int | None = None) -> tuple[search.Retrieval, float]:

@@ -43,6 +43,9 @@ class Settings(BaseSettings):
     # Aliased to the vendors' conventional names so the env var is ANTHROPIC_API_KEY,
     # not TABLEORACLE_ANTHROPIC_API_KEY, and the SDKs' own env lookup agrees with ours.
     anthropic_api_key: str = Field(default="", alias="ANTHROPIC_API_KEY")
+    # Identity-linked Console keys must name the workspace they act in; the API
+    # rejects them with a 400 otherwise. Ordinary keys ignore this.
+    anthropic_workspace_id: str = Field(default="", alias="ANTHROPIC_WORKSPACE_ID")
     openai_api_key: str = Field(default="", alias="OPENAI_API_KEY")
 
     # --- corpus ---
