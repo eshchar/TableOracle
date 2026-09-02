@@ -125,7 +125,7 @@ corpus/srd-5.1/*.md
    top 5 chunks ──► one `document` block each, citations enabled
       │
       ▼
-   Claude Haiku 4.5 ► streamed text + `citations_delta` events
+   Claude Sonnet 5 ─► streamed text + `citations_delta` events
       │
       ▼
    char offsets in the answer ──► offsets in a file you can open
@@ -234,10 +234,10 @@ one machine, recorded because it is real and because it decided the default:
 | `claude-haiku-4-5` | **$0.0062** | **$0.0068** | **2.5 s** | 4 | 0 |
 
 Haiku is ~3× cheaper and ~2.6× faster here, emitted more citations, and
-abstained correctly — so it is the default. That is a cost decision on partial
-evidence, not a claim of equal quality; **two questions is not an
-evaluation.** M3 scores all three models against the full set and this default
-follows the result.
+abstained correctly. **Sonnet is nonetheless the default**, because two
+questions is not an evaluation and Sonnet keeps capabilities Haiku lacks
+(below). M3 scores both against the full set and this default follows the
+result; `TABLEORACLE_ANSWER_MODEL=claude-haiku-4-5` switches today.
 
 What Haiku gives up: no adaptive thinking, no `output_config.effort`, and its
 minimum cacheable prefix sits above this system prompt, so prompt caching does
