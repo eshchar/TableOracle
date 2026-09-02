@@ -33,6 +33,11 @@ _SLUG_STRIP_RE = re.compile(r"[^a-z0-9]+")
 # Leading "06_" / "10-" ordering prefixes on corpus directories and files.
 _ORDER_PREFIX_RE = re.compile(r"^\d+[_-]")
 
+# Cap on vectors per chunk. Keeps the index from ballooning on chunks that
+# pack many tiny sections, at the cost of the tail sections sharing the
+# packed vector rather than getting their own.
+MAX_EMBEDDINGS_PER_CHUNK = 12
+
 
 def count_tokens(text: str) -> int:
     return len(_ENCODER.encode(text, disallowed_special=()))
@@ -73,7 +78,19 @@ class Section:
 
 @dataclass(frozen=True)
 class Chunk:
-    """A contiguous, embeddable span of one source file."""
+    """A contiguous, embeddable span of one source file.
+
+    ``embed_texts`` is what actually gets embedded, and there is usually more
+    than one. A chunk packs several related sections together so that
+    neighbouring rules are retrievable as a unit, but embedding that packed
+    text as a single vector averages ~10 unrelated rules into one diluted
+    centroid that matches nothing strongly.
+
+    So retrieval indexes the *parts* and returns the *whole*: one vector per
+    constituent section, every one pointing back at this chunk. A query about
+    Disengage matches the Disengage vector precisely, and the model still
+    receives the whole "Actions in Combat" chunk for context.
+    """
 
     source_file: str
     anchor: str
@@ -81,6 +98,7 @@ class Chunk:
     heading: str
     text: str
     embed_text: str
+    embed_texts: tuple[str, ...]
     source_start: int
     source_end: int
     token_count: int
@@ -260,6 +278,10 @@ def chunk_document(
             spans = [(head.start, group[-1].end)]
 
         for span_start, span_end in spans:
+            members = [
+                sec for sec in group
+                if sec.start >= span_start and sec.end <= span_end
+            ] or [head]
             raw = doc.text[span_start:span_end]
             text = raw.strip()
             if not text or is_stub(text):
@@ -283,6 +305,26 @@ def chunk_document(
             seen_anchors.add(anchor)
 
             embed_text = f"{breadcrumb}\n\n{text}" if breadcrumb else text
+
+            # One embedding per constituent section, each carrying the full
+            # breadcrumb so a short rule still knows where it lives. Sections
+            # are deduplicated and capped: a chunk split from one oversized
+            # section has only itself to offer.
+            parts: list[str] = []
+            for sec in members:
+                trail = " > ".join(filter(None, (corpus_title, *sec.path)))
+                body = doc.text[max(sec.start, span_start):min(sec.end, span_end)].strip()
+                if body:
+                    parts.append(f"{trail}\n\n{body}")
+            if not parts:
+                parts = [embed_text]
+            if len(parts) > MAX_EMBEDDINGS_PER_CHUNK:
+                parts = parts[:MAX_EMBEDDINGS_PER_CHUNK]
+            # The packed text is embedded too: a question phrased across
+            # several of the packed rules matches the whole better than any part.
+            if embed_text not in parts:
+                parts.append(embed_text)
+
             chunks.append(
                 Chunk(
                     source_file=doc.relative_path,
@@ -291,6 +333,7 @@ def chunk_document(
                     heading=head.title,
                     text=text,
                     embed_text=embed_text,
+                    embed_texts=tuple(parts),
                     source_start=true_start,
                     source_end=true_end,
                     token_count=count_tokens(text),

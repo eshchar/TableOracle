@@ -51,16 +51,34 @@ def migrate(conn: sqlite3.Connection, settings: Settings | None = None) -> None:
     """Apply the static schema, then the dimension-dependent vector table."""
     settings = settings or get_settings()
     conn.executescript(SCHEMA_PATH.read_text(encoding="utf-8"))
-    # vec0 needs the dimension baked into the DDL, so it can't live in schema.sql.
-    conn.execute(
-        f"""
-        CREATE VIRTUAL TABLE IF NOT EXISTS chunk_vec USING vec0(
-            chunk_id INTEGER PRIMARY KEY,
-            embedding FLOAT[{settings.embed_dims}] distance_metric=cosine
-        )
-        """
+
+    # vec0 needs the dimension baked into the DDL, so it can't live in
+    # schema.sql. It also has to be rebuilt rather than created-if-missing when
+    # its shape changes: CREATE ... IF NOT EXISTS silently keeps the old table,
+    # and an index whose vector table still carries the previous schema fails
+    # deep inside the next ingest instead of at migration time.
+    #
+    # Dropping is safe here and nowhere else in this schema: chunk_vec holds
+    # only derived data, every vector is rebuilt from the corpus on the ingest
+    # that follows, and embeddings are cached on disk so the rebuild is cheap.
+    wanted = (
+        f"CREATE VIRTUAL TABLE chunk_vec USING vec0("
+        f"embedding FLOAT[{settings.embed_dims}] distance_metric=cosine, chunk_id INTEGER)"
     )
+    row = conn.execute(
+        "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'chunk_vec'"
+    ).fetchone()
+    if row is not None and _normalize_ddl(row["sql"]) != _normalize_ddl(wanted):
+        conn.execute("DROP TABLE chunk_vec")
+        row = None
+    if row is None:
+        conn.execute(wanted)
     conn.commit()
+
+
+def _normalize_ddl(sql: str) -> str:
+    """Compare DDL ignoring whitespace, which sqlite preserves verbatim."""
+    return " ".join(sql.split()).replace(" (", "(").replace("( ", "(").lower()
 
 
 def index_status(conn: sqlite3.Connection) -> dict[str, object]:

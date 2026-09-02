@@ -129,3 +129,35 @@ def test_file_slug_strips_ordering_prefixes():
 
 def test_slugify():
     assert slugify("Actions in Combat > Disengage") == "actions-in-combat-disengage"
+
+
+def test_chunk_emits_one_embedding_per_constituent_section(sample_doc):
+    """Small-to-big: index the parts, return the whole.
+
+    The packed "Actions in Combat" chunk averages ~10 unrelated rules into one
+    vector, which matched nothing strongly and left the demo question's chunk
+    at rank ~100 in the dense leg. Each section now gets its own vector.
+    """
+    chunks = chunk_document(sample_doc, target_tokens=400, max_tokens=600, corpus_title="SRD 5.1")
+    holder = next(c for c in chunks if "Disengage action" in c.text)
+
+    assert len(holder.embed_texts) > 1
+    joined = "\n".join(holder.embed_texts)
+    assert "Disengage" in joined and "Dash" in joined
+    # Every part carries the breadcrumb, so a short rule still knows where it lives.
+    assert all("SRD 5.1" in part for part in holder.embed_texts)
+    # The packed text is indexed too, for questions spanning several rules.
+    assert holder.embed_text in holder.embed_texts
+
+
+def test_embedding_count_is_capped(sample_doc):
+    from tableoracle.ingest.chunk import MAX_EMBEDDINGS_PER_CHUNK
+
+    for chunk in chunk_document(sample_doc, target_tokens=10_000, max_tokens=10_000):
+        assert len(chunk.embed_texts) <= MAX_EMBEDDINGS_PER_CHUNK + 1
+
+
+def test_every_chunk_has_at_least_one_embedding(sample_doc):
+    for chunk in chunk_document(sample_doc, target_tokens=120, max_tokens=200):
+        assert chunk.embed_texts
+        assert all(part.strip() for part in chunk.embed_texts)

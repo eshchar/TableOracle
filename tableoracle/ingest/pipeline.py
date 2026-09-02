@@ -22,6 +22,9 @@ class IngestReport:
     embed_cost_usd: float
     elapsed_s: float
     offsets_verified: int
+    # Vectors exceed chunks: each chunk is indexed once per constituent
+    # section, plus once as a whole. See Chunk.embed_texts.
+    vectors: int = 0
 
 
 def _utcnow() -> str:
@@ -95,9 +98,19 @@ def ingest(
             f"Provider dims {provider.dims} != configured {settings.embed_dims}"
         )
 
+    # One embedding per constituent section, flattened; `owners` maps each
+    # vector back to the chunk it belongs to.
+    texts: list[str] = []
+    owners: list[int] = []
+    for index, chunk in enumerate(chunks):
+        for part in chunk.embed_texts:
+            texts.append(part)
+            owners.append(index)
+
     if progress:
-        print(f"Embedding with {provider.model} ({provider.dims}d) ...")
-    vectors = provider.embed([c.embed_text for c in chunks], progress=progress)
+        print(f"Embedding with {provider.model} ({provider.dims}d): "
+              f"{len(texts)} vectors across {len(chunks)} chunks ...")
+    vectors = provider.embed(texts, progress=progress)
 
     conn = db.connect(settings)
     try:
@@ -157,7 +170,10 @@ def ingest(
             ]
             conn.executemany(
                 "INSERT INTO chunk_vec (chunk_id, embedding) VALUES (?, ?)",
-                [(cid, db.pack_vector(vec)) for cid, vec in zip(ids, vectors, strict=True)],
+                [
+                    (ids[owner], db.pack_vector(vec))
+                    for owner, vec in zip(owners, vectors, strict=True)
+                ],
             )
             conn.execute(
                 "UPDATE ingest_runs SET finished_at = ? WHERE id = ?", (_utcnow(), run_id)
@@ -170,6 +186,7 @@ def ingest(
     report = IngestReport(
         documents=doc_count,
         chunks=len(chunks),
+        vectors=len(texts),
         tokens=sum(c.token_count for c in chunks),
         embed_tokens=embed_tokens,
         embed_cost_usd=cost,

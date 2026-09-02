@@ -94,8 +94,31 @@ def test_reingest_is_idempotent(tmp_settings):
     try:
         # A rebuild must replace the index, not append a second copy of it.
         assert conn.execute("SELECT COUNT(*) FROM chunks").fetchone()[0] == second.chunks
-        assert conn.execute("SELECT COUNT(*) FROM chunk_vec").fetchone()[0] == second.chunks
+        # More vectors than chunks: each chunk is indexed once per constituent
+        # section and once as a whole (small-to-big retrieval).
+        assert conn.execute("SELECT COUNT(*) FROM chunk_vec").fetchone()[0] == second.vectors
+        assert second.vectors >= second.chunks
         assert conn.execute("SELECT COUNT(*) FROM rulebooks").fetchone()[0] == 1
+        # Every vector points at a chunk that exists.
+        orphans = conn.execute(
+            "SELECT COUNT(*) FROM chunk_vec WHERE chunk_id NOT IN (SELECT id FROM chunks)"
+        ).fetchone()[0]
+        assert orphans == 0
+    finally:
+        conn.close()
+
+
+def test_vector_search_returns_each_chunk_once(tmp_settings):
+    """Several vectors per chunk must not become several results per chunk."""
+    provider = HashingEmbeddingProvider(dims=tmp_settings.embed_dims)
+    ingest(tmp_settings, provider, progress=False)
+    conn = db.connect(tmp_settings)
+    try:
+        hits = search.vector_search(conn, provider.embed_query("disengage"), 10)
+        ids = [cid for cid, _ in hits]
+        assert len(ids) == len(set(ids))
+        # Deduplication keeps the closest section, so distances stay ascending.
+        assert [d for _, d in hits] == sorted(d for _, d in hits)
     finally:
         conn.close()
 

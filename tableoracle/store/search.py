@@ -95,15 +95,33 @@ def build_fts_query(query: str) -> str:
     return " OR ".join('"' + t.replace('"', "") + '"' for t in tokens)
 
 
+# A chunk contributes one vector per constituent section, so a KNN of size N
+# can return far fewer than N distinct chunks. Over-fetch, then deduplicate.
+VECTOR_OVERFETCH = 4
+
+
 def vector_search(
     conn: sqlite3.Connection, query_vector: list[float], limit: int
 ) -> list[tuple[int, float]]:
+    """Nearest chunks, keeping each chunk's best-matching section.
+
+    Several vectors point at the same chunk (see Chunk.embed_texts), so results
+    are deduplicated on chunk_id keeping the smallest distance: a chunk is as
+    close as its closest part.
+    """
     rows = conn.execute(
         "SELECT chunk_id, distance FROM chunk_vec"
         " WHERE embedding MATCH ? AND k = ? ORDER BY distance",
-        (pack_vector(query_vector), limit),
+        (pack_vector(query_vector), limit * VECTOR_OVERFETCH),
     ).fetchall()
-    return [(row["chunk_id"], row["distance"]) for row in rows]
+
+    best: dict[int, float] = {}
+    for row in rows:
+        chunk_id, distance = row["chunk_id"], row["distance"]
+        if chunk_id not in best or distance < best[chunk_id]:
+            best[chunk_id] = distance
+    ordered = sorted(best.items(), key=lambda kv: kv[1])
+    return ordered[:limit]
 
 
 def keyword_search(conn: sqlite3.Connection, query: str, limit: int) -> list[tuple[int, float]]:

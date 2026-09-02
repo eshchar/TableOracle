@@ -61,19 +61,28 @@ per-question failures are committed under `evals/results/`.
 Embeddings run locally, so this half needs no key and no credit:
 `make eval-retrieval`.
 
-| metric | value |
-|---|---|
-| retrieval@1 | 62.5% |
-| retrieval@3 | 77.1% |
-| **retrieval@5** | **85.4%** |
-| retrieval@10 | 89.6% |
-| MRR | 0.713 |
-| p95 latency | 10 ms |
+| metric | before small-to-big | **now** |
+|---|---|---|
+| retrieval@1 | 62.5% | **72.9%** |
+| retrieval@3 | 77.1% | **91.7%** |
+| **retrieval@5** | 85.4% | **93.8%** |
+| retrieval@10 | 89.6% | **97.9%** |
+| MRR | 0.713 | **0.820** |
+| p95 latency | 10 ms | 20 ms |
+
+The "before" column is not decoration — it is the measurement that justified
+the change. See [Small-to-big retrieval](#small-to-big-retrieval) below.
 
 Latency excludes the one-off ~1.4 s load of the local embedding model on the
 first query of a process; every query after that is single-digit milliseconds.
 
 ### Answers
+
+> Measured against the **previous** index, before small-to-big retrieval landed.
+> Retrieval@5 has since risen 85.4% → 93.8%, so these figures understate the
+> current system; they are left in place rather than quietly restated, because
+> a number that was not measured should not be printed. Re-run with
+> `make eval`.
 
 | metric | Sonnet 5 | Haiku 4.5 |
 |---|---|---|
@@ -237,6 +246,40 @@ it is indistinguishable from a grounded one. See `tableoracle/answer/prompt.py`.
 different embedding model does not error — it returns plausible, meaningless
 neighbours. The embedding model and dimension are recorded at ingest and checked
 on every read.
+
+### Small-to-big retrieval
+
+The first version embedded each packed chunk as one vector, and it was the
+system's largest weakness. "Actions in Combat" packs Attack, Cast a Spell,
+Dash, Disengage, Dodge and more into 498 tokens; averaged into a single
+embedding, it matched nothing strongly. The headline demo question ranked that
+chunk **~100th** in the dense leg and only reached the model at rank 5, carried
+entirely by BM25.
+
+The fix is to **index the parts and return the whole**: each constituent
+section is embedded separately, every vector points back at its parent chunk,
+and vector search deduplicates on chunk id keeping the closest section. A
+question about Disengage now matches a Disengage vector precisely, while the
+model still receives the whole packed chunk for context. That turned 1,883
+chunks into 5,369 vectors.
+
+Measured on the same 56 questions, no other change:
+
+| | before | after |
+|---|---|---|
+| retrieval@1 | 62.5% | **72.9%** |
+| retrieval@3 | 77.1% | **91.7%** |
+| retrieval@5 | 85.4% | **93.8%** |
+| MRR | 0.713 | **0.820** |
+
+Four previously-missed questions became findable and **none regressed**. The
+demo question moved from rank 5 to **rank 1**. The furthest answerable question
+also moved closer (0.392 → 0.330), which widens the margin under the abstention
+threshold.
+
+This is the loop the eval suite exists to enable: the weakness was measured
+before it was fixed, and the fix was checked rather than assumed. Retrieval
+scoring costs nothing, so the whole experiment was free.
 
 ---
 
@@ -412,23 +455,6 @@ evals/                56 questions, scorer, committed results
 
 - **No quality numbers yet.** M3's job. Retrieval quality has been spot-checked,
   not measured.
-- **Packed chunks embed poorly, and it shows.** The 498-token "Actions in
-  Combat" chunk averages ~10 unrelated actions into one vector, so the dense
-  leg ranks it ~#100 for *"can I cast a spell and disengage in the same turn?"*
-  while BM25 ranks it #1. It still reaches the model at rank 5, carried
-  entirely by the keyword leg — which works, but on a one-slot margin from a
-  single retriever. The packing that helps BM25 and helps the model read the
-  rule in context is the same packing that dilutes the embedding.
-  The fix is small-to-big retrieval: embed each leaf section separately and
-  return the packed parent for context. Deferred deliberately until M3 can
-  measure whether it helps, rather than tuned now against a handful of
-  questions chosen by the person doing the tuning.
-- **Retrieval@5 is 85.4%, so roughly one answerable question in seven never
-  sees its governing passage.** The packed-chunk dilution above is the largest
-  known cause. Small-to-big retrieval is the fix and is not yet built.
-- **The eval set is 56 questions written by the author of the system**, which
-  bounds how much any single number should be trusted. The failure lists are
-  committed so the scoring can be argued with.
 - **`/ask` runs the synchronous SDK stream inside an async endpoint.** Fine for
   local single-user use; it would need the async client to serve concurrent
   traffic.
