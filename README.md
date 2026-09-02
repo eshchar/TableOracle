@@ -8,19 +8,27 @@ read yourself** — file, character offsets, and all.
 
 ```
 $ tableoracle ask "Can I cast a spell and disengage in the same turn?"
-[retrieved 5 chunks in <ms>, best distance <d>]
+[retrieved 5 chunks in 13.25ms, best distance 0.2961]
 
-<streamed answer>
+Generally no — not if the spell's casting time is 1 action, since you only
+have one action to spend on your turn. [...] However, if the spell you want
+to cast has a casting time of a bonus action [...] you'd still be free to
+use your action to Disengage.
+
+[4260 in / 795 out | $0.02013 | ttft 6621ms | total 10975ms]
 
 Sources
   - Actions in Combat
-    06_Gameplay/Order_of_Combat.md [<start>:<end>]
-    "If you take the Disengage action, your movement doesn't provoke..."
+    06_Gameplay/Order_of_Combat.md [12821:13022]
+    "# Actions in Combat  When you take your action on your turn, you can
+     take one of the actions presented here..."
+  - Casting a Spell
+    07_Spells/Spellcasting.md [8792:9096]
+    "### Bonus Action  A spell cast with a bonus action is especially swift..."
 ```
 
-<sub>Output shape, not a captured transcript — the timings and offsets are
-placeholders. Real measurements land in M3 alongside the eval harness. The
-quoted rule text and the source path are real.</sub>
+<sub>A real captured run, lightly elided for width. All three citations were
+verified byte-exact against the corpus files at those offsets.</sub>
 
 The interesting part is not the chat interface. It is that the answer is
 *constrained* by retrieval, that citations resolve to exact bytes in a
@@ -189,18 +197,44 @@ counts, cache reads, cost in dollars, time to first token, retrieval time,
 citation count. M3's metrics table is a read over that file rather than a
 separate measurement harness.
 
-### On prompt caching
+### On prompt caching — measured, not assumed
 
-The system prompt carries a `cache_control` breakpoint; the retrieved documents
-sit after it and are not cached, because they differ on every question. In RAG
-the retrieved passages are most of the input, so caching can only ever save the
-system prefix here.
+The system prompt carries a `cache_control` breakpoint; retrieved documents sit
+after it and are not cached, because they differ on every question.
 
-Worth stating plainly: the minimum cacheable prefix is 1024–4096 tokens
-depending on model, and this system prompt is shorter than that, so **caching
-very likely does not engage at all right now**. `cache_read_tokens` is logged on
-every request precisely so this can be confirmed rather than assumed, and M3
-will report what it actually measures instead of claiming a saving.
+I originally wrote here that caching probably would not engage, on the
+reasoning that the system prompt (**743 tokens**, measured via
+`messages.count_tokens`) sits below Sonnet's 1024-token minimum cacheable
+prefix. **That was wrong.** Running it reports a consistent
+**1,462 cached input tokens** on every request after the first — reproducible
+across both identical and differing questions:
+
+```
+[4260 in /  795 out | $0.02013 | ttft 6621ms | cache read    0]   first request
+[6507 in /  126 out | $0.01457 | ttft 3165ms | cache read 1462]
+[6507 in /  182 out | $0.01513 | ttft 3252ms | cache read 1462]
+```
+
+So caching covers noticeably more than the system prompt alone — roughly 22% of
+input tokens on these requests. The exact accounting is not visible from the
+client side, and rather than invent a mechanism, the number is logged on every
+request in `data/usage.jsonl` and M3 will report what it measures.
+
+The general point stands regardless: in RAG the retrieved passages dominate the
+input and are volatile, so caching can only ever help the stable prefix.
+
+### First measured runs
+
+Not the metrics table — that needs M3's eval suite. These are a handful of
+manual runs on one machine, recorded because they are real:
+
+| | |
+|---|---|
+| Retrieval (warm) | ~13 ms |
+| Time to first token | 3.0–6.6 s |
+| Total request | 4.4–11.0 s |
+| Cost per question | $0.014–$0.020 (Sonnet 5, medium effort) |
+| Citations resolved | 3/3 verified byte-exact against the corpus files |
 
 ---
 

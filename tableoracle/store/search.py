@@ -64,15 +64,19 @@ class Retrieval:
     results: list[SearchResult] = field(default_factory=list)
     vector_hits: int = 0
     keyword_hits: int = 0
+    # Smallest cosine distance anywhere in the vector leg's candidate set --
+    # deliberately not restricted to the rows that survived fusion.
+    #
+    # "How semantically close is the nearest thing in the corpus?" is a
+    # property of the corpus, not of what RRF happened to promote. Reading it
+    # off the returned rows instead reports None whenever the top k are all
+    # keyword-only hits, which is precisely the case where a confidence signal
+    # matters most.
+    best_vector_distance: float | None = None
 
     @property
-    def best_vector_distance(self) -> float | None:
-        """Smallest cosine distance across the retrieved set, or None.
-
-        M2's abstention threshold reads this. M1 only surfaces it -- deciding
-        what counts as "too weak to answer" needs the eval set to calibrate
-        against, and guessing a number now would be a number nobody trusts.
-        """
+    def best_returned_distance(self) -> float | None:
+        """Smallest distance among the rows actually handed to the model."""
         distances = [r.vec_distance for r in self.results if r.vec_distance is not None]
         return min(distances) if distances else None
 
@@ -144,12 +148,19 @@ def search(
     vec_dist = dict(vec_hits)
     kw_score = dict(kw_hits)
 
+    best_distance = vec_hits[0][1] if vec_hits else None
+
     fused = reciprocal_rank_fusion(
         [[cid for cid, _ in vec_hits], [cid for cid, _ in kw_hits]], rrf_k=rrf_k
     )
     top_ids = sorted(fused, key=lambda cid: (-fused[cid], cid))[:k]
     if not top_ids:
-        return Retrieval(query=query, vector_hits=len(vec_hits), keyword_hits=len(kw_hits))
+        return Retrieval(
+            query=query,
+            vector_hits=len(vec_hits),
+            keyword_hits=len(kw_hits),
+            best_vector_distance=best_distance,
+        )
 
     placeholders = ",".join("?" * len(top_ids))
     rows = {
@@ -186,4 +197,5 @@ def search(
         results=results,
         vector_hits=len(vec_hits),
         keyword_hits=len(kw_hits),
+        best_vector_distance=best_distance,
     )

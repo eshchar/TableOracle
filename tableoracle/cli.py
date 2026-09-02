@@ -8,6 +8,19 @@ import sys
 from tableoracle.config import get_settings
 
 
+def _force_utf8_stdout() -> None:
+    """Print UTF-8 regardless of the console's code page.
+
+    Rules text is full of em dashes and typographic quotes. On a Windows
+    console defaulting to cp1252 those stream out as mojibake, which looks
+    like the model produced garbage when in fact the answer was fine.
+    """
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is not None:
+            reconfigure(encoding="utf-8", errors="replace")
+
+
 def cmd_ingest(args: argparse.Namespace) -> int:
     from tableoracle.ingest.pipeline import ingest
 
@@ -164,6 +177,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    _force_utf8_stdout()
     args = build_parser().parse_args(argv)
     return args.func(args)
 
