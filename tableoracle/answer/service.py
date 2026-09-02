@@ -15,6 +15,16 @@ from tableoracle.obs.usage import RequestRecord, Stopwatch, append_record, price
 from tableoracle.store import db, search
 
 
+# Claude 5 models accept adaptive thinking and output_config.effort; earlier
+# models reject both with a 400. Keyed on the family in the model id so a dated
+# snapshot ("claude-sonnet-5-20260115") matches too.
+_CLAUDE5_FAMILIES = ("claude-opus-5", "claude-sonnet-5", "claude-fable-5")
+
+
+def supports_claude5_controls(model: str) -> bool:
+    return any(model.startswith(family) for family in _CLAUDE5_FAMILIES)
+
+
 @dataclass
 class StreamEvent:
     """One event on the answer stream."""
@@ -176,9 +186,14 @@ class AnswerService:
             "messages": [
                 {"role": "user", "content": build_user_content(retrieval.results, question)}
             ],
-            "thinking": {"type": "adaptive"},
-            "output_config": {"effort": settings.answer_effort},
         }
+        # Adaptive thinking and effort are Claude 5 features; sending either to
+        # an older model is a hard 400, not a silent no-op. M3 compares models
+        # against the eval set, so the request has to shape itself to whichever
+        # model is configured rather than assume the default's capabilities.
+        if supports_claude5_controls(settings.answer_model):
+            request["thinking"] = {"type": "adaptive"}
+            request["output_config"] = {"effort": settings.answer_effort}
 
         first_token_seen = False
         with self.client.messages.stream(**request) as stream:

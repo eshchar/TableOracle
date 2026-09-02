@@ -125,7 +125,7 @@ corpus/srd-5.1/*.md
    top 5 chunks ──► one `document` block each, citations enabled
       │
       ▼
-   Claude Sonnet 5 ─► streamed text + `citations_delta` events
+   Claude Haiku 4.5 ► streamed text + `citations_delta` events
       │
       ▼
    char offsets in the answer ──► offsets in a file you can open
@@ -223,17 +223,34 @@ request in `data/usage.jsonl` and M3 will report what it measures.
 The general point stands regardless: in RAG the retrieved passages dominate the
 input and are volatile, so caching can only ever help the stable prefix.
 
-### First measured runs
+### Choosing a model
 
-Not the metrics table — that needs M3's eval suite. These are a handful of
-manual runs on one machine, recorded because they are real:
+Not the metrics table — that needs M3's eval suite. This is two questions on
+one machine, recorded because it is real and because it decided the default:
+
+| model | demo question | abstention | ttft | citations | cached |
+|---|---|---|---|---|---|
+| `claude-sonnet-5` | $0.0201 | $0.0143 | 3.0–6.6 s | 3 | 1462 |
+| `claude-haiku-4-5` | **$0.0062** | **$0.0068** | **2.5 s** | 4 | 0 |
+
+Haiku is ~3× cheaper and ~2.6× faster here, emitted more citations, and
+abstained correctly — so it is the default. That is a cost decision on partial
+evidence, not a claim of equal quality; **two questions is not an
+evaluation.** M3 scores all three models against the full set and this default
+follows the result.
+
+What Haiku gives up: no adaptive thinking, no `output_config.effort`, and its
+minimum cacheable prefix sits above this system prompt, so prompt caching does
+not engage for it at all (`cached: 0` above, against Sonnet's 1462).
+
+### First measured runs
 
 | | |
 |---|---|
 | Retrieval (warm) | ~13 ms |
 | Time to first token | 3.0–6.6 s |
 | Total request | 4.4–11.0 s |
-| Cost per question | $0.014–$0.020 (Sonnet 5, medium effort) |
+| Cost per question | $0.004–$0.007 (Haiku 4.5) · $0.014–$0.020 (Sonnet 5) |
 | Citations resolved | 3/3 verified byte-exact against the corpus files |
 
 ---

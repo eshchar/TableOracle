@@ -67,14 +67,22 @@ class Settings(BaseSettings):
     # --- models ---
     # Local by default: Table Oracle then needs only ANTHROPIC_API_KEY.
     embed_model: str = "bge-small-en-v1.5"
-    # Sonnet by default rather than Opus. The task here is constrained --
-    # read the supplied passages, answer only from them, cite -- which is
-    # faithful extraction and synthesis rather than open-ended reasoning, and
-    # that is where Opus's headroom earns least. It also makes M3's eval suite
-    # 2.5x cheaper to re-run, which matters more than a marginal quality edge
-    # when the whole point is to iterate on measurements. M3 reports all three
-    # models against the eval set; if Sonnet loses there, this changes.
-    answer_model: str = "claude-sonnet-5"
+    # Haiku by default. The task is constrained -- read the supplied passages,
+    # answer only from them, cite -- which is faithful extraction rather than
+    # open-ended reasoning, and that is where the larger models earn least.
+    #
+    # Measured on the two manual cases in the README, Haiku was ~3x cheaper and
+    # ~2.6x faster to first token than Sonnet, emitted more citations, and
+    # abstained correctly on an out-of-corpus question. Two questions is not an
+    # evaluation, so this is a cost decision taken on partial evidence, not a
+    # claim of equal quality: M3 scores Haiku, Sonnet and Opus against the full
+    # eval set and this default follows whatever that shows.
+    #
+    # Trade-offs accepted: Haiku supports neither adaptive thinking nor
+    # output_config.effort (see supports_claude5_controls), and its minimum
+    # cacheable prefix is above this system prompt, so prompt caching does not
+    # engage for it. Override with TABLEORACLE_ANSWER_MODEL.
+    answer_model: str = "claude-haiku-4-5"
     answer_effort: str = "medium"
     answer_max_tokens: int = 4096
 
