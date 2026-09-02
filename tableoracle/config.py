@@ -76,6 +76,10 @@ class Settings(BaseSettings):
     answer_model: str = "claude-sonnet-5"
     answer_effort: str = "medium"
     answer_max_tokens: int = 4096
+    # The judge grades answers against supplied rule text -- a classifier
+    # over evidence, not the hard task. Cheaper than the model under test
+    # on purpose: grading a model with itself invites the obvious objection.
+    judge_model: str = "claude-haiku-4-5"
 
     # --- tools and abstention ---
     max_tool_turns: int = 6

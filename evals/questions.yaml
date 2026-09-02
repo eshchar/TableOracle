@@ -1,114 +1,559 @@
 # Table Oracle evaluation set
 #
-# STATUS: M1 defines this format and seeds it. M3 grows it to ~60 questions and
-# adds the scorer behind `make eval`.
+# GENERATED -- do not hand-edit anchors. Regenerate with the builder in the
+# repo history, which resolves each question's `locator` (a literal phrase from
+# the SRD) against chunk text.
 #
-# Every `expected_chunks` anchor below was taken from a real built index, not
-# invented -- `tableoracle search "<question>"` prints the anchor of any result,
-# which is how new entries should be written.
+# Anchors are ground truth taken from the CORPUS, never from retrieval output.
+# An eval whose expectations came from the retriever would only ever grade the
+# system against itself. Writing this file caught 18 questions where the
+# expected wording was recalled from memory rather than present in the corpus.
 #
-# ---------------------------------------------------------------------------
-# Field reference
-#
-#   id                       stable identifier; never reuse or renumber
+# Fields
 #   question                 asked verbatim, exactly as a user would type it
-#   expected_chunks          anchors that SHOULD be retrieved. Scores
-#                            retrieval@k (is any expected anchor in the top k)
-#                            and citation accuracy (do the citations the model
-#                            actually emitted resolve to these).
-#   expected_answer_contains substrings/claims a correct answer must make.
-#                            Feeds the deterministic half of correctness.
+#   expected_chunks          anchors that SHOULD be retrieved. Several are
+#                            listed when the SRD repeats a rule (an index page
+#                            and a detail page); citing either is correct.
+#   expected_answer_contains substrings a correct answer should contain
 #   should_abstain           true when the corpus genuinely cannot answer.
-#                            These are the honesty tests and matter as much as
-#                            the answerable ones -- a system that never abstains
-#                            has not solved grounding, it has hidden the problem.
-#   tags                     for slicing results by rules area and difficulty
-#
-# Two scores are computed per question in M3, deliberately:
-#   - exact citation match: deterministic, free, and the honest number
-#   - LLM judge: covers whether the prose answer is actually correct
-# Reporting only the judge would be unfalsifiable; only exact matching would
-# miss answers that cite correctly and still reason badly.
-# ---------------------------------------------------------------------------
+#                            These matter as much as the answerable ones: a
+#                            system that never abstains has not solved
+#                            grounding, it has hidden the problem.
+#   tags                     for slicing results by area and difficulty
+
 
 - id: disengage-and-cast
-  question: Can I cast a spell and disengage in the same turn?
+  question: "Can I cast a spell and disengage in the same turn?"
+  # Actions in Combat
   expected_chunks:
     - gameplay/order-of-combat/actions-in-combat
   expected_answer_contains:
-    - Disengage
-    - action
+    - "action"
   should_abstain: false
   tags: [combat, actions, multi-hop]
 
 - id: opportunity-attack-trigger
-  question: What triggers an opportunity attack?
+  question: "What triggers an opportunity attack?"
+  # Making an Attack > Melee Attacks
   expected_chunks:
     - gameplay/order-of-combat/making-an-attack-melee-attacks
   expected_answer_contains:
-    - reach
-    - reaction
+    - "reaction"
   should_abstain: false
   tags: [combat, reactions]
 
-- id: death-saving-throws
-  question: How many death saving throws do I need to fail before I die?
+- id: avoid-opportunity-attack
+  question: "How do I move away from an enemy without getting hit?"
+  # Making an Attack > Melee Attacks
+  expected_chunks:
+    - gameplay/order-of-combat/making-an-attack-melee-attacks
+  expected_answer_contains:
+    - "Disengage"
+  should_abstain: false
+  tags: [combat, paraphrase]
+
+- id: death-saves-count
+  question: "How many death saving throws do I need to fail before I die?"
+  # Making an Attack > Damage and Healing > Death Saving Throws
   expected_chunks:
     - gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws
   expected_answer_contains:
-    - three
+    - "three"
   should_abstain: false
-  tags: [combat, death, lookup]
+  tags: [combat, death]
+
+- id: death-save-nat-20
+  question: "What happens if I roll a 20 on a death saving throw?"
+  # Making an Attack > Damage and Healing > Death Saving Throws
+  expected_chunks:
+    - gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws
+  expected_answer_contains:
+    - "1 hit point"
+  should_abstain: false
+  tags: [combat, death, edge-case]
+
+- id: death-save-damage
+  question: "What happens if I take damage while at 0 hit points?"
+  # Making an Attack > Damage and Healing > Death Saving Throws
+  expected_chunks:
+    - gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws
+  expected_answer_contains:
+    - "failure"
+  should_abstain: false
+  tags: [combat, death]
+
+- id: half-cover
+  question: "How much does half cover add to AC?"
+  # Making an Attack > Cover
+  expected_chunks:
+    - gameplay/order-of-combat/making-an-attack-cover
+  expected_answer_contains:
+    - "+2"
+  should_abstain: false
+  tags: [combat, lookup]
+
+- id: three-quarters-cover
+  question: "What bonus does three-quarters cover give?"
+  # Making an Attack > Cover
+  expected_chunks:
+    - gameplay/order-of-combat/making-an-attack-cover
+  expected_answer_contains:
+    - "+5"
+  should_abstain: false
+  tags: [combat, lookup]
+
+- id: total-cover-targeting
+  question: "Can I target a creature behind total cover?"
+  # Making an Attack > Cover
+  expected_chunks:
+    - gameplay/order-of-combat/making-an-attack-cover
+  expected_answer_contains:
+    - "total cover"
+  should_abstain: false
+  tags: [combat, spells]
 
 - id: grapple-escape
-  question: How does a creature escape a grapple?
+  question: "How does a creature escape a grapple?"
+  # Making an Attack > Melee Attacks > Grappling
   expected_chunks:
     - gameplay/order-of-combat/making-an-attack-melee-attacks-grappling
   expected_answer_contains:
-    - Athletics
-    - Acrobatics
+    - "Athletics"
   should_abstain: false
   tags: [combat, contests]
 
-- id: ring-of-swimming-speed
-  question: What swimming speed does a Ring of Swimming give you?
+- id: shove-options
+  question: "What can I do with a shove?"
+  # Making an Attack > Melee Attacks > Grappling
   expected_chunks:
+    - gameplay/order-of-combat/making-an-attack-melee-attacks-grappling
+  expected_answer_contains:
+    - "prone"
+  should_abstain: false
+  tags: [combat]
+
+- id: two-weapon-fighting
+  question: "How does two-weapon fighting work?"
+  # Making an Attack > Melee Attacks
+  expected_chunks:
+    - gameplay/order-of-combat/making-an-attack-melee-attacks
+  expected_answer_contains:
+    - "bonus action"
+  should_abstain: false
+  tags: [combat]
+
+- id: crit-damage
+  question: "How do critical hits work for damage?"
+  # Making an Attack > Damage and Healing > Hit Points
+  expected_chunks:
+    - gameplay/order-of-combat/making-an-attack-damage-and-healing-hit-points
+  expected_answer_contains:
+    - "roll"
+  should_abstain: false
+  tags: [combat, damage]
+
+- id: unconscious-at-zero
+  question: "What happens when I drop to 0 hit points?"
+  # Making an Attack > Damage and Healing > Damage Resistance and Vulnerability
+  expected_chunks:
+    - gameplay/order-of-combat/making-an-attack-damage-and-healing-damage-resistance-and-vulnerability
+  expected_answer_contains:
+    - "unconscious"
+  should_abstain: false
+  tags: [combat, death]
+
+- id: knock-out
+  question: "Can I knock someone out instead of killing them?"
+  # Making an Attack > Knocking a Creature Out
+  expected_chunks:
+    - gameplay/order-of-combat/making-an-attack-knocking-a-creature-out
+  expected_answer_contains:
+    - "unconscious"
+  should_abstain: false
+  tags: [combat]
+
+- id: prone-attack-penalty
+  question: "What happens when I attack a prone creature?"
+  # Conditions > Frightened
+  expected_chunks:
+    - gamemastering/conditions/conditions-frightened
+  expected_answer_contains:
+    - "advantage"
+  should_abstain: false
+  tags: [combat, conditions]
+
+- id: stand-from-prone
+  question: "How much movement does standing up from prone cost?"
+  # Movement and Position > Being Prone
+  expected_chunks:
+    - gameplay/order-of-combat/movement-and-position-being-prone
+  expected_answer_contains:
+    - "half your speed"
+  should_abstain: false
+  tags: [combat, movement]
+
+- id: unseen-attacker
+  question: "What happens when I attack a target I can't see?"
+  # Making an Attack > Unseen Attackers and Targets
+  expected_chunks:
+    - gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets
+  expected_answer_contains:
+    - "disadvantage"
+  should_abstain: false
+  tags: [combat]
+
+- id: long-range-penalty
+  question: "What happens when I shoot at something beyond normal range?"
+  # Weapons > Weapon Properties
+  expected_chunks:
+    - equipment/weapons/weapons-weapon-properties
+  expected_answer_contains:
+    - "disadvantage"
+  should_abstain: false
+  tags: [combat, ranged]
+
+- id: difficult-terrain-cost
+  question: "How does difficult terrain affect movement?"
+  # Movement and Position
+  expected_chunks:
+    - gameplay/order-of-combat/movement-and-position
+  expected_answer_contains:
+    - "extra foot"
+  should_abstain: false
+  tags: [movement]
+
+- id: surprise-rule
+  question: "How does surprise work in combat?"
+  # ORDER OF COMBAT
+  expected_chunks:
+    - gameplay/order-of-combat/order-of-combat
+  expected_answer_contains:
+    - "can't"
+  should_abstain: false
+  tags: [combat, initiative]
+
+- id: initiative-roll
+  question: "What do I roll for initiative?"
+  # ORDER OF COMBAT > Initiative
+  expected_chunks:
+    - gameplay/order-of-combat/order-of-combat-initiative
+  expected_answer_contains:
+    - "Dexterity"
+  should_abstain: false
+  tags: [combat, initiative]
+
+- id: bonus-action-rule
+  question: "How do bonus actions work?"
+  # ORDER OF COMBAT > Initiative
+  expected_chunks:
+    - gameplay/order-of-combat/order-of-combat-initiative
+  expected_answer_contains:
+    - "special"
+  should_abstain: false
+  tags: [combat, actions]
+
+- id: dodge-action
+  question: "What does the Dodge action do?"
+  # Actions in Combat
+  expected_chunks:
+    - gameplay/order-of-combat/actions-in-combat
+  expected_answer_contains:
+    - "disadvantage"
+  should_abstain: false
+  tags: [combat, actions]
+
+- id: help-action
+  question: "What does the Help action do?"
+  # Actions in Combat > Help
+  expected_chunks:
+    - gameplay/order-of-combat/actions-in-combat-help
+  expected_answer_contains:
+    - "advantage"
+  should_abstain: false
+  tags: [combat, actions]
+
+- id: advantage-stacking
+  question: "Do multiple sources of advantage stack?"
+  # Advantage and Disadvantage
+  expected_chunks:
+    - gameplay/using-ability-scores/advantage-and-disadvantage
+  expected_answer_contains:
+    - "one"
+  should_abstain: false
+  tags: [rules, edge-case]
+
+- id: advantage-and-disadvantage
+  question: "What if I have both advantage and disadvantage?"
+  # Advantage and Disadvantage
+  expected_chunks:
+    - gameplay/using-ability-scores/advantage-and-disadvantage
+  expected_answer_contains:
+    - "neither"
+  should_abstain: false
+  tags: [rules, edge-case]
+
+- id: passive-check-formula
+  question: "How do I calculate a passive Perception score?"
+  # Ability Checks > Passive Checks
+  expected_chunks:
+    - gameplay/using-ability-scores/ability-checks-passive-checks
+  expected_answer_contains:
+    - "10"
+  should_abstain: false
+  tags: [rules, checks]
+
+- id: contest-tie
+  question: "What happens if a contest ends in a tie?"
+  # Ability Checks
+  expected_chunks:
+    - gameplay/using-ability-scores/ability-checks
+  expected_answer_contains:
+    - "tie"
+  should_abstain: false
+  tags: [rules, contests]
+
+- id: long-rest-length
+  question: "How long is a long rest?"
+  # Resting
+  expected_chunks:
+    - gameplay/adventuring/resting
+  expected_answer_contains:
+    - "8 hours"
+  should_abstain: false
+  tags: [resting]
+
+- id: short-rest-length
+  question: "How long is a short rest?"
+  # Resting
+  expected_chunks:
+    - gameplay/adventuring/resting
+  expected_answer_contains:
+    - "1 hour"
+  should_abstain: false
+  tags: [resting]
+
+- id: long-rest-frequency
+  question: "How often can I benefit from a long rest?"
+  # Resting
+  expected_chunks:
+    - gameplay/adventuring/resting
+  expected_answer_contains:
+    - "24"
+  should_abstain: false
+  tags: [resting, edge-case]
+
+- id: falling-damage
+  question: "How much damage do I take from falling?"
+  # The Environment
+  expected_chunks:
+    - gameplay/adventuring/the-environment
+  expected_answer_contains:
+    - "1d6"
+  should_abstain: false
+  tags: [exploration, lookup]
+
+- id: suffocation
+  question: "How long can I hold my breath?"
+  # The Environment
+  expected_chunks:
+    - gameplay/adventuring/the-environment
+  expected_answer_contains:
+    - "Constitution"
+  should_abstain: false
+  tags: [exploration]
+
+- id: heavily-obscured
+  question: "What does a heavily obscured area do to sight?"
+  # The Environment
+  expected_chunks:
+    - gameplay/adventuring/the-environment
+  expected_answer_contains:
+    - "blinded"
+  should_abstain: false
+  tags: [exploration, vision]
+
+- id: carrying-capacity
+  question: "How much weight can I carry?"
+  # Ability Checks > Using Each Ability
+  expected_chunks:
+    - gameplay/using-ability-scores/ability-checks-using-each-ability
+  expected_answer_contains:
+    - "15"
+  should_abstain: false
+  tags: [rules, lookup]
+
+- id: long-jump
+  question: "How far can I long jump?"
+  # Movement > Special Types of Movement
+  expected_chunks:
+    - gameplay/adventuring/movement-special-types-of-movement
+  expected_answer_contains:
+    - "Strength"
+  should_abstain: false
+  tags: [movement]
+
+- id: underwater-fire
+  question: "Does being underwater affect fire damage?"
+  # Underwater Combat
+  expected_chunks:
+    - gameplay/order-of-combat/underwater-combat
+  expected_answer_contains:
+    - "resistance"
+  should_abstain: false
+  tags: [combat, environment]
+
+- id: mounted-combat-options
+  question: "What can my mount do while I ride it?"
+  # Mounted Combat
+  expected_chunks:
+    - gameplay/order-of-combat/mounted-combat
+  expected_answer_contains:
+    - "Dash"
+  should_abstain: false
+  tags: [combat, mounted]
+
+- id: spell-components
+  question: "What are the components of a spell?"
+  # Casting a Spell
+  expected_chunks:
+    - spells/spellcasting/casting-a-spell
+  expected_answer_contains:
+    - "verbal"
+  should_abstain: false
+  tags: [spells]
+
+- id: concentration-break
+  question: "What breaks concentration on a spell?"
+  # Casting a Spell > Duration
+  expected_chunks:
+    - spells/spellcasting/casting-a-spell-duration
+  expected_answer_contains:
+    - "Constitution"
+  should_abstain: false
+  tags: [spells, concentration]
+
+- id: concentration-two-spells
+  question: "Can I concentrate on two spells at once?"
+  # Casting a Spell > Duration
+  expected_chunks:
+    - spells/spellcasting/casting-a-spell-duration
+  expected_answer_contains:
+    - "another"
+  should_abstain: false
+  tags: [spells, concentration]
+
+- id: ritual-casting
+  question: "How does ritual casting work?"
+  # Rituals
+  expected_chunks:
+    - spells/spellcasting/rituals
+  expected_answer_contains:
+    - "10 minutes"
+  should_abstain: false
+  tags: [spells]
+
+- id: upcasting
+  question: "What happens if I cast a spell using a higher level slot?"
+  # What Is a Spell? > Spell Slots
+  expected_chunks:
+    - spells/spellcasting/what-is-a-spell-spell-slots
+  expected_answer_contains:
+    - "higher level"
+  should_abstain: false
+  tags: [spells]
+
+- id: ring-of-swimming
+  question: "What swimming speed does a Ring of Swimming give?"
+  # Magic Items (R) > Ring of Spell Storing | Ring of Swimming
+  expected_chunks:
+    - magic-items/magic-items-a-z/magic-items-r/magic-items-r-ring-of-spell-storing
     - magic-items/magic-items-each/ring-of-swimming/ring-of-swimming
   expected_answer_contains:
     - "40"
   should_abstain: false
-  tags: [magic-items, lookup, rare-token]
+  tags: [magic-items, lookup]
 
-- id: cover-bonus
-  question: How much does half cover add to AC?
+- id: attunement-limit
+  question: "How many magic items can I attune to at once?"
+  # Magic Items
   expected_chunks:
-    - gameplay/order-of-combat/making-an-attack-cover
+    - magic-items/magic-items/magic-items
   expected_answer_contains:
-    - "2"
+    - "three"
   should_abstain: false
-  tags: [combat, lookup]
+  tags: [magic-items, lookup]
 
-# --- Honesty cases: the corpus cannot support an answer, so it must decline ---
+- id: finesse-property
+  question: "What does the finesse weapon property do?"
+  # Weapons > Weapon Properties
+  expected_chunks:
+    - equipment/weapons/weapons-weapon-properties
+  expected_answer_contains:
+    - "Dexterity"
+  should_abstain: false
+  tags: [equipment]
 
-- id: abstain-out-of-scope-edition
-  question: What changed about the Weapon Mastery rules in the 2024 Player's Handbook?
+- id: heavy-armor-stealth
+  question: "Does wearing heavy armor affect stealth?"
+  # Armor
+  expected_chunks:
+    - equipment/armor/armor
+  expected_answer_contains:
+    - "disadvantage"
+  should_abstain: false
+  tags: [equipment]
+
+- id: abstain-bladesinger
+  question: "What are the rules for the Bladesinger wizard subclass?"
+  expected_chunks: []
+  expected_answer_contains: []
+  should_abstain: true
+  tags: [abstention, model-knows-but-corpus-does-not]
+
+- id: abstain-weapon-mastery
+  question: "What changed about the Weapon Mastery rules in the 2024 Player's Handbook?"
   expected_chunks: []
   expected_answer_contains: []
   should_abstain: true
   tags: [abstention, out-of-corpus]
 
-- id: abstain-not-in-srd
-  question: What are the rules for the Bladesinger wizard subclass?
+- id: abstain-spelljammer
+  question: "What are the rules for starship combat in Spelljammer?"
   expected_chunks: []
   expected_answer_contains: []
   should_abstain: true
-  # The SRD ships only one subclass per class; Bladesinger is not in it. This is
-  # the sharpest honesty test in the set, because the model plainly knows the
-  # answer from training and must decline anyway.
+  tags: [abstention, out-of-corpus]
+
+- id: abstain-artificer
+  question: "How does the Artificer class infusion system work?"
+  expected_chunks: []
+  expected_answer_contains: []
+  should_abstain: true
   tags: [abstention, model-knows-but-corpus-does-not]
 
-- id: abstain-non-rules
-  question: Who was the lead designer of fifth edition?
+- id: abstain-designer
+  question: "Who was the lead designer of fifth edition?"
+  expected_chunks: []
+  expected_answer_contains: []
+  should_abstain: true
+  tags: [abstention, not-a-rules-question]
+
+- id: abstain-pizza
+  question: "What is the best pizza topping?"
+  expected_chunks: []
+  expected_answer_contains: []
+  should_abstain: true
+  tags: [abstention, off-domain]
+
+- id: abstain-taxes
+  question: "How do I file my taxes in Portugal?"
+  expected_chunks: []
+  expected_answer_contains: []
+  should_abstain: true
+  tags: [abstention, off-domain]
+
+- id: abstain-book-price
+  question: "How much does the Player's Handbook cost in stores?"
   expected_chunks: []
   expected_answer_contains: []
   should_abstain: true

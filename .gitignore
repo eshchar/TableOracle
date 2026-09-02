@@ -13,3 +13,6 @@ __pycache__/
 # local index + caches + logs (rebuildable via `make ingest`)
 data/
 .pytest_cache/
+
+# eval run logs (results themselves are committed under evals/results/)
+data/eval-*.log

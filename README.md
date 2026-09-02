@@ -38,20 +38,82 @@ committed file, and that the system is built to say "I don't know."
 
 ## Status
 
-**M1 and M2 are complete.** Ingest → chunk → embed → hybrid search → streaming
-answers with resolved citations, three tools the model calls mid-answer, and
-abstention that is enforced structurally rather than merely requested.
+**All three milestones are complete.** Ingest → chunk → embed → hybrid search →
+streaming answers with resolved citations, three tools the model calls
+mid-answer, abstention enforced structurally, and a committed eval suite that
+produces the numbers below.
 
 | Milestone | What it adds | State |
 |---|---|---|
 | **M1** | Retrieval spine, citations, cost/latency logging | **done** |
 | **M2** | Tool calling, mid-answer search, two-tier abstention | **done** |
-| M3 | 60-question eval suite, `make eval`, README metrics table | not started |
+| **M3** | 56-question eval suite, `make eval`, metrics below | **done** |
 
-**There are no quality numbers in this README yet, and that is deliberate.**
-Retrieval@k, citation accuracy, p95 latency and $/query arrive in M3, measured
-by a committed eval harness. Publishing estimates before then would be exactly
-the kind of unfalsifiable claim this project is built to avoid.
+## Metrics
+
+56 questions — 48 answerable, 8 the corpus genuinely cannot answer. Every
+expected citation is ground truth located in the corpus by literal text, never
+taken from retrieval output. Reproduce with `make eval`; raw results and
+per-question failures are committed under `evals/results/`.
+
+### Retrieval — free to reproduce, no API key
+
+Embeddings run locally, so this half needs no key and no credit:
+`make eval-retrieval`.
+
+| metric | value |
+|---|---|
+| retrieval@1 | 62.5% |
+| retrieval@3 | 77.1% |
+| **retrieval@5** | **85.4%** |
+| retrieval@10 | 89.6% |
+| MRR | 0.713 |
+| p95 latency | 10 ms |
+
+Latency excludes the one-off ~1.4 s load of the local embedding model on the
+first query of a process; every query after that is single-digit milliseconds.
+
+### Answers
+
+| metric | Sonnet 5 | Haiku 4.5 |
+|---|---|---|
+| **citation accuracy** | **93.8%** | 83.3% |
+| citation precision | 64.8% | **74.8%** |
+| judge: correct | **94.3%** | 90.6% |
+| expected phrase recall | **97.9%** | 85.4% |
+| abstention correct | 75.0% | **87.5%** |
+| false abstention rate | **0.0%** | **0.0%** |
+| mean $/query | $0.0150 | **$0.0072** |
+| p95 latency | 11.7 s | **3.9 s** |
+| full run cost | $0.84 | $0.40 |
+
+*Citation accuracy* is the share of answerable questions where at least one
+emitted citation resolves to a chunk the corpus says holds the rule — citing
+something else earns no partial credit. *False abstention* is refusing a
+question the corpus can answer, which is the expensive mistake; both models
+score zero.
+
+**Sonnet is the default.** Haiku is 2.1× cheaper and 3.0× faster, and wins on
+precision and abstention — but it is 10.5 points worse on citation accuracy,
+which is the metric this project exists to move. `TABLEORACLE_ANSWER_MODEL`
+switches it. Choosing between them was the reason to run both.
+
+### What the numbers do not say
+
+- **Citation precision is 64.8%** for Sonnet, well below its accuracy. It cites
+  generously — often several passages where one would do. Every citation still
+  resolves to real bytes; they are simply not all the passage the question
+  turned on.
+- **Three questions cite nothing expected** on Sonnet: `unconscious-at-zero`,
+  `suffocation`, `spell-components`. All three are retrieval misses, not
+  reasoning failures — `suffocation` is the worst of them, because the system
+  claimed the corpus does not cover breath-holding when it does.
+- **The judge was wrong before it was right.** Its first version scored Sonnet
+  at 74.6%, because it saw only the single expected passage and penalised
+  accurate detail drawn from the other four retrieved chunks. Fixing the prompt
+  moved the score to 94.3% with no change to the system under test. The
+  re-grade cost $0.07 against $0.84 to re-answer, which is why
+  `--rejudge` exists.
 
 ---
 
@@ -218,19 +280,23 @@ a tool that cites its sources should not then estimate its odds.
 ## Abstention: measured, then designed
 
 The obvious design is a retrieval-score threshold. **It does not work**, and
-the measurement says why. Best cosine distance over 12 questions:
+the measurement says why. Best cosine distance across all 56 eval questions:
 
 | | range |
 |---|---|
-| Answerable from the corpus | 0.2281 – **0.3224** |
+| Answerable from the corpus | 0.2281 – **0.3920** |
 | Not in the corpus | **0.2856** – 0.5209 |
 
-The ranges overlap, and the overlap is where the danger lives. Bladesinger
-(0.2856), Spelljammer (0.2986), and 2024 Weapon Mastery (0.3103) all score
-*better* than the easiest answerable question, because they are D&D-shaped:
-retrieval cheerfully returns adjacent wizard and combat text that does not
-answer them. Only questions from another domain separate cleanly (pizza 0.5209,
-Portuguese taxes 0.4720).
+The ranges overlap, and the overlap is where the danger lives. Five of the
+eight unanswerable questions — Bladesinger (0.2856), Spelljammer (0.2986),
+2024 Weapon Mastery (0.3103), Artificer (0.3214), book price (0.3445) — score
+*better* than the furthest answerable question (0.3920), because they are
+D&D-shaped: retrieval cheerfully returns adjacent text that does not answer
+them. Only questions from another domain separate cleanly.
+
+At the chosen threshold of 0.40, measured across all 56 questions: **0 of 48
+answerable questions are wrongly refused**, and 3 of 8 unanswerable ones are
+caught before any model call. The other 5 are unreachable by any threshold.
 
 So abstention is two tiers:
 
@@ -335,8 +401,9 @@ tableoracle/
   tools/              dice engine, tool schemas, dispatch
   api/                FastAPI app, SSE, single-page UI
   obs/                cost and latency logging
-evals/questions.yaml  eval format, seeded (scorer lands in M3)
+  evals/              harness, LLM judge, reporting
 tests/                117 tests, no API keys required
+evals/                56 questions, scorer, committed results
 ```
 
 ---
@@ -356,9 +423,12 @@ tests/                117 tests, no API keys required
   return the packed parent for context. Deferred deliberately until M3 can
   measure whether it helps, rather than tuned now against a handful of
   questions chosen by the person doing the tuning.
-- **The abstention threshold rests on 12 questions.** The two-tier design is
-  sound and the overlap finding is real, but 0.40 is derived from a small
-  hand-picked set. M3 re-derives it against the full eval suite.
+- **Retrieval@5 is 85.4%, so roughly one answerable question in seven never
+  sees its governing passage.** The packed-chunk dilution above is the largest
+  known cause. Small-to-big retrieval is the fix and is not yet built.
+- **The eval set is 56 questions written by the author of the system**, which
+  bounds how much any single number should be trusted. The failure lists are
+  committed so the scoring can be argued with.
 - **`/ask` runs the synchronous SDK stream inside an async endpoint.** Fine for
   local single-user use; it would need the async client to serve concurrent
   traffic.

@@ -1,0 +1,3215 @@
+{
+  "generated_utc": "2026-09-02T08:18:59+00:00",
+  "embed_model": "bge-small-en-v1.5",
+  "answer_model": "claude-sonnet-5",
+  "questions": 56,
+  "retrieval": {
+    "questions": 56,
+    "answerable": 48,
+    "abstention": 8,
+    "retrieval_at_1": 0.625,
+    "retrieval_at_3": 0.7708,
+    "retrieval_at_5": 0.8542,
+    "retrieval_at_10": 0.8958,
+    "mrr": 0.7134,
+    "misses_at_5": [
+      "avoid-opportunity-attack",
+      "death-save-damage",
+      "two-weapon-fighting",
+      "unconscious-at-zero",
+      "prone-attack-penalty",
+      "suffocation",
+      "spell-components"
+    ],
+    "latency_ms": {
+      "mean": 7.52,
+      "p50": 7.38,
+      "p95": 10.11
+    },
+    "distance": {
+      "answerable_max": 0.392,
+      "abstention_min": 0.2856,
+      "separable": false,
+      "threshold": 0.4
+    }
+  },
+  "retrieval_rows": [
+    {
+      "id": "disengage-and-cast",
+      "question": "Can I cast a spell and disengage in the same turn?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "actions",
+        "multi-hop"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/actions-in-combat"
+      ],
+      "retrieved": [
+        "spells/spellcasting/combining-magical-effects",
+        "spells/spellcasting/casting-a-spell",
+        "spells/spells-a-z/spells-f/spells-f-forbiddance",
+        "spells/spells-each/forbiddance/forbiddance",
+        "gameplay/order-of-combat/actions-in-combat",
+        "spells/spells-a-z/spells-d/spells-d-dispel-magic",
+        "classes/monk/monk-ki-flurry-of-blows",
+        "spells/spells-each/confusion/confusion",
+        "spells/spells-each/haste/haste",
+        "spells/spells-a-z/spells-c/spells-c-confusion"
+      ],
+      "best_distance": 0.28789299726486206,
+      "rank": 5,
+      "latency_ms": 11.803800007328391
+    },
+    {
+      "id": "opportunity-attack-trigger",
+      "question": "What triggers an opportunity attack?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "reactions"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/reactions",
+        "gameplay/order-of-combat/actions-in-combat-help",
+        "gamemastering/traps/traps",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks",
+        "gameplay/order-of-combat/actions-in-combat",
+        "gamemastering/traps/traps-sample-traps-poison-darts",
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets",
+        "spells/spells-each/glyph-of-warding/glyph-of-warding",
+        "spells/spells-a-z/spells-g/spells-g-glyph-of-warding",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling"
+      ],
+      "best_distance": 0.3335614502429962,
+      "rank": 4,
+      "latency_ms": 7.4874999991152436
+    },
+    {
+      "id": "avoid-opportunity-attack",
+      "question": "How do I move away from an enemy without getting hit?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "paraphrase"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/movement-and-position-being-prone",
+        "gameplay/adventuring/movement",
+        "classes/ranger/ranger-favored-enemy",
+        "gameplay/order-of-combat/actions-in-combat-help",
+        "magic-items/magic-items-each/dancing-sword/dancing-sword",
+        "gameplay/order-of-combat/movement-and-position",
+        "characterization/alignment/alignment",
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling",
+        "spells/spells-each/command/command"
+      ],
+      "best_distance": 0.28145894408226013,
+      "rank": null,
+      "latency_ms": 8.020900000701658
+    },
+    {
+      "id": "death-saves-count",
+      "question": "How many death saving throws do I need to fail before I die?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "death"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws",
+        "magic-items/magic-items-each/deck-of-many-things/deck-of-many-things-avatar-of-death-actions",
+        "magic-items/magic-items-a-z/magic-items-d/magic-items-d-deck-of-many-things-avatar-of-death-actions",
+        "spells/spells-each/resistance/resistance",
+        "gameplay/adventuring/between-adventures",
+        "gameplay/using-ability-scores/saving-throws",
+        "classes/bard/bard-bard-colleges-college-of-lore",
+        "magic-items/magic-items-each/pipes-of-haunting/pipes-of-haunting",
+        "spells/spellcasting/spell-saving-throws",
+        "spells/spells-a-z/spells-c/spells-c-color-spray"
+      ],
+      "best_distance": 0.22108784317970276,
+      "rank": 1,
+      "latency_ms": 8.571699989261106
+    },
+    {
+      "id": "death-save-nat-20",
+      "question": "What happens if I roll a 20 on a death saving throw?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "death",
+        "edge-case"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws"
+      ],
+      "retrieved": [
+        "spells/spellcasting/spell-saving-throws",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws",
+        "gamemastering/traps/traps-traps-in-play-trap-effects",
+        "gameplay/using-ability-scores/advantage-and-disadvantage",
+        "magic-items/magic-items-each/deck-of-many-things/deck-of-many-things--2",
+        "gameplay/using-ability-scores/saving-throws",
+        "magic-items/magic-items-each/wand-of-wonder/wand-of-wonder",
+        "magic-items/magic-items-a-z/magic-items-w/magic-items-w-wand-of-wonder",
+        "magic-items/magic-items-each/ring-of-spell-turning/ring-of-spell-turning",
+        "spells/spells-each/harm/harm"
+      ],
+      "best_distance": 0.21301700174808502,
+      "rank": 2,
+      "latency_ms": 8.1614999944577
+    },
+    {
+      "id": "death-save-damage",
+      "question": "What happens if I take damage while at 0 hit points?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "death"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws"
+      ],
+      "retrieved": [
+        "gamemastering/traps/traps-traps-in-play-trap-effects",
+        "gameplay/order-of-combat/making-an-attack-knocking-a-creature-out",
+        "spells/spellcasting/spell-saving-throws",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-hit-points",
+        "magic-items/magic-items-each/wand-of-wonder/wand-of-wonder",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-damage-resistance-and-vulnerability",
+        "magic-items/magic-items-a-z/magic-items-w/magic-items-w-wand-of-wonder",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws",
+        "spells/spells-each/speak-with-dead/speak-with-dead",
+        "magic-items/magic-items-each/efreeti-bottle/efreeti-bottle"
+      ],
+      "best_distance": 0.22363340854644775,
+      "rank": 8,
+      "latency_ms": 8.295999999972992
+    },
+    {
+      "id": "half-cover",
+      "question": "How much does half cover add to AC?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "lookup"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-cover"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/making-an-attack-cover",
+        "spells/spells-each/blade-barrier/blade-barrier",
+        "equipment/armor/armor-medium-armor",
+        "magic-items/magic-items-each/armor/armor-1-2-or-3",
+        "gameplay/order-of-combat/making-an-attack",
+        "magic-items/magic-items-each/shield/shield-1-2-or-3",
+        "equipment/armor/armor-heavy-armor",
+        "magic-items/magic-items-each/cube-of-force/cube-of-force",
+        "races/races-each/halfling/halfling",
+        "monsters/monsters-a-z/npcs/bandit-captain"
+      ],
+      "best_distance": 0.32242000102996826,
+      "rank": 1,
+      "latency_ms": 7.378100010100752
+    },
+    {
+      "id": "three-quarters-cover",
+      "question": "What bonus does three-quarters cover give?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "lookup"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-cover"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/making-an-attack-cover",
+        "magic-items/magic-items-each/wand-of-the-war-mage/wand-of-the-war-mage-1-2-or-3",
+        "feats/feats/feats",
+        "gameplay/using-ability-scores/proficiency-bonus",
+        "spells/spells-each/blade-barrier/blade-barrier",
+        "magic-items/magic-items-each/shield/shield-1-2-or-3",
+        "characterization/inspiration/inspiration",
+        "equipment/coinage/coinage",
+        "magic-items/magic-items-each/bag-of-tricks/bag-of-tricks",
+        "magic-items/magic-items-each/staff-of-striking/staff-of-striking"
+      ],
+      "best_distance": 0.33033493161201477,
+      "rank": 1,
+      "latency_ms": 6.200700008776039
+    },
+    {
+      "id": "total-cover-targeting",
+      "question": "Can I target a creature behind total cover?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "spells"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-cover"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/making-an-attack-cover",
+        "spells/spellcasting/casting-a-spell-targets-a-clear-path-to-the-target",
+        "monsters/monsters-a-z/creatures-g-i/creatures-g-i-giant-toad",
+        "monsters/monsters-each/giant-toad-creature/giant-toad",
+        "monsters/monsters-a-z/monsters-r/monsters-r-remorhaz",
+        "classes/paladin/paladin-divine-sense",
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets",
+        "gameplay/using-ability-scores/using-ability-scores",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-dexterity-initiative",
+        "magic-items/magic-items-each/marvelous-pigments/marvelous-pigments"
+      ],
+      "best_distance": 0.2136872112751007,
+      "rank": 1,
+      "latency_ms": 7.32429999334272
+    },
+    {
+      "id": "grapple-escape",
+      "question": "How does a creature escape a grapple?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "contests"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling",
+        "monsters/monsters-a-z/creatures-g-i/creatures-g-i-giant-crocodile-actions",
+        "monsters/monsters-a-z/monsters-r/monsters-r-remorhaz",
+        "monsters/monsters-each/kraken/kraken-actions",
+        "monsters/monsters-a-z/monsters-k/monsters-k-kraken-actions",
+        "monsters/monsters-a-z/creatures-a-c/creatures-a-c-crocodile",
+        "monsters/monsters-each/remorhaz/remorhaz",
+        "monsters/monsters-a-z/creatures-g-i/creatures-g-i-giant-octopus-actions",
+        "monsters/monsters-a-z/creatures-g-i/creatures-g-i-giant-frog-actions",
+        "spells/spells-each/maze/maze"
+      ],
+      "best_distance": 0.2247496396303177,
+      "rank": 1,
+      "latency_ms": 6.538000001455657
+    },
+    {
+      "id": "shove-options",
+      "question": "What can I do with a shove?",
+      "should_abstain": false,
+      "tags": [
+        "combat"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling",
+        "gameplay/order-of-combat/actions-in-combat-help",
+        "gameplay/order-of-combat/actions-in-combat",
+        "characterization/alignment/alignment",
+        "gameplay/order-of-combat/movement-and-position-being-prone",
+        "gameplay/adventuring/between-adventures",
+        "magic-items/magic-items-each/wand-of-binding/wand-of-binding",
+        "spells/spells-each/suggestion/suggestion",
+        "magic-items/magic-items-a-z/magic-items-i/magic-items-i-iron-bands-of-binding",
+        "characterization/backgrounds/backgrounds"
+      ],
+      "best_distance": 0.3392784893512726,
+      "rank": 1,
+      "latency_ms": 6.778800001484342
+    },
+    {
+      "id": "two-weapon-fighting",
+      "question": "How does two-weapon fighting work?",
+      "should_abstain": false,
+      "tags": [
+        "combat"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks"
+      ],
+      "retrieved": [
+        "classes/ranger/ranger-fighting-style-archery",
+        "classes/fighter/fighter-fighting-style",
+        "classes/paladin/paladin-fighting-style-defense",
+        "gameplay/order-of-combat/order-of-combat",
+        "gameplay/order-of-combat/underwater-combat",
+        "gamemastering/diseases/diseases",
+        "monsters/monsters/monster-statistics-type-tags",
+        "gameplay/using-ability-scores/ability-checks-passive-checks",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling",
+        "gameplay/order-of-combat/movement-and-position-creature-size"
+      ],
+      "best_distance": 0.25844627618789673,
+      "rank": null,
+      "latency_ms": 6.204399993293919
+    },
+    {
+      "id": "crit-damage",
+      "question": "How do critical hits work for damage?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "damage"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-hit-points"
+      ],
+      "retrieved": [
+        "magic-items/magic-items-each/vicious-weapon/vicious-weapon",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-hit-points",
+        "gamemastering/objects/objects-statistics-for-objects",
+        "classes/fighter/fighter-martial-archetypes-champion",
+        "gameplay/using-ability-scores/ability-checks-passive-checks",
+        "gameplay/order-of-combat/making-an-attack-knocking-a-creature-out",
+        "gamemastering/diseases/diseases",
+        "characterization/backgrounds/backgrounds",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-damage-types",
+        "classes/barbarian/barbarian-fast-movement"
+      ],
+      "best_distance": 0.24812860786914825,
+      "rank": 2,
+      "latency_ms": 7.132200000341982
+    },
+    {
+      "id": "unconscious-at-zero",
+      "question": "What happens when I drop to 0 hit points?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "death"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-damage-resistance-and-vulnerability"
+      ],
+      "retrieved": [
+        "gamemastering/traps/traps-traps-in-play-trap-effects",
+        "gameplay/order-of-combat/making-an-attack-knocking-a-creature-out",
+        "spells/spellcasting/spell-saving-throws",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws",
+        "magic-items/magic-items-each/efreeti-bottle/efreeti-bottle",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-hit-points",
+        "magic-items/magic-items-each/wand-of-wonder/wand-of-wonder",
+        "magic-items/magic-items-a-z/magic-items-w/magic-items-w-wand-of-wonder",
+        "monsters/monsters/monster-statistics-hit-points",
+        "characterization/multiclassing/multiclassing-hit-points-and-hit-dice"
+      ],
+      "best_distance": 0.27101701498031616,
+      "rank": null,
+      "latency_ms": 7.533800002420321
+    },
+    {
+      "id": "knock-out",
+      "question": "Can I knock someone out instead of killing them?",
+      "should_abstain": false,
+      "tags": [
+        "combat"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-knocking-a-creature-out"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/making-an-attack-knocking-a-creature-out",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks",
+        "spells/spells-each/knock/knock",
+        "monsters/monsters-a-z/monsters-b/monsters-b-bulette-actions",
+        "spells/spells-a-z/spells-k/spells-k",
+        "races/races-each/half-orc/half-orc",
+        "gamemastering/objects/objects",
+        "spells/spells-a-z/spells-d/spells-d-daylight",
+        "magic-items/magic-items-each/bag-of-devouring/bag-of-devouring"
+      ],
+      "best_distance": 0.34146586060523987,
+      "rank": 1,
+      "latency_ms": 7.496799997170456
+    },
+    {
+      "id": "prone-attack-penalty",
+      "question": "What happens when I attack a prone creature?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "conditions"
+      ],
+      "expected": [
+        "gamemastering/conditions/conditions-frightened"
+      ],
+      "retrieved": [
+        "monsters/monsters-a-z/monsters-g/monsters-g-gibbering-mouther",
+        "gameplay/order-of-combat/movement-and-position-being-prone",
+        "spells/spellcasting/spell-saving-throws",
+        "magic-items/magic-items-each/efreeti-bottle/efreeti-bottle",
+        "monsters/monsters-a-z/creatures-d-f/creatures-d-f-elephant-actions",
+        "magic-items/magic-items-each/wand-of-wonder/wand-of-wonder",
+        "monsters/monsters-a-z/monsters-d/monsters-d-devils-pit-fiend-actions",
+        "magic-items/magic-items-a-z/magic-items-w/magic-items-w-wand-of-wonder",
+        "monsters/monsters/monster-statistics-actions-melee-and-ranged-attacks",
+        "spells/spells-each/speak-with-dead/speak-with-dead"
+      ],
+      "best_distance": 0.23152710497379303,
+      "rank": null,
+      "latency_ms": 7.135599997127429
+    },
+    {
+      "id": "stand-from-prone",
+      "question": "How much movement does standing up from prone cost?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "movement"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/movement-and-position-being-prone"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/movement-and-position-being-prone",
+        "gameplay/adventuring/movement-special-types-of-movement",
+        "gameplay/order-of-combat/movement-and-position",
+        "monsters/monsters-each/bulette/bulette",
+        "gameplay/order-of-combat/mounted-combat",
+        "magic-items/magic-items-each/ring-of-free-action/ring-of-free-action",
+        "spells/spells-a-z/spells-e/spells-e",
+        "spells/spells-each/earthquake/earthquake",
+        "magic-items/magic-items-each/gloves-of-swimming-and-climbing/gloves-of-swimming-and-climbing",
+        "gameplay/order-of-combat/movement-and-position-creature-size"
+      ],
+      "best_distance": 0.2532447576522827,
+      "rank": 1,
+      "latency_ms": 7.08130000566598
+    },
+    {
+      "id": "unseen-attacker",
+      "question": "What happens when I attack a target I can't see?",
+      "should_abstain": false,
+      "tags": [
+        "combat"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets"
+      ],
+      "retrieved": [
+        "gamemastering/traps/traps-traps-in-play-detecting-and-disabling-a-trap",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-dexterity-initiative",
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets",
+        "spells/spellcasting/spell-saving-throws",
+        "spells/spells-each/speak-with-dead/speak-with-dead",
+        "magic-items/magic-items-each/shield-of-missile-attraction/shield-of-missile-attraction",
+        "spells/spellcasting/casting-a-spell-targets-a-clear-path-to-the-target",
+        "magic-items/magic-items-each/efreeti-bottle/efreeti-bottle",
+        "gameplay/order-of-combat/actions-in-combat-help",
+        "magic-items/magic-items-each/wand-of-wonder/wand-of-wonder"
+      ],
+      "best_distance": 0.17497077584266663,
+      "rank": 3,
+      "latency_ms": 7.75469999643974
+    },
+    {
+      "id": "long-range-penalty",
+      "question": "What happens when I shoot at something beyond normal range?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "ranged"
+      ],
+      "expected": [
+        "equipment/weapons/weapons-weapon-properties"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/making-an-attack-ranged-attacks-range",
+        "magic-items/magic-items-each/wand-of-wonder/wand-of-wonder",
+        "magic-items/magic-items-a-z/magic-items-w/magic-items-w-wand-of-wonder",
+        "gamemastering/traps/traps-traps-in-play-trap-effects",
+        "equipment/weapons/weapons-weapon-properties",
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets",
+        "magic-items/magic-items-a-z/magic-items-r/magic-items-r-ring-of-shooting-stars",
+        "magic-items/magic-items-each/ring-of-shooting-stars/ring-of-shooting-stars",
+        "gameplay/adventuring/the-environment-food-and-water",
+        "magic-items/magic-items-a-z/magic-items-g/magic-items-g-gloves-of-missile-snaring"
+      ],
+      "best_distance": 0.32494470477104187,
+      "rank": 5,
+      "latency_ms": 6.9598999980371445
+    },
+    {
+      "id": "difficult-terrain-cost",
+      "question": "How does difficult terrain affect movement?",
+      "should_abstain": false,
+      "tags": [
+        "movement"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/movement-and-position"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/movement-and-position",
+        "gameplay/adventuring/movement-speed-difficult-terrain",
+        "gameplay/adventuring/movement-special-types-of-movement",
+        "magic-items/magic-items-each/ring-of-free-action/ring-of-free-action",
+        "spells/spells-each/mirage-arcane/mirage-arcane",
+        "spells/spells-each/move-earth/move-earth",
+        "gameplay/adventuring/movement",
+        "spells/spells-a-z/spells-m/spells-m-move-earth",
+        "gameplay/order-of-combat/movement-and-position-being-prone",
+        "spells/spells-each/freedom-of-movement/freedom-of-movement"
+      ],
+      "best_distance": 0.1975938081741333,
+      "rank": 1,
+      "latency_ms": 5.708900003810413
+    },
+    {
+      "id": "surprise-rule",
+      "question": "How does surprise work in combat?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "initiative"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/order-of-combat"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/order-of-combat",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-dexterity-initiative",
+        "gameplay/order-of-combat/actions-in-combat-help",
+        "gamemastering/diseases/diseases",
+        "classes/rogue/rogue-roguish-archetypes-thief",
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets",
+        "gameplay/order-of-combat/movement-and-position-creature-size",
+        "spells/spells-each/shocking-grasp/shocking-grasp",
+        "gameplay/using-ability-scores/ability-checks-passive-checks",
+        "magic-items/magic-items-each/wand-of-enemy-detection/wand-of-enemy-detection"
+      ],
+      "best_distance": 0.23824581503868103,
+      "rank": 1,
+      "latency_ms": 6.403999999747612
+    },
+    {
+      "id": "initiative-roll",
+      "question": "What do I roll for initiative?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "initiative"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/order-of-combat-initiative"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/order-of-combat-initiative",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-dexterity-initiative",
+        "gameplay/order-of-combat/order-of-combat",
+        "classes/barbarian/barbarian-fast-movement",
+        "gameplay/order-of-combat/order-of-combat-other-activity-on-your-turn",
+        "spells/spellcasting/spell-attack-rolls",
+        "spells/spells-each/conjure-minor-elementals/conjure-minor-elementals",
+        "spells/spells-a-z/spells-c/spells-c-conjure-animals",
+        "gameplay/order-of-combat/making-an-attack",
+        "spells/spells-each/conjure-woodland-beings/conjure-woodland-beings"
+      ],
+      "best_distance": 0.280022531747818,
+      "rank": 1,
+      "latency_ms": 6.296199993812479
+    },
+    {
+      "id": "bonus-action-rule",
+      "question": "How do bonus actions work?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "actions"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/order-of-combat-initiative"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/order-of-combat-initiative",
+        "gameplay/using-ability-scores/ability-checks-passive-checks",
+        "gameplay/order-of-combat/actions-in-combat-help",
+        "gamemastering/diseases/diseases",
+        "characterization/backgrounds/backgrounds",
+        "gameplay/order-of-combat/actions-in-combat",
+        "classes/monk/monk-ki-flurry-of-blows",
+        "classes/rogue/rogue-roguish-archetypes-thief",
+        "characterization/backgrounds/backgrounds-acolyte-suggested-characteristics",
+        "gameplay/using-ability-scores/proficiency-bonus"
+      ],
+      "best_distance": 0.2704731225967407,
+      "rank": 1,
+      "latency_ms": 7.3373999912291765
+    },
+    {
+      "id": "dodge-action",
+      "question": "What does the Dodge action do?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "actions"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/actions-in-combat"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/actions-in-combat",
+        "gameplay/order-of-combat/order-of-combat-initiative",
+        "classes/monk/monk-ki-flurry-of-blows",
+        "classes/rogue/rogue-uncanny-dodge",
+        "classes/ranger/ranger-ranger-archetypes-hunter-superior-hunter-s-defense",
+        "monsters/monsters-a-z/monsters-b/monsters-b-bulette-actions",
+        "classes/monk/monk-evasion",
+        "characterization/alignment/alignment",
+        "gameplay/order-of-combat/actions-in-combat-help",
+        "gameplay/order-of-combat/order-of-combat-other-activity-on-your-turn"
+      ],
+      "best_distance": 0.35302868485450745,
+      "rank": 1,
+      "latency_ms": 10.12829999672249
+    },
+    {
+      "id": "help-action",
+      "question": "What does the Help action do?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "actions"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/actions-in-combat-help"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/actions-in-combat-help",
+        "spells/spells-each/suggestion/suggestion",
+        "spells/spells-a-z/spells-d/spells-d-dominate-monster",
+        "spells/spells-a-z/spells-m/spells-m-mass-suggestion",
+        "spells/spells-each/dominate-monster/dominate-monster",
+        "spells/spells-a-z/spells-d/spells-d-dominate-person",
+        "spells/spells-each/dominate-person/dominate-person",
+        "spells/spells-a-z/spells-d/spells-d-dominate-beast",
+        "spells/spells-each/dominate-beast/dominate-beast",
+        "characterization/alignment/alignment"
+      ],
+      "best_distance": 0.32396411895751953,
+      "rank": 1,
+      "latency_ms": 7.44440000562463
+    },
+    {
+      "id": "advantage-stacking",
+      "question": "Do multiple sources of advantage stack?",
+      "should_abstain": false,
+      "tags": [
+        "rules",
+        "edge-case"
+      ],
+      "expected": [
+        "gameplay/using-ability-scores/advantage-and-disadvantage"
+      ],
+      "retrieved": [
+        "gameplay/using-ability-scores/advantage-and-disadvantage",
+        "gameplay/order-of-combat/making-an-attack-cover",
+        "spells/spellcasting/combining-magical-effects",
+        "characterization/multiclassing/multiclassing",
+        "gamemastering/conditions/conditions",
+        "characterization/backgrounds/backgrounds",
+        "spells/spellcasting/casting-a-spell-duration",
+        "magic-items/magic-items-each/necklace-of-fireballs/necklace-of-fireballs",
+        "gameplay/using-ability-scores/proficiency-bonus",
+        "gameplay/using-ability-scores/ability-checks-skills-variant-skills-with-different-abilities"
+      ],
+      "best_distance": 0.2886667847633362,
+      "rank": 1,
+      "latency_ms": 6.810799997765571
+    },
+    {
+      "id": "advantage-and-disadvantage",
+      "question": "What if I have both advantage and disadvantage?",
+      "should_abstain": false,
+      "tags": [
+        "rules",
+        "edge-case"
+      ],
+      "expected": [
+        "gameplay/using-ability-scores/advantage-and-disadvantage"
+      ],
+      "retrieved": [
+        "gameplay/using-ability-scores/advantage-and-disadvantage",
+        "feats/feats/feats",
+        "gamemastering/conditions/conditions",
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets",
+        "gamemastering/conditions/conditions-frightened",
+        "characterization/backgrounds/backgrounds",
+        "magic-items/magic-items-each/spellguard-shield/spellguard-shield",
+        "gameplay/using-ability-scores/ability-checks-skills-variant-skills-with-different-abilities",
+        "spells/spellcasting/combining-magical-effects",
+        "magic-items/magic-items-a-z/magic-items-c/magic-items-c-cloak-of-arachnida"
+      ],
+      "best_distance": 0.26797181367874146,
+      "rank": 1,
+      "latency_ms": 7.723799993982539
+    },
+    {
+      "id": "passive-check-formula",
+      "question": "How do I calculate a passive Perception score?",
+      "should_abstain": false,
+      "tags": [
+        "rules",
+        "checks"
+      ],
+      "expected": [
+        "gameplay/using-ability-scores/ability-checks-passive-checks"
+      ],
+      "retrieved": [
+        "gameplay/using-ability-scores/ability-checks-passive-checks",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-dexterity-initiative",
+        "gameplay/using-ability-scores/using-ability-scores",
+        "gameplay/adventuring/movement",
+        "gameplay/using-ability-scores/using-ability-scores-ability-scores-and-modifiers",
+        "monsters/monsters/monster-statistics-hit-points",
+        "spells/spells-each/awaken/awaken",
+        "monsters/monsters/monster-statistics-senses-blindsight",
+        "spells/spells-each/detect-thoughts/detect-thoughts",
+        "magic-items/magic-items-each/deck-of-many-things/deck-of-many-things-avatar-of-death-actions"
+      ],
+      "best_distance": 0.2888984978199005,
+      "rank": 1,
+      "latency_ms": 6.17979999515228
+    },
+    {
+      "id": "contest-tie",
+      "question": "What happens if a contest ends in a tie?",
+      "should_abstain": false,
+      "tags": [
+        "rules",
+        "contests"
+      ],
+      "expected": [
+        "gameplay/using-ability-scores/ability-checks"
+      ],
+      "retrieved": [
+        "gameplay/using-ability-scores/ability-checks",
+        "gameplay/order-of-combat/order-of-combat-initiative",
+        "spells/spellcasting/spell-saving-throws",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling",
+        "magic-items/magic-items-each/rope-of-entanglement/rope-of-entanglement",
+        "magic-items/magic-items-each/periapt-of-wound-closure/periapt-of-wound-closure",
+        "magic-items/magic-items-each/sphere-of-annihilation/sphere-of-annihilation",
+        "spells/spells-each/rope-trick/rope-trick",
+        "magic-items/magic-items-a-z/magic-items-s/magic-items-s-sphere-of-annihilation",
+        "gameplay/order-of-combat/order-of-combat"
+      ],
+      "best_distance": 0.3919562101364136,
+      "rank": 1,
+      "latency_ms": 7.8080000093905255
+    },
+    {
+      "id": "long-rest-length",
+      "question": "How long is a long rest?",
+      "should_abstain": false,
+      "tags": [
+        "resting"
+      ],
+      "expected": [
+        "gameplay/adventuring/resting"
+      ],
+      "retrieved": [
+        "gameplay/adventuring/resting",
+        "gameplay/adventuring/movement",
+        "spells/spells-each/resurrection/resurrection",
+        "monsters/monsters/monster-statistics-reactions",
+        "magic-items/magic-items-each/manual-of-gainful-exercise/manual-of-gainful-exercise",
+        "classes/druid/druid-spellcasting-cantrips",
+        "spells/spells-each/longstrider/longstrider",
+        "classes/fighter/fighter-extra-attack",
+        "gameplay/adventuring/movement-speed-travel-pace",
+        "gamemastering/diseases/diseases-sample-diseases-sight-rot"
+      ],
+      "best_distance": 0.2599010169506073,
+      "rank": 1,
+      "latency_ms": 6.856500011053868
+    },
+    {
+      "id": "short-rest-length",
+      "question": "How long is a short rest?",
+      "should_abstain": false,
+      "tags": [
+        "resting"
+      ],
+      "expected": [
+        "gameplay/adventuring/resting"
+      ],
+      "retrieved": [
+        "gameplay/adventuring/resting",
+        "spells/spells-each/divination/divination",
+        "monsters/monsters/monster-statistics-reactions",
+        "spells/spells-each/gentle-repose/gentle-repose",
+        "spells/spells-each/passwall/passwall",
+        "magic-items/magic-items/magic-items",
+        "classes/cleric/cleric-divine-domain",
+        "magic-items/magic-items-each/manual-of-gainful-exercise/manual-of-gainful-exercise",
+        "spells/spells-each/tiny-hut/tiny-hut",
+        "monsters/monsters-each/rakshasa/rakshasa"
+      ],
+      "best_distance": 0.24743810296058655,
+      "rank": 1,
+      "latency_ms": 6.642199994530529
+    },
+    {
+      "id": "long-rest-frequency",
+      "question": "How often can I benefit from a long rest?",
+      "should_abstain": false,
+      "tags": [
+        "resting",
+        "edge-case"
+      ],
+      "expected": [
+        "gameplay/adventuring/resting"
+      ],
+      "retrieved": [
+        "gameplay/adventuring/resting",
+        "monsters/monsters/monster-statistics-reactions",
+        "gameplay/adventuring/between-adventures",
+        "gameplay/adventuring/movement-special-types-of-movement",
+        "classes/fighter/fighter-extra-attack",
+        "magic-items/magic-items/magic-items",
+        "magic-items/magic-items-each/manual-of-gainful-exercise/manual-of-gainful-exercise",
+        "magic-items/magic-items-each/manual-of-bodily-health/manual-of-bodily-health",
+        "monsters/monsters-a-z/npcs/knight",
+        "monsters/monsters-each/knight-npc/knight"
+      ],
+      "best_distance": 0.2650662660598755,
+      "rank": 1,
+      "latency_ms": 6.919099992956035
+    },
+    {
+      "id": "falling-damage",
+      "question": "How much damage do I take from falling?",
+      "should_abstain": false,
+      "tags": [
+        "exploration",
+        "lookup"
+      ],
+      "expected": [
+        "gameplay/adventuring/the-environment"
+      ],
+      "retrieved": [
+        "magic-items/magic-items-each/ring-of-feather-falling/ring-of-feather-falling",
+        "gameplay/order-of-combat/movement-and-position-being-prone",
+        "spells/spells-each/feather-fall/feather-fall",
+        "spells/spells-a-z/spells-f/spells-f-feather-fall",
+        "gameplay/adventuring/the-environment",
+        "spells/spells-each/command/command",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-damage-resistance-and-vulnerability",
+        "spells/spells-a-z/spells-c/spells-c-color-spray",
+        "gameplay/adventuring/movement-special-types-of-movement",
+        "gameplay/adventuring/between-adventures"
+      ],
+      "best_distance": 0.2644244134426117,
+      "rank": 5,
+      "latency_ms": 6.999200006248429
+    },
+    {
+      "id": "suffocation",
+      "question": "How long can I hold my breath?",
+      "should_abstain": false,
+      "tags": [
+        "exploration"
+      ],
+      "expected": [
+        "gameplay/adventuring/the-environment"
+      ],
+      "retrieved": [
+        "characterization/backgrounds/backgrounds-acolyte-suggested-characteristics",
+        "magic-items/magic-items-each/potion-of-water-breathing/potion-of-water-breathing",
+        "spells/spells-each/water-breathing/water-breathing",
+        "magic-items/magic-items-each/oathbow/oathbow",
+        "magic-items/magic-items-each/cloak-of-the-manta-ray/cloak-of-the-manta-ray",
+        "monsters/monsters-each/octopus-creature/octopus",
+        "magic-items/magic-items-each/bag-of-holding/bag-of-holding",
+        "monsters/monsters-each/giant-octopus-creature/giant-octopus",
+        "spells/spells-each/freedom-of-movement/freedom-of-movement",
+        "monsters/monsters-each/plesiosaurus-dinosaur/plesiosaurus-dinosaur"
+      ],
+      "best_distance": 0.32293301820755005,
+      "rank": null,
+      "latency_ms": 6.659899998339824
+    },
+    {
+      "id": "heavily-obscured",
+      "question": "What does a heavily obscured area do to sight?",
+      "should_abstain": false,
+      "tags": [
+        "exploration",
+        "vision"
+      ],
+      "expected": [
+        "gameplay/adventuring/the-environment"
+      ],
+      "retrieved": [
+        "gameplay/adventuring/the-environment",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-dexterity-initiative",
+        "gameplay/adventuring/the-environment-vision-and-light-blindsight",
+        "magic-items/magic-items-each/eversmoking-bottle/eversmoking-bottle",
+        "monsters/monsters/monster-statistics-senses-blindsight",
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets",
+        "magic-items/magic-items-a-z/magic-items-e/magic-items-e-elven-chain",
+        "spells/spells-each/mirage-arcane/mirage-arcane",
+        "monsters/monsters-a-z/creatures-m-o/creatures-m-o-octopus-actions",
+        "spells/spells-a-z/spells-m/spells-m-mirage-arcane"
+      ],
+      "best_distance": 0.31311625242233276,
+      "rank": 1,
+      "latency_ms": 6.991999995079823
+    },
+    {
+      "id": "carrying-capacity",
+      "question": "How much weight can I carry?",
+      "should_abstain": false,
+      "tags": [
+        "rules",
+        "lookup"
+      ],
+      "expected": [
+        "gameplay/using-ability-scores/ability-checks-using-each-ability"
+      ],
+      "retrieved": [
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-strength-variant-encumbrance",
+        "equipment/transportation/mounts-and-vehicles",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability",
+        "equipment/transportation/mounts-and-vehicles--2",
+        "spells/spells-each/enlarge-reduce/enlarge-reduce",
+        "equipment/armor/armor-heavy-armor",
+        "spells/spells-each/dimension-door/dimension-door",
+        "magic-items/magic-items-each/handy-haversack/handy-haversack",
+        "magic-items/magic-items-a-z/magic-items-h/magic-items-h-handy-haversack",
+        "magic-items/magic-items-each/carpet-of-flying/carpet-of-flying"
+      ],
+      "best_distance": 0.2719578146934509,
+      "rank": 3,
+      "latency_ms": 6.570300000021234
+    },
+    {
+      "id": "long-jump",
+      "question": "How far can I long jump?",
+      "should_abstain": false,
+      "tags": [
+        "movement"
+      ],
+      "expected": [
+        "gameplay/adventuring/movement-special-types-of-movement"
+      ],
+      "retrieved": [
+        "gameplay/adventuring/movement-special-types-of-movement",
+        "spells/spells-each/jump/jump",
+        "spells/spells-a-z/spells-j/spells-j",
+        "magic-items/magic-items-each/boots-of-striding-and-springing/boots-of-striding-and-springing",
+        "gameplay/adventuring/movement",
+        "spells/spells-a-z/spells-a/spells-a-arcane-eye",
+        "gameplay/adventuring/movement-speed-travel-pace",
+        "gameplay/order-of-combat/movement-and-position",
+        "spells/spells-each/find-the-path/find-the-path",
+        "spells/spells-each/arcane-eye/arcane-eye"
+      ],
+      "best_distance": 0.23722369968891144,
+      "rank": 1,
+      "latency_ms": 6.284099988988601
+    },
+    {
+      "id": "underwater-fire",
+      "question": "Does being underwater affect fire damage?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "environment"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/underwater-combat"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/underwater-combat",
+        "spells/spells-each/freedom-of-movement/freedom-of-movement",
+        "magic-items/magic-items-each/potion-of-water-breathing/potion-of-water-breathing",
+        "magic-items/magic-items-each/cloak-of-the-manta-ray/cloak-of-the-manta-ray",
+        "monsters/monsters-a-z/monsters-a/monsters-a",
+        "spells/spells-each/water-breathing/water-breathing",
+        "spells/spells-each/wall-of-fire/wall-of-fire",
+        "spells/spells-a-z/spells-w/spells-w",
+        "spells/spells-each/confusion/confusion",
+        "spells/spells-a-z/spells-c/spells-c-confusion"
+      ],
+      "best_distance": 0.28222090005874634,
+      "rank": 1,
+      "latency_ms": 6.621699998504482
+    },
+    {
+      "id": "mounted-combat-options",
+      "question": "What can my mount do while I ride it?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "mounted"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/mounted-combat"
+      ],
+      "retrieved": [
+        "equipment/transportation/mounts-and-vehicles",
+        "gameplay/order-of-combat/mounted-combat",
+        "gameplay/adventuring/movement-speed-travel-pace",
+        "magic-items/magic-items-each/figurine-of-wondrous-power/figurine-of-wondrous-power-giant-fly",
+        "magic-items/magic-items-a-z/magic-items-f/magic-items-f-figurine-of-wondrous-power-giant-fly",
+        "monsters/monsters-each/riding-horse-creature/riding-horse",
+        "characterization/backgrounds/backgrounds-acolyte-suggested-characteristics",
+        "magic-items/magic-items-each/cape-of-the-mountebank/cape-of-the-mountebank",
+        "monsters/monsters-a-z/creatures-m-o/creatures-m-o-mastiff-actions",
+        "equipment/adventuring-gear/adventuring-gear--2"
+      ],
+      "best_distance": 0.23272199928760529,
+      "rank": 2,
+      "latency_ms": 7.136700005503371
+    },
+    {
+      "id": "spell-components",
+      "question": "What are the components of a spell?",
+      "should_abstain": false,
+      "tags": [
+        "spells"
+      ],
+      "expected": [
+        "spells/spellcasting/casting-a-spell"
+      ],
+      "retrieved": [
+        "spells/spells-each/identify/identify",
+        "classes/warlock/warlock-pact-magic-cantrips",
+        "spells/spellcasting/casting-a-spell-components-verbal-v",
+        "spells/spellcasting/what-is-a-spell",
+        "spells/spells-each/glibness/glibness",
+        "characterization/alignment/alignment",
+        "spells/spellcasting/what-is-a-spell-spell-slots",
+        "spells/spellcasting/rituals",
+        "spells/spells-each/find-the-path/find-the-path",
+        "spells/spellcasting/casting-a-spell"
+      ],
+      "best_distance": 0.217975914478302,
+      "rank": 10,
+      "latency_ms": 9.13050000963267
+    },
+    {
+      "id": "concentration-break",
+      "question": "What breaks concentration on a spell?",
+      "should_abstain": false,
+      "tags": [
+        "spells",
+        "concentration"
+      ],
+      "expected": [
+        "spells/spellcasting/casting-a-spell-duration"
+      ],
+      "retrieved": [
+        "spells/spellcasting/casting-a-spell-duration",
+        "spells/spells-a-z/spells-r/spells-r-remove-curse",
+        "spells/spells-a-z/spells-m/spells-m-meld-into-stone",
+        "spells/spells-each/mending/mending",
+        "spells/spells-a-z/spells-c/spells-c-conjure-woodland-beings",
+        "spells/spells-a-z/spells-c/spells-c-counterspell",
+        "spells/spells-each/contact-other-plane/contact-other-plane",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability",
+        "spells/spellcasting/what-is-a-spell",
+        "spells/spells-a-z/spells-a/spells-a-arcane-lock"
+      ],
+      "best_distance": 0.21821559965610504,
+      "rank": 1,
+      "latency_ms": 9.258199992473237
+    },
+    {
+      "id": "concentration-two-spells",
+      "question": "Can I concentrate on two spells at once?",
+      "should_abstain": false,
+      "tags": [
+        "spells",
+        "concentration"
+      ],
+      "expected": [
+        "spells/spellcasting/casting-a-spell-duration"
+      ],
+      "retrieved": [
+        "spells/spellcasting/casting-a-spell-duration",
+        "spells/spellcasting/combining-magical-effects",
+        "spells/spells-each/guidance/guidance",
+        "classes/wizard/wizard-arcane-recovery",
+        "classes/wizard/wizard-spellcasting-learning-spells-of-1st-level-and-higher",
+        "spells/spells-each/resistance/resistance",
+        "characterization/multiclassing/class-features-spellcasting",
+        "magic-items/magic-items-each/helm-of-telepathy/helm-of-telepathy",
+        "classes/druid/druid-ritual-casting-spellcasting-focus",
+        "gameplay/using-ability-scores/proficiency-bonus"
+      ],
+      "best_distance": 0.2316230833530426,
+      "rank": 1,
+      "latency_ms": 8.10809999529738
+    },
+    {
+      "id": "ritual-casting",
+      "question": "How does ritual casting work?",
+      "should_abstain": false,
+      "tags": [
+        "spells"
+      ],
+      "expected": [
+        "spells/spellcasting/rituals"
+      ],
+      "retrieved": [
+        "spells/spells-each/identify/identify",
+        "spells/spellcasting/rituals",
+        "classes/warlock/warlock-eldritch-invocations-agonizing-blast",
+        "classes/bard/bard-spellcasting",
+        "spells/spells-a-z/spells-a/spells-a-augury",
+        "gamemastering/diseases/diseases",
+        "spells/spells-each/divination/divination",
+        "magic-items/magic-items/magic-items-activating-an-item-command-word",
+        "spells/spells-each/magic-mouth/magic-mouth",
+        "spells/spells-a-z/spells-i/spells-i"
+      ],
+      "best_distance": 0.19309774041175842,
+      "rank": 2,
+      "latency_ms": 5.7419000077061355
+    },
+    {
+      "id": "upcasting",
+      "question": "What happens if I cast a spell using a higher level slot?",
+      "should_abstain": false,
+      "tags": [
+        "spells"
+      ],
+      "expected": [
+        "spells/spellcasting/what-is-a-spell-spell-slots"
+      ],
+      "retrieved": [
+        "spells/spellcasting/what-is-a-spell-spell-slots",
+        "classes/warlock/warlock-pact-magic-cantrips",
+        "characterization/multiclassing/class-features-spellcasting",
+        "spells/spells-a-z/spells-h/spells-h-heal",
+        "spells/spells-each/conjure-animals/conjure-animals",
+        "spells/spells-each/conjure-minor-elementals/conjure-minor-elementals",
+        "magic-items/magic-items-each/ring-of-spell-storing/ring-of-spell-storing",
+        "classes/sorcerer/sorcerer-spellcasting",
+        "spells/spells-each/conjure-woodland-beings/conjure-woodland-beings",
+        "classes/sorcerer/sorcerer-font-of-magic"
+      ],
+      "best_distance": 0.1788349598646164,
+      "rank": 1,
+      "latency_ms": 7.8935999918030575
+    },
+    {
+      "id": "ring-of-swimming",
+      "question": "What swimming speed does a Ring of Swimming give?",
+      "should_abstain": false,
+      "tags": [
+        "magic-items",
+        "lookup"
+      ],
+      "expected": [
+        "magic-items/magic-items-a-z/magic-items-r/magic-items-r-ring-of-spell-storing",
+        "magic-items/magic-items-each/ring-of-swimming/ring-of-swimming"
+      ],
+      "retrieved": [
+        "magic-items/magic-items-each/ring-of-swimming/ring-of-swimming",
+        "magic-items/magic-items-a-z/magic-items-r/magic-items-r-ring-of-spell-storing",
+        "magic-items/magic-items-each/gloves-of-swimming-and-climbing/gloves-of-swimming-and-climbing",
+        "magic-items/magic-items-each/cloak-of-the-manta-ray/cloak-of-the-manta-ray",
+        "monsters/monsters/monster-statistics-speed-burrow",
+        "magic-items/magic-items-a-z/magic-items-r/magic-items-r-ring-of-three-wishes",
+        "magic-items/magic-items-each/ring-of-djinni-summoning/ring-of-djinni-summoning",
+        "magic-items/magic-items-each/ring-of-water-walking/ring-of-water-walking",
+        "magic-items/magic-items-a-z/magic-items-r/magic-items-r",
+        "monsters/monsters-each/gibbering-mouther/gibbering-mouther"
+      ],
+      "best_distance": 0.15619365870952606,
+      "rank": 1,
+      "latency_ms": 7.633799992618151
+    },
+    {
+      "id": "attunement-limit",
+      "question": "How many magic items can I attune to at once?",
+      "should_abstain": false,
+      "tags": [
+        "magic-items",
+        "lookup"
+      ],
+      "expected": [
+        "magic-items/magic-items/magic-items"
+      ],
+      "retrieved": [
+        "magic-items/magic-items/magic-items",
+        "magic-items/magic-items-a-z/magic-items-n/magic-items-n",
+        "magic-items/magic-items-each/necklace-of-prayer-beads/necklace-of-prayer-beads",
+        "magic-items/magic-items-a-z/magic-items-r/magic-items-r-rod-of-absorption",
+        "magic-items/magic-items-a-z/magic-items-w/magic-items-w-weapon-1-2-or-3",
+        "spells/spells-each/identify/identify",
+        "magic-items/magic-items-a-z/magic-items-d/magic-items-d-deck-of-many-things",
+        "magic-items/magic-items/magic-items-activating-an-item-command-word",
+        "magic-items/magic-items/magic-items-wearing-and-wielding-items",
+        "magic-items/magic-items-each/rod-of-absorption/rod-of-absorption"
+      ],
+      "best_distance": 0.1988772749900818,
+      "rank": 1,
+      "latency_ms": 8.86210000317078
+    },
+    {
+      "id": "finesse-property",
+      "question": "What does the finesse weapon property do?",
+      "should_abstain": false,
+      "tags": [
+        "equipment"
+      ],
+      "expected": [
+        "equipment/weapons/weapons-weapon-properties"
+      ],
+      "retrieved": [
+        "equipment/weapons/weapons-weapon-properties",
+        "equipment/weapons/weapons-weapon-properties-improvised-weapons-special-weapons--2",
+        "equipment/weapons/weapons-weapon-properties-improvised-weapons",
+        "gameplay/order-of-combat/making-an-attack",
+        "magic-items/magic-items-each/sun-blade/sun-blade",
+        "equipment/weapons/weapons",
+        "spells/spells-each/identify/identify",
+        "equipment/weapons/weapons-weapon-properties-improvised-weapons-special-weapons",
+        "magic-items/magic-items-each/glamoured-studded-leather/glamoured-studded-leather",
+        "characterization/alignment/alignment"
+      ],
+      "best_distance": 0.21968255937099457,
+      "rank": 1,
+      "latency_ms": 8.067999995546415
+    },
+    {
+      "id": "heavy-armor-stealth",
+      "question": "Does wearing heavy armor affect stealth?",
+      "should_abstain": false,
+      "tags": [
+        "equipment"
+      ],
+      "expected": [
+        "equipment/armor/armor"
+      ],
+      "retrieved": [
+        "equipment/armor/armor-heavy-armor",
+        "equipment/armor/armor",
+        "magic-items/magic-items-each/adamantine-armor/adamantine-armor",
+        "magic-items/magic-items-each/mithral-armor/mithral-armor",
+        "magic-items/magic-items-each/armor-of-resistance/armor-of-resistance",
+        "equipment/armor/armor-medium-armor",
+        "magic-items/magic-items-a-z/magic-items-a/magic-items-a-armor-1-2-or-3",
+        "magic-items/magic-items-each/armor/armor-1-2-or-3",
+        "equipment/armor/armor-getting-into-and-out-of-armor",
+        "magic-items/magic-items-each/oil-of-slipperiness/oil-of-slipperiness"
+      ],
+      "best_distance": 0.2680567502975464,
+      "rank": 2,
+      "latency_ms": 6.6026999993482605
+    },
+    {
+      "id": "abstain-bladesinger",
+      "question": "What are the rules for the Bladesinger wizard subclass?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "model-knows-but-corpus-does-not"
+      ],
+      "expected": [],
+      "retrieved": [
+        "characterization/multiclassing/class-features-spellcasting",
+        "classes/wizard/wizard-spellcasting",
+        "classes/warlock/warlock-eldritch-invocations-agonizing-blast",
+        "classes/warlock/warlock-eldritch-invocations-eldritch-spear",
+        "gameplay/order-of-combat/actions-in-combat",
+        "classes/warlock/warlock-eldritch-invocations-sign-of-ill-omen",
+        "spells/spellcasting/rituals",
+        "characterization/alignment/alignment",
+        "magic-items/magic-items-a-z/magic-items-s/magic-items-s-stone-of-good-luck-luckstone",
+        "characterization/backgrounds/backgrounds"
+      ],
+      "best_distance": 0.28557494282722473,
+      "rank": null,
+      "latency_ms": 8.763500009081326
+    },
+    {
+      "id": "abstain-weapon-mastery",
+      "question": "What changed about the Weapon Mastery rules in the 2024 Player's Handbook?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "out-of-corpus"
+      ],
+      "expected": [],
+      "retrieved": [
+        "classes/monk/monk-evasion",
+        "equipment/weapons/weapons",
+        "monsters/monsters/monster-statistics-speed-burrow",
+        "equipment/weapons/weapons-weapon-properties-improvised-weapons-special-weapons--2",
+        "monsters/monsters/monster-statistics-special-traits",
+        "equipment/tools/tools--2",
+        "monsters/monsters-a-z/npcs/customizing-npcs",
+        "equipment/weapons/weapons-weapon-properties",
+        "monsters/monsters-each/customizing-npcs-npc/customizing-npcs",
+        "magic-items/magic-items-each/manual-of-quickness-of-action/manual-of-quickness-of-action"
+      ],
+      "best_distance": 0.3192521035671234,
+      "rank": null,
+      "latency_ms": 10.114300006534904
+    },
+    {
+      "id": "abstain-spelljammer",
+      "question": "What are the rules for starship combat in Spelljammer?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "out-of-corpus"
+      ],
+      "expected": [],
+      "retrieved": [
+        "gameplay/order-of-combat/actions-in-combat",
+        "gameplay/order-of-combat/making-an-attack",
+        "spells/spells-a-z/spells-c/spells-c-conjure-animals",
+        "classes/sorcerer/sorcerer-metamagic-careful-spell",
+        "gameplay/order-of-combat/order-of-combat-initiative",
+        "gameplay/order-of-combat/underwater-combat",
+        "monsters/monsters-a-z/monsters-a/monsters-a-angels-planetar",
+        "gameplay/order-of-combat/order-of-combat",
+        "spells/spells-each/command/command",
+        "gameplay/order-of-combat/movement-and-position"
+      ],
+      "best_distance": 0.2985959053039551,
+      "rank": null,
+      "latency_ms": 8.101899991743267
+    },
+    {
+      "id": "abstain-artificer",
+      "question": "How does the Artificer class infusion system work?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "model-knows-but-corpus-does-not"
+      ],
+      "expected": [],
+      "retrieved": [
+        "races/races-each/gnome/gnome-rock-gnome",
+        "classes/rogue/rogue-expertise",
+        "gamemastering/diseases/diseases",
+        "classes/warlock/warlock-class-features-equipment",
+        "magic-items/magic-items/magic-items-activating-an-item-command-word",
+        "classes/rogue/rogue-class-features-equipment",
+        "gameplay/using-ability-scores/ability-checks-passive-checks",
+        "equipment/adventuring-gear/adventuring-gear",
+        "spells/spellcasting/cantrips",
+        "equipment/tools/tools--2"
+      ],
+      "best_distance": 0.3213868737220764,
+      "rank": null,
+      "latency_ms": 7.862700003897771
+    },
+    {
+      "id": "abstain-designer",
+      "question": "Who was the lead designer of fifth edition?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "not-a-rules-question"
+      ],
+      "expected": [],
+      "retrieved": [
+        "spells/spells-each/illusory-script/illusory-script",
+        "magic-items/magic-items-each/wand-of-wonder/wand-of-wonder--2",
+        "characterization/backgrounds/backgrounds-acolyte-suggested-characteristics",
+        "equipment/adventuring-gear/adventuring-gear--9",
+        "equipment/adventuring-gear/adventuring-gear--12",
+        "spells/spells-a-z/spells-i/spells-i",
+        "spells/spells-each/disguise-self/disguise-self",
+        "magic-items/magic-items-each/tome-of-understanding/tome-of-understanding",
+        "gameplay/using-ability-scores/ability-checks-passive-checks",
+        "magic-items/magic-items-each/tome-of-leadership-and-influence/tome-of-leadership-and-influence"
+      ],
+      "best_distance": 0.441071480512619,
+      "rank": null,
+      "latency_ms": 7.953000007546507
+    },
+    {
+      "id": "abstain-pizza",
+      "question": "What is the best pizza topping?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "off-domain"
+      ],
+      "expected": [],
+      "retrieved": [
+        "characterization/alignment/alignment",
+        "magic-items/magic-items-each/stone-of-good-luck/stone-of-good-luck-luckstone",
+        "spells/spells-each/suggestion/suggestion",
+        "magic-items/magic-items-each/stone-of-controlling-earth-elementals/stone-of-controlling-earth-elementals",
+        "spells/spells-each/reverse-gravity/reverse-gravity",
+        "magic-items/magic-items-each/potion-of-climbing/potion-of-climbing",
+        "magic-items/magic-items-each/potion-of-flying/potion-of-flying",
+        "monsters/monsters-each/gelatinous-cube-ooze/gelatinous-cube-ooze-actions",
+        "spells/spells-each/mass-suggestion/mass-suggestion",
+        "monsters/monsters-each/black-pudding-ooze/black-pudding-ooze"
+      ],
+      "best_distance": 0.5209313631057739,
+      "rank": null,
+      "latency_ms": 7.548599998699501
+    },
+    {
+      "id": "abstain-taxes",
+      "question": "How do I file my taxes in Portugal?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "off-domain"
+      ],
+      "expected": [],
+      "retrieved": [
+        "equipment/trade-goods/trade-goods",
+        "magic-items/magic-items-a-z/magic-items-d/magic-items-d-deck-of-many-things-avatar-of-death-actions",
+        "classes/wizard/wizard-arcane-traditions-school-of-evocation-overchannel",
+        "characterization/backgrounds/backgrounds-acolyte-suggested-characteristics",
+        "equipment/expenses/expenses-lifestyle-expenses",
+        "equipment/expenses/expenses-spellcasting-services",
+        "spells/spells-a-z/spells-r/spells-r-resurrection",
+        "characterization/backgrounds/backgrounds-acolyte",
+        "spells/spellcasting/what-is-a-spell-spell-slots",
+        "magic-items/magic-items-each/oathbow/oathbow"
+      ],
+      "best_distance": 0.4720472991466522,
+      "rank": null,
+      "latency_ms": 6.416699994588271
+    },
+    {
+      "id": "abstain-book-price",
+      "question": "How much does the Player's Handbook cost in stores?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "not-a-rules-question"
+      ],
+      "expected": [],
+      "retrieved": [
+        "magic-items/magic-items-a-z/magic-items-m/magic-items-m-manual-of-gainful-exercise",
+        "gameplay/adventuring/between-adventures-downtime-activities-researching",
+        "equipment/expenses/expenses-lifestyle-expenses",
+        "monsters/monsters/monster-statistics-hit-points",
+        "equipment/adventuring-gear/adventuring-gear--11",
+        "monsters/monsters/monster-statistics",
+        "equipment/expenses/expenses-food-drink-and-lodging",
+        "magic-items/magic-items-each/ring-of-spell-storing/ring-of-spell-storing",
+        "equipment/adventuring-gear/adventuring-gear--9",
+        "monsters/monsters/monster-statistics-ability-scores"
+      ],
+      "best_distance": 0.34454283118247986,
+      "rank": null,
+      "latency_ms": 9.658000009949319
+    }
+  ],
+  "answers": {
+    "questions": 56,
+    "citation_accuracy": 0.9375,
+    "citation_precision": 0.6478,
+    "answered_with_a_citation": 1.0,
+    "expected_phrase_recall": 0.9792,
+    "abstention": {
+      "correct": 0.75,
+      "false_abstain_rate": 0.0,
+      "false_abstained": [],
+      "missed": [
+        "abstain-weapon-mastery",
+        "abstain-artificer"
+      ]
+    },
+    "judge": {
+      "scored": 53,
+      "correct_rate": 0.9434,
+      "failed": [
+        "difficult-terrain-cost",
+        "suffocation",
+        "carrying-capacity",
+        "abstain-bladesinger",
+        "abstain-weapon-mastery",
+        "abstain-spelljammer",
+        "abstain-artificer",
+        "abstain-designer",
+        "abstain-pizza",
+        "abstain-taxes"
+      ]
+    },
+    "tool_calls_total": 4,
+    "cost_usd": {
+      "mean": 0.014999,
+      "total": 0.84
+    },
+    "latency_ms": {
+      "p50": 5148.8,
+      "p95": 11687.2,
+      "ttft_p50": 2240.7
+    },
+    "citation_failures": [
+      "unconscious-at-zero",
+      "suffocation",
+      "spell-components"
+    ],
+    "errors": [],
+    "judge_cost_usd": 0.1429
+  },
+  "answer_rows": [
+    {
+      "id": "disengage-and-cast",
+      "question": "Can I cast a spell and disengage in the same turn?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "actions",
+        "multi-hop"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/actions-in-combat"
+      ],
+      "answer": "Yes, but only if the spell's casting time isn't a full action.\n\nOn your turn you get one action (unless a special feature grants more), and Disengage is itself an action: If you take the Disengage action, your movement doesn't provoke opportunity attacks for the rest of the turn. Since Disengage uses up your action for the turn, you can't also spend your action to cast a spell that requires an action.\n\nHowever, casting a spell doesn't always require an action: Each spell has a casting time, which specifies whether the caster must use an action, a reaction, minutes, or even hours to cast the spell. Casting a spell is, therefore, not necessarily an action. Most spells do have a casting time of 1 action, so a spellcaster often uses his or her action in combat to cast such a spell. This is reinforced by the bonus-action casting rules: A spell cast with a bonus action is especially swift. You must use a bonus action on your turn to cast the spell, provided that you haven't already taken a bonus action this turn.\n\nSo:\n- If the spell has a casting time of **1 bonus action**, you can cast it with your bonus action and still use your action to Disengage.\n- If the spell has a casting time of **1 action** (the most common case), you cannot also Disengage that turn, since both would require your one action.\n- Reaction-cast spells are cast in response to a triggering event rather than on your own turn's action economy, so those wouldn't conflict either, per the rules given for reactions.\n\nThe excerpts don't address any special feature that grants extra actions, so absent such a feature, only bonus-action or reaction spells can be freely combined with a Disengage action in the same turn.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/actions-in-combat",
+        "gameplay/order-of-combat/actions-in-combat",
+        "spells/spellcasting/casting-a-spell"
+      ],
+      "citation_count": 3,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.025077,
+      "ttft_ms": 5110.88,
+      "total_ms": 10379.07,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant accurately explains that you can cast a spell and disengage in the same turn only if the spell doesn't use your action (e.g., bonus action or reaction casting), correctly identifying that both actions and bonus actions are separate resources, and that most spells use an action, making them incompatible with Disengage on the same turn."
+    },
+    {
+      "id": "opportunity-attack-trigger",
+      "question": "What triggers an opportunity attack?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "reactions"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks"
+      ],
+      "answer": "An opportunity attack is triggered when a hostile creature you can see moves out of your reach. You can make an opportunity attack when a hostile creature that you can see moves out of your reach. To make the opportunity attack, you use your reaction to make one melee attack against the provoking creature. The attack occurs right before the creature leaves your reach.\n\nThere are notable exceptions: You can avoid provoking an opportunity attack by taking the Disengage action. You also don't provoke an opportunity attack when you teleport or when someone or something moves you without using your movement, action, or reaction. For example, you don't provoke an opportunity attack if an explosion hurls you out of a foe's reach or if gravity causes you to fall past an enemy.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks"
+      ],
+      "citation_count": 2,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.013568,
+      "ttft_ms": 1114.8,
+      "total_ms": 3714.25,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant accurately states that opportunity attacks are triggered when a hostile creature you can see moves out of your reach, correctly describes the mechanics (using your reaction to make one melee attack before the creature leaves reach), and accurately lists the exceptions (Disengage action, teleportation, being moved by external forces)."
+    },
+    {
+      "id": "avoid-opportunity-attack",
+      "question": "How do I move away from an enemy without getting hit?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "paraphrase"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks"
+      ],
+      "answer": "The best way is to take the **Disengage** action on your turn. According to the rules, if you take the Disengage action, your movement doesn't provoke opportunity attacks for the rest of the turn.\n\nThis matters because normally, moving out of a hostile creature's reach is what triggers the attack: In a fight, everyone is constantly watching for a chance to strike an enemy who is fleeing or passing by, and you can make an opportunity attack when a hostile creature that you can see moves out of your reach, using your reaction to make one melee attack against the provoking creature right before it leaves your reach. Disengage is explicitly called out as the way to sidestep this: You can avoid provoking an opportunity attack by taking the Disengage action. You also don't provoke an opportunity attack when you teleport or when someone or something moves you without using your movement, action, or reaction.\n\nA couple of other notes:\n- Disengage only protects your movement *for the rest of that turn* \u2014 it's tied to the action, so it needs to be taken on your turn before you move away.\n- If you're not moving on your own turn but want to react to an enemy approaching (e.g., before your turn comes up), you could instead use the Ready action to prepare a move: you choose the action you will take in response to that trigger, or you choose to move up to your speed in response to it. Examples include \"If the cultist steps on the trapdoor, I'll pull the lever that opens it,\" and \"If the goblin steps next to me, I move away.\" Note this still counts as movement and would still provoke an opportunity attack unless paired with Disengage's effect \u2014 the excerpts don't state that readying a move avoids opportunity attacks, so treat plain Disengage as the reliable, explicit tool for avoiding them.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/actions-in-combat",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks",
+        "gameplay/order-of-combat/actions-in-combat-help"
+      ],
+      "citation_count": 4,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 1,
+      "cost_usd": 0.049491,
+      "ttft_ms": 7695.39,
+      "total_ms": 14392.63,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant accurately states that taking the Disengage action allows you to move away from an enemy without provoking opportunity attacks, directly citing the governing rule passage that explicitly states 'You can avoid provoking an opportunity attack by taking the Disengage action.' The additional clarifications about timing, the Ready action, and opportunity attack mechanics are all consistent with the passage provided."
+    },
+    {
+      "id": "death-saves-count",
+      "question": "How many death saving throws do I need to fail before I die?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "death"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws"
+      ],
+      "answer": "You need three failed death saving throws to die. As the rule states: On your third failure, you die.\n\nKeep in mind that failures don't need to be consecutive \u2014 The successes and failures don't need to be consecutive; keep track of both until you collect three of a kind. Also note that rolling a natural 1 is especially dangerous: When you make a death saving throw and roll a 1 on the d20, it counts as two failures.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws"
+      ],
+      "citation_count": 3,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.01186,
+      "ttft_ms": 2208.91,
+      "total_ms": 4411.17,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer accurately states that three failed death saving throws result in death, correctly cites the governing rule, and appropriately notes the special case where a roll of 1 counts as two failures."
+    },
+    {
+      "id": "death-save-nat-20",
+      "question": "What happens if I roll a 20 on a death saving throw?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "death",
+        "edge-case"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws"
+      ],
+      "answer": "If you roll a natural 20 on a death saving throw, you regain 1 hit point. This is a special result \u2014 rolling a 1, by contrast, counts as two failures instead of one.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws"
+      ],
+      "citation_count": 1,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.011398,
+      "ttft_ms": 2254.18,
+      "total_ms": 2626.05,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer accurately states the governing rule that rolling a 20 on a death saving throw causes you to regain 1 hit point, and correctly contrasts this with the special case of rolling a 1 (which counts as two failures)."
+    },
+    {
+      "id": "death-save-damage",
+      "question": "What happens if I take damage while at 0 hit points?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "death"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws"
+      ],
+      "answer": "If you take damage while at 0 hit points, you automatically suffer a death saving throw failure \u2014 and the severity of that failure depends on the source of the damage:\n\nIf you take any damage while you have 0 hit points, you suffer a death saving throw failure. If the damage is from a critical hit, you suffer two failures instead. If the damage equals or exceeds your hit point maximum, you suffer instant death.\n\nNote that three death saving throw failures are what actually kill you: On your third success, you become stable. On your third failure, you die. The successes and failures don't need to be consecutive; keep track of both until you collect three of a kind.\n\nThere's also an important exception for a *stable* creature: A stable creature doesn't make death saving throws, even though it has 0 hit points, but it does remain unconscious. The creature stops being stable, and must start making death saving throws again, if it takes any damage. So if a stabilized creature at 0 HP takes damage, it loses its stable status and must resume making death saves (with the same instant-death and critical-hit rules applying to that new damage).",
+      "cited_anchors": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws"
+      ],
+      "citation_count": 3,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 1,
+      "cost_usd": 0.030877,
+      "ttft_ms": 4676.98,
+      "total_ms": 8449.55,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer accurately states the governing rule about damage at 0 hit points: normal damage causes one death saving throw failure, critical hits cause two failures, and damage equaling or exceeding hit point maximum causes instant death. It also correctly explains the death saving throw system and accurately describes how stable creatures lose their stability and resume death saves if damaged."
+    },
+    {
+      "id": "half-cover",
+      "question": "How much does half cover add to AC?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "lookup"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-cover"
+      ],
+      "answer": "Half cover adds a **+2 bonus** to AC (and to Dexterity saving throws). A target with half cover has a +2 bonus to AC and Dexterity saving throws. A target has half cover if an obstacle blocks at least half of its body.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/making-an-attack-cover"
+      ],
+      "citation_count": 1,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.009518,
+      "ttft_ms": 1458.52,
+      "total_ms": 2774.45,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant's answer accurately states that half cover adds a +2 bonus to AC, which directly matches the governing rule passage stating 'A target with half cover has a +2 bonus to AC and Dexterity saving throws.'"
+    },
+    {
+      "id": "three-quarters-cover",
+      "question": "What bonus does three-quarters cover give?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "lookup"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-cover"
+      ],
+      "answer": "Three-quarters cover gives a **+5 bonus to AC and Dexterity saving throws**. As the rules state: A target with three-quarters cover has a +5 bonus to AC and Dexterity saving throws. A target has three-quarters cover if about three-quarters of it is covered by an obstacle. The obstacle might be a portcullis, an arrow slit, or a thick tree trunk.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/making-an-attack-cover"
+      ],
+      "citation_count": 1,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.00878,
+      "ttft_ms": 2400.47,
+      "total_ms": 4144.22,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer accurately states that three-quarters cover provides a +5 bonus to AC and Dexterity saving throws, which directly matches the governing rule passage."
+    },
+    {
+      "id": "total-cover-targeting",
+      "question": "Can I target a creature behind total cover?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "spells"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-cover"
+      ],
+      "answer": "No \u2014 a target with total cover cannot be directly targeted by an attack or spell.\n\nFor attacks specifically, a target with total cover can't be targeted directly by an attack or a spell, although some spells can reach such a target by including it in an area of effect. A target has total cover if it is completely concealed by an obstacle.\n\nThe same restriction applies to spellcasting: to target something, you must have a clear path to it, so it can't be behind total cover. Note the carve-out mentioned above \u2014 a creature behind total cover can still be affected if it happens to be caught within an area-of-effect spell, even though it can't be singled out as a direct target.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/making-an-attack-cover",
+        "spells/spellcasting/casting-a-spell-targets-a-clear-path-to-the-target"
+      ],
+      "citation_count": 2,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.011586,
+      "ttft_ms": 2486.85,
+      "total_ms": 5344.83,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer accurately states the governing rule that a target with total cover cannot be directly targeted by an attack or spell, and correctly notes the exception for area-of-effect spells that can reach such targets by including them in an area of effect."
+    },
+    {
+      "id": "grapple-escape",
+      "question": "How does a creature escape a grapple?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "contests"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling"
+      ],
+      "answer": "A grappled creature escapes by using its action to make a check contested by the grappler's Strength (Athletics) check. Specifically: A grappled creature can use its action to escape. To do so, it must succeed on a Strength (Athletics) or Dexterity (Acrobatics) check contested by your Strength (Athletics) check.\n\nSo the grappled creature chooses whether to use Athletics or Acrobatics for its own check, but the grappler always resists with Strength (Athletics).\n\nNote that some monsters set a specific escape DC instead of requiring a contested check \u2014 for example, a target grappled by a giant crocodile's bite must escape at DC 16, and one grappled by a remorhaz's bite escapes at escape DC 17. In those cases the fixed DC replaces the standard contested-check math from the general grappling rule.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling",
+        "monsters/monsters-a-z/creatures-g-i/creatures-g-i-giant-crocodile-actions",
+        "monsters/monsters-a-z/monsters-r/monsters-r-remorhaz"
+      ],
+      "citation_count": 3,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.013984,
+      "ttft_ms": 2240.7,
+      "total_ms": 5724.35,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": null,
+      "judge_reason": "judge failed: JSONDecodeError"
+    },
+    {
+      "id": "shove-options",
+      "question": "What can I do with a shove?",
+      "should_abstain": false,
+      "tags": [
+        "combat"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling"
+      ],
+      "answer": "A shove lets you knock the target either prone or push it away from you. Specifically:\n\nUsing the Attack action, you can make a special melee attack to shove a creature, either to knock it prone or push it away from you. If you're able to make multiple attacks with the Attack action, this attack replaces one of them.\n\nRestrictions and resolution:\n- The target must be no more than one size larger than you and must be within your reach.\n- Instead of making an attack roll, you make a Strength (Athletics) check contested by the target's Strength (Athletics) or Dexterity (Acrobatics) check (the target chooses the ability to use).\n- You succeed automatically if the target is incapacitated.\n- If you succeed, you either knock the target prone or push it 5 feet away from you.\n\nSo you choose one of the two outcomes \u2014 prone or a 5-foot push \u2014 when you succeed on the contested check.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling"
+      ],
+      "citation_count": 5,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.016332,
+      "ttft_ms": 4550.41,
+      "total_ms": 7426.98,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant accurately states that a shove allows you to either knock a target prone or push it 5 feet away, correctly describes the mechanics (Strength Athletics check contested by target's choice of abilities), notes the size and reach restrictions, and correctly identifies that you choose the outcome upon success."
+    },
+    {
+      "id": "two-weapon-fighting",
+      "question": "How does two-weapon fighting work?",
+      "should_abstain": false,
+      "tags": [
+        "combat"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks"
+      ],
+      "answer": "Two-Weapon Fighting is a base combat rule, and the Fighting Style feature of the same name modifies it further.\n\n**The base rule:** When you take the Attack action and attack with a light melee weapon that you're holding in one hand, you can use a bonus action to attack with a different light melee weapon that you're holding in the other hand. You don't add your ability modifier to the damage of the bonus attack, unless that modifier is negative. If either weapon has the thrown property, you can throw the weapon, instead of making a melee attack with it.\n\nBoth weapons must be **light** \u2014 a light weapon is small and easy to handle, making it ideal for use when fighting with two weapons.\n\n**The Fighting Style feature** (available to Fighters and Rangers, per the excerpts) removes the usual penalty: Two-Weapon Fighting... When you engage in two-weapon fighting, you can add your ability modifier to the damage of the second attack. Without this style, you'd only get your ability modifier on the bonus-action attack if that modifier is negative; with the style, you add it normally like any other attack.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks",
+        "equipment/weapons/weapons-weapon-properties",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks"
+      ],
+      "citation_count": 3,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 1,
+      "cost_usd": 0.031811,
+      "ttft_ms": 4461.55,
+      "total_ms": 8587.89,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer accurately describes the base two-weapon fighting rule from the passage, correctly stating the bonus action mechanics, the light weapon requirement, and the damage modifier penalty, and correctly notes that a Fighting Style feature modifies this rule (though the Fighting Style itself is not in the provided passage, referring to it is appropriate given the context)."
+    },
+    {
+      "id": "crit-damage",
+      "question": "How do critical hits work for damage?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "damage"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-hit-points"
+      ],
+      "answer": "On a critical hit, you don't just add extra flat damage\u2014you roll extra dice. When you score a critical hit, you get to roll extra dice for the attack's damage against the target. Roll all of the attack's damage dice twice and add them together. Then add any relevant modifiers as normal. To speed up play, you can roll all the damage dice at once.\n\nFor example: if you score a critical hit with a dagger, roll 2d4 for the damage, rather than 1d4, and then add your relevant ability modifier. If the attack involves other damage dice, such as from the rogue's Sneak Attack feature, you roll those dice twice as well.\n\nA couple of notes on how a critical hit happens and how magic items can modify this:\n\n- The Champion fighter archetype changes the threshold for scoring a critical hit rather than the damage: Beginning when you choose this archetype at 3rd level, your weapon attacks score a critical hit on a roll of 19 or 20, later improving so that Starting at 15th level, your weapon attacks score a critical hit on a roll of 18-20.\n- Some magic weapons add extra damage specifically on a critical hit triggered by a natural 20. The *Vicious Weapon*, for instance: When you roll a 20 on your attack roll with this magic weapon, your critical hit deals an extra 2d6 damage of the weapon's type. This is added on top of the normal doubled dice from the crit itself.\n\nSo overall: double the weapon/spell/feature damage dice, add modifiers once as normal, and then layer on any critical-hit-specific bonus damage from features or magic items.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-hit-points",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-hit-points",
+        "classes/fighter/fighter-martial-archetypes-champion",
+        "classes/fighter/fighter-martial-archetypes-champion",
+        "magic-items/magic-items-each/vicious-weapon/vicious-weapon"
+      ],
+      "citation_count": 5,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.0161,
+      "ttft_ms": 3412.82,
+      "total_ms": 9536.34,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer accurately states the governing rule that critical hits involve rolling all damage dice twice and adding modifiers as normal, with the dagger example matching exactly; the additional notes about Champion and Vicious Weapon represent related rules from elsewhere in the rulebook that correctly supplement the core mechanic without contradicting the passage."
+    },
+    {
+      "id": "unconscious-at-zero",
+      "question": "What happens when I drop to 0 hit points?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "death"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-damage-resistance-and-vulnerability"
+      ],
+      "answer": "When you're reduced to 0 hit points, you face the death saving throw process described in the rules:\n\n**Making death saving throws.** Whenever you start your turn with 0 hit points, you must make a special saving throw, called a death saving throw, to determine whether you creep closer to death or hang onto life. Unlike other saving throws, this one isn't tied to any ability score. You are in the hands of fate now, aided only by spells and features that improve your chances of succeeding on a saving throw.\n\n**How it works.** Roll a d20. If the roll is 10 or higher, you succeed. Otherwise, you fail. A success or failure has no effect by itself. On your third success, you become stable. On your third failure, you die. The successes and failures don't need to be consecutive; keep track of both until you collect three of a kind. The number of both is reset to zero when you regain any hit points or become stable.\n\n**Rolling 1 or 20.** When you make a death saving throw and roll a 1 on the d20, it counts as two failures. If you roll a 20 on the d20, you regain 1 hit point.\n\n**Taking damage at 0 HP.** If you take any damage while you have 0 hit points, you suffer a death saving throw failure. If the damage is from a critical hit, you suffer two failures instead. If the damage equals or exceeds your hit point maximum, you suffer instant death.\n\n**Stabilizing.** The best way to save a creature with 0 hit points is to heal it. If healing is unavailable, the creature can at least be stabilized so that it isn't killed by a failed death saving throw. You can use your action to administer first aid to an unconscious creature and attempt to stabilize it, which requires a successful DC 10 Wisdom (Medicine) check. Once stable, a stable creature doesn't make death saving throws, even though it has 0 hit points, but it does remain unconscious. The creature stops being stable, and must start making death saving throws again, if it takes any damage. A stable creature that isn't healed regains 1 hit point after 1d4 hours.\n\n**Note on temporary hit points.** If you had temporary hit points buffering you, if you have 0 hit points, receiving temporary hit points doesn't restore you to consciousness or stabilize you; they can still absorb damage directed at you while you're in that state, but only true healing can save you.\n\n**Monsters** are typically handled differently: most GMs have a monster die the instant it drops to 0 hit points, rather than having it fall unconscious and make death saving throws. Mighty villains and special nonplayer characters are common exceptions; the GM might have them fall unconscious and follow the same rules as player characters.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws",
+        "gameplay/order-of-combat/making-an-attack-knocking-a-creature-out",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws"
+      ],
+      "citation_count": 8,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.022522,
+      "ttft_ms": 4545.12,
+      "total_ms": 12066.91,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": null,
+      "judge_reason": "judge failed: JSONDecodeError"
+    },
+    {
+      "id": "knock-out",
+      "question": "Can I knock someone out instead of killing them?",
+      "should_abstain": false,
+      "tags": [
+        "combat"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-knocking-a-creature-out"
+      ],
+      "answer": "Yes. When an attacker reduces a creature to 0 hit points with a melee attack, the attacker can choose to knock the creature out instead of killing it. As the rules state: When an attacker reduces a creature to 0 hit points with a melee attack, the attacker can knock the creature out. The attacker can make this choice the instant the damage is dealt. The creature falls unconscious and is stable.\n\nNote that this option specifically applies to melee attacks \u2014 the excerpt does not mention this being available for ranged attacks or other damage sources.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/making-an-attack-knocking-a-creature-out"
+      ],
+      "citation_count": 1,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.011272,
+      "ttft_ms": 3069.5,
+      "total_ms": 5386.4,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant accurately states the governing rule: when a melee attack reduces a creature to 0 hit points, the attacker can choose to knock them out instead, making them unconscious and stable. The caveat about melee attacks only is also correct per the passage."
+    },
+    {
+      "id": "prone-attack-penalty",
+      "question": "What happens when I attack a prone creature?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "conditions"
+      ],
+      "expected": [
+        "gamemastering/conditions/conditions-frightened"
+      ],
+      "answer": "Attacking a prone creature depends on your attack's range:\n\nA prone creature's only movement option is to crawl, unless it stands up and thereby ends the condition. The creature has disadvantage on attack rolls. An attack roll against the creature have advantage if the attacker is within 5 feet of the creature. Otherwise, the attack roll has disadvantage.\n\nSo:\n- **Melee attacks within 5 feet** of a prone target have **advantage**.\n- **Ranged attacks, or any attack from farther than 5 feet**, have **disadvantage**.\n\nNote also that the prone creature itself, if it's able to act at all, has disadvantage on its own attack rolls while prone. If it stands up, the condition ends, but standing up costs movement equal to half its speed.",
+      "cited_anchors": [
+        "gamemastering/conditions/conditions-frightened"
+      ],
+      "citation_count": 1,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 1,
+      "cost_usd": 0.032177,
+      "ttft_ms": 5838.22,
+      "total_ms": 8366.65,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant accurately states the governing rule for attacking prone creatures: advantage on attacks within 5 feet, disadvantage otherwise, and correctly notes the prone creature's disadvantage on its own attack rolls and the movement cost to stand up."
+    },
+    {
+      "id": "stand-from-prone",
+      "question": "How much movement does standing up from prone cost?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "movement"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/movement-and-position-being-prone"
+      ],
+      "answer": "Standing up from prone costs half your speed in movement. Standing up takes more effort; doing so costs an amount of movement equal to half your speed. For example, if your speed is 30 feet, you must spend 15 feet of movement to stand up. You can't stand up if you don't have enough movement left or if your speed is 0.\n\nBy contrast, you can drop prone without using any of your speed.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/movement-and-position-being-prone",
+        "gameplay/order-of-combat/movement-and-position-being-prone"
+      ],
+      "citation_count": 2,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.013596,
+      "ttft_ms": 2876.21,
+      "total_ms": 4740.56,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer accurately states that standing up costs an amount of movement equal to half your speed, provides the correct example (30 feet speed = 15 feet to stand up), notes the conditions preventing standing up (insufficient movement or 0 speed), and correctly contrasts this with dropping prone being free, all matching the governing rule passage."
+    },
+    {
+      "id": "unseen-attacker",
+      "question": "What happens when I attack a target I can't see?",
+      "should_abstain": false,
+      "tags": [
+        "combat"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets"
+      ],
+      "answer": "When you attack a target you can't see, you have disadvantage on the attack roll. When you attack a target that you can't see, you have disadvantage on the attack roll. This is true whether you're guessing the target's location or you're targeting a creature you can hear but not see.\n\nThere's also a location-guessing consequence: If the target isn't in the location you targeted, you automatically miss, but the GM typically just says that the attack missed, not whether you guessed the target's location correctly.\n\nConversely, the reverse situation favors you: When a creature can't see you, you have advantage on attack rolls against it. If you are hidden-both unseen and unheard-when you make an attack, you give away your location when the attack hits or misses.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets",
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets",
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets"
+      ],
+      "citation_count": 3,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.011648,
+      "ttft_ms": 2633.43,
+      "total_ms": 5148.84,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant accurately states all the key rules from the passage: disadvantage on attack rolls against unseen targets, the automatic miss if the target isn't where you guessed, the advantage gained when attacking an unseen attacker, and the consequence of revealing your location when attacking from a hidden state."
+    },
+    {
+      "id": "long-range-penalty",
+      "question": "What happens when I shoot at something beyond normal range?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "ranged"
+      ],
+      "expected": [
+        "equipment/weapons/weapons-weapon-properties"
+      ],
+      "answer": "When you shoot at a target beyond a weapon's normal range (but still within its long range), your attack roll suffers disadvantage. Specifically: the smaller number is the normal range, and the larger number is the long range. Your attack roll has disadvantage when your target is beyond normal range, and you can't attack a target beyond the long range.\n\nThe weapon rules confirm the same thing: the first is the weapon's normal range in feet, and the second indicates the weapon's long range. When attacking a target beyond normal range, you have disadvantage on the attack roll. You can't attack a target beyond the weapon's long range.\n\nSo beyond normal range but within long range = disadvantage; beyond long range = the attack simply can't be made at all.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/making-an-attack-ranged-attacks-range",
+        "equipment/weapons/weapons-weapon-properties"
+      ],
+      "citation_count": 2,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.012834,
+      "ttft_ms": 1713.74,
+      "total_ms": 3880.22,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant accurately states the governing rule: attacking beyond normal range but within long range incurs disadvantage on the attack roll, and attacking beyond long range is impossible."
+    },
+    {
+      "id": "difficult-terrain-cost",
+      "question": "How does difficult terrain affect movement?",
+      "should_abstain": false,
+      "tags": [
+        "movement"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/movement-and-position"
+      ],
+      "answer": "In combat, difficult terrain effectively doubles the cost of movement: Every foot of movement in difficult terrain costs 1 extra foot. This rule is true even if multiple things in a space count as difficult terrain. Note that this stacking rule means overlapping difficult terrain sources don't compound the penalty further\u2014it's still just 1 extra foot per foot moved.\n\nWhat counts as difficult terrain: Low furniture, rubble, undergrowth, steep stairs, snow, and shallow bogs are examples of difficult terrain. The space of another creature, whether hostile or not, also counts as difficult terrain.\n\nFor travel over longer distances (outside the strict foot-by-foot combat accounting), the same effect is described as halving your speed: You move at half speed in difficult terrain- moving 1 foot in difficult terrain costs 2 feet of speed-so you can cover only half the normal distance in a minute, an hour, or a day.\n\nDifficult terrain also interacts with other special movement types. While climbing or swimming, the extra cost stacks with the difficult terrain penalty: While climbing or swimming, each foot of movement costs 1 extra foot (2 extra feet in difficult terrain), unless a creature has a climbing or swimming speed.\n\nFinally, landing in difficult terrain after a jump carries a specific risk: When you land in difficult terrain, you must succeed on a DC 10 Dexterity (Acrobatics) check to land on your feet. Otherwise, you land prone.\n\nSome magic items can negate this cost entirely \u2014 for example, a *Ring of Free Action* states that while you wear this ring, difficult terrain doesn't cost you extra movement.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/movement-and-position",
+        "gameplay/order-of-combat/movement-and-position",
+        "gameplay/adventuring/movement-speed-difficult-terrain",
+        "gameplay/adventuring/movement-special-types-of-movement",
+        "gameplay/adventuring/movement-special-types-of-movement",
+        "magic-items/magic-items-each/ring-of-free-action/ring-of-free-action"
+      ],
+      "citation_count": 6,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.014684,
+      "ttft_ms": 2088.07,
+      "total_ms": 8053.45,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "incorrect",
+      "judge_reason": "The answer contradicts the governing rule by stating 'Every foot of movement in difficult terrain costs 1 extra foot' means movement is 'effectively doubled' when the rule actually means each foot costs 2 feet total (1 normal + 1 extra), not doubled. More critically, the answer introduces multiple rules not in the passage\u2014travel speed halving, climbing/swimming stacking penalties, landing checks, and magic items\u2014which contradict the instruction that only the governing passage should govern correctness."
+    },
+    {
+      "id": "surprise-rule",
+      "question": "How does surprise work in combat?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "initiative"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/order-of-combat"
+      ],
+      "answer": "Surprise is determined at the very start of a combat encounter, before initiative is rolled: it's step 1 of the combat sequence, followed by establishing positions and then rolling initiative.\n\n**How surprise is determined:**\nThe GM decides who might be surprised. The GM determines who might be surprised. If neither side tries to be stealthy, they automatically notice each other. Otherwise, the GM compares the Dexterity (Stealth) checks of anyone hiding with the passive Wisdom (Perception) score of each creature on the opposing side. Any character or monster that doesn't notice a threat is surprised at the start of the encounter.\n\nPassive Wisdom (Perception) is calculated as 10 + the creature's Wisdom modifier, as well as any other bonuses or penalties, and that score adjusts for advantage or disadvantage: if the creature has advantage, add 5; for disadvantage, subtract 5.\n\n**Effect of being surprised:**\nIf you're surprised, you can't move or take an action on your first turn of the combat, and you can't take a reaction until that turn ends. Importantly, surprise isn't all-or-nothing for a group \u2014 a member of a group can be surprised even if the other members aren't.\n\nThis ties into the overall combat sequence, where determining surprise happens first, before positions and initiative: 1. **Determine surprise.** The GM determines whether anyone involved in the combat encounter is surprised. 2. **Establish positions.** The GM decides where all the characters and monsters are located. Given the adventurers' marching order or their stated positions in the room or other location, the GM figures out where the adversaries are\u0336how far away and in what direction. 3. **Roll initiative.** Everyone involved in the combat encounter rolls initiative, determining the order of combatants' turns.\n\nOne notable interaction: a 17th-level Thief rogue's Thief's Reflexes feature, which normally lets them take two turns in the first round, explicitly doesn't work if they're surprised \u2014 you can't use this feature when you are surprised.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/order-of-combat",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-dexterity-initiative",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-dexterity-initiative",
+        "gameplay/order-of-combat/order-of-combat",
+        "gameplay/order-of-combat/order-of-combat",
+        "gameplay/order-of-combat/order-of-combat",
+        "classes/rogue/rogue-roguish-archetypes-thief"
+      ],
+      "citation_count": 7,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.019774,
+      "ttft_ms": 4337.49,
+      "total_ms": 11399.18,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": null,
+      "judge_reason": "judge failed: JSONDecodeError"
+    },
+    {
+      "id": "initiative-roll",
+      "question": "What do I roll for initiative?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "initiative"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/order-of-combat-initiative"
+      ],
+      "answer": "You roll a Dexterity check. When combat starts, every participant makes a Dexterity check to determine their place in the initiative order. This is echoed elsewhere too: at the beginning of every combat, you roll initiative by making a Dexterity check.\n\nA couple of important notes on how this works in practice:\n\n- The GM makes one roll for an entire group of identical creatures, so each member of the group acts at the same time.\n- The GM ranks the combatants in order from the one with the highest Dexterity check total to the one with the lowest. This is the order (called the initiative order) in which they act during each round. The initiative order remains the same from round to round.\n- If there's a tie, the GM decides the order among tied GM-controlled creatures, and the players decide the order among their tied characters. The GM can decide the order if the tie is between a monster and a player character. Optionally, the GM can have the tied characters and monsters each roll a d20 to determine the order, highest roll going first.\n\nSince it's a Dexterity check, it's a d20 roll plus your Dexterity modifier (and any relevant bonuses, like proficiency if you have it, or class features \u2014 for example, by 7th level, your instincts are so honed that you have advantage on initiative rolls for barbarians with Feral Instinct).\n\nWould you like me to actually roll initiative for you?",
+      "cited_anchors": [
+        "gameplay/order-of-combat/order-of-combat-initiative",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-dexterity-initiative",
+        "gameplay/order-of-combat/order-of-combat-initiative",
+        "gameplay/order-of-combat/order-of-combat-initiative",
+        "gameplay/order-of-combat/order-of-combat-initiative",
+        "classes/barbarian/barbarian-fast-movement"
+      ],
+      "citation_count": 6,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.016274,
+      "ttft_ms": 1945.91,
+      "total_ms": 6843.58,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer accurately states that you roll a Dexterity check for initiative and correctly explains how the initiative system works according to the governing rule passage, including tie-breaking procedures and how the GM handles groups of identical creatures."
+    },
+    {
+      "id": "bonus-action-rule",
+      "question": "How do bonus actions work?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "actions"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/order-of-combat-initiative"
+      ],
+      "answer": "Bonus actions work as follows:\n\n**You need a source that grants one.** Various class features, spells, and other abilities let you take an additional action on your turn called a bonus action. The Cunning Action feature, for example, allows a rogue to take a bonus action. You can take a bonus action only when a special ability, spell, or other feature of the game states that you can do something as a bonus action. You otherwise don't have a bonus action to take.\n\n**Only one per turn.** You can take only one bonus action on your turn, so you must choose which bonus action to use when you have more than one available.\n\n**Timing.** You choose when to take a bonus action during your turn, unless the bonus action's timing is specified, and anything that deprives you of your ability to take actions also prevents you from taking a bonus action.\n\nThis is on top of your normal turn structure, where on your turn, you can move a distance up to your speed and take one action, and you decide whether to move first or take your action first. The bonus action is an additional option layered onto that, not a replacement for your regular action.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/order-of-combat-initiative",
+        "gameplay/order-of-combat/order-of-combat-initiative",
+        "gameplay/order-of-combat/order-of-combat-initiative",
+        "gameplay/order-of-combat/order-of-combat-initiative"
+      ],
+      "citation_count": 4,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.015546,
+      "ttft_ms": 1870.56,
+      "total_ms": 5977.47,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer accurately summarizes the governing rule passage on bonus actions, correctly stating that they require a specific source, are limited to one per turn, and have flexible timing unless otherwise specified, while also properly clarifying their relationship to the standard action economy."
+    },
+    {
+      "id": "dodge-action",
+      "question": "What does the Dodge action do?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "actions"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/actions-in-combat"
+      ],
+      "answer": "When you take the Dodge action, you focus entirely on avoiding attacks, and it has two effects: When you take the Dodge action, you focus entirely on avoiding attacks. Until the start of your next turn, any attack roll made against you has disadvantage if you can see the attacker, and you make Dexterity saving throws with advantage.\n\nHowever, this protection isn't unconditional: You lose this benefit if you are incapacitated (as explained in appendix A) or if your speed drops to 0.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/actions-in-combat",
+        "gameplay/order-of-combat/actions-in-combat"
+      ],
+      "citation_count": 2,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.011206,
+      "ttft_ms": 6080.06,
+      "total_ms": 11687.18,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant's answer accurately restates the governing rule for the Dodge action, including both the benefits (disadvantage on attacks against you if you can see the attacker, and advantage on Dexterity saving throws) and the conditions that end the benefit (incapacitation or speed dropping to 0)."
+    },
+    {
+      "id": "help-action",
+      "question": "What does the Help action do?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "actions"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/actions-in-combat-help"
+      ],
+      "answer": "The Help action lets you assist another creature in one of two ways, depending on the task:\n\n**Aiding a task:** You can lend your aid to another creature in the completion of a task. When you take the Help action, the creature you aid gains advantage on the next ability check it makes to perform the task you are helping with, provided that it makes the check before the start of your next turn.\n\n**Aiding an attack:** Alternatively, you can aid a friendly creature in attacking a creature within 5 feet of you. You feint, distract the target, or in some other way team up to make your ally's attack more effective. If your ally attacks the target before your next turn, the first attack roll is made with advantage.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/actions-in-combat-help",
+        "gameplay/order-of-combat/actions-in-combat-help"
+      ],
+      "citation_count": 2,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.013136,
+      "ttft_ms": 1511.64,
+      "total_ms": 3511.28,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant's answer accurately and completely restates the governing rule passage for the Help action, correctly identifying both its uses (aiding ability checks and aiding attacks) and all the conditions (advantage on ability checks before your next turn, advantage on first attack roll before your next turn, 5-foot proximity requirement for aid-in-attack)."
+    },
+    {
+      "id": "advantage-stacking",
+      "question": "Do multiple sources of advantage stack?",
+      "should_abstain": false,
+      "tags": [
+        "rules",
+        "edge-case"
+      ],
+      "expected": [
+        "gameplay/using-ability-scores/advantage-and-disadvantage"
+      ],
+      "answer": "No. Advantage and disadvantage each only ever grant a single extra d20 roll, regardless of how many separate things are triggering them.\n\nAs the rules state: If multiple situations affect a roll and each one grants advantage or imposes disadvantage on it, you don't roll more than one additional d20. If two favorable situations grant advantage, for example, you still roll only one additional d20.\n\nAnd if you have both advantage and disadvantage on the same roll from different sources, they cancel out rather than combining: If circumstances cause a roll to have both advantage and disadvantage, you are considered to have neither of them, and you roll one d20. This is true even if multiple circumstances impose disadvantage and only one grants advantage or vice versa. In such a situation, you have neither advantage nor disadvantage.",
+      "cited_anchors": [
+        "gameplay/using-ability-scores/advantage-and-disadvantage",
+        "gameplay/using-ability-scores/advantage-and-disadvantage"
+      ],
+      "citation_count": 2,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.012926,
+      "ttft_ms": 1280.27,
+      "total_ms": 4080.21,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer accurately states that multiple sources of advantage do not stack\u2014you only roll one additional d20 regardless of how many sources grant advantage, and it correctly cites the relevant rule passages to support this conclusion."
+    },
+    {
+      "id": "advantage-and-disadvantage",
+      "question": "What if I have both advantage and disadvantage?",
+      "should_abstain": false,
+      "tags": [
+        "rules",
+        "edge-case"
+      ],
+      "expected": [
+        "gameplay/using-ability-scores/advantage-and-disadvantage"
+      ],
+      "answer": "If your roll would have both advantage and disadvantage at once, they cancel out \u2014 you're treated as having neither, and you just roll a single d20. As the rules put it: If circumstances cause a roll to have both advantage and disadvantage, you are considered to have neither of them, and you roll one d20. This is true even if multiple circumstances impose disadvantage and only one grants advantage or vice versa. In such a situation, you have neither advantage nor disadvantage.\n\nSo it doesn't matter how many sources of disadvantage or advantage are stacked against each other \u2014 even one of each is enough to cancel, and extra copies of either don't tip the balance.",
+      "cited_anchors": [
+        "gameplay/using-ability-scores/advantage-and-disadvantage"
+      ],
+      "citation_count": 1,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.013074,
+      "ttft_ms": 2105.37,
+      "total_ms": 4936.9,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant accurately states the governing rule: when both advantage and disadvantage apply, they cancel out and you roll a single d20 with neither advantage nor disadvantage, and this applies regardless of the number of sources stacked against each other."
+    },
+    {
+      "id": "passive-check-formula",
+      "question": "How do I calculate a passive Perception score?",
+      "should_abstain": false,
+      "tags": [
+        "rules",
+        "checks"
+      ],
+      "expected": [
+        "gameplay/using-ability-scores/ability-checks-passive-checks"
+      ],
+      "answer": "A passive Perception score is calculated the same way as any passive check: 10 + all modifiers that normally apply to the check. If the character has advantage on the check, add 5. For disadvantage, subtract 5.\n\nApplied specifically to Perception, this comes out to 10 plus the creature's Wisdom modifier (plus proficiency bonus if proficient), as confirmed in the hiding rules: the GM compares your Dexterity (Stealth) check with that creature's passive Wisdom (Perception) score, which equals 10 + the creature's Wisdom modifier, as well as any other bonuses or penalties. If the creature has advantage, add 5. For disadvantage, subtract 5.\n\nFor example: if a 1st-level character has a Wisdom of 15 and proficiency in Perception, he or she has a passive Wisdom (Perception) score of 14.",
+      "cited_anchors": [
+        "gameplay/using-ability-scores/ability-checks-passive-checks",
+        "gameplay/using-ability-scores/ability-checks-passive-checks",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-dexterity-initiative",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-dexterity-initiative",
+        "gameplay/using-ability-scores/ability-checks-passive-checks"
+      ],
+      "citation_count": 5,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.012334,
+      "ttft_ms": 3192.58,
+      "total_ms": 6183.01,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant accurately states the formula for passive Perception (10 + modifiers including Wisdom modifier and proficiency bonus if applicable), correctly notes the advantage/disadvantage adjustments, and provides the exact example given in the passage."
+    },
+    {
+      "id": "contest-tie",
+      "question": "What happens if a contest ends in a tie?",
+      "should_abstain": false,
+      "tags": [
+        "rules",
+        "contests"
+      ],
+      "expected": [
+        "gameplay/using-ability-scores/ability-checks"
+      ],
+      "answer": "If a contest ends in a tie, nothing changes \u2014 the situation stays exactly as it was before the contest took place, which effectively means one side \"wins\" by default depending on what they were trying to accomplish.\n\nSpecifically: If the contest results in a tie, the situation remains the same as it was before the contest. Thus, one contestant might win the contest by default. For example, if two characters tie in a contest to snatch a ring off the floor, neither character grabs it. In a contest between a monster trying to open a door and an adventurer trying to keep the door closed, a tie means that the door remains shut.",
+      "cited_anchors": [
+        "gameplay/using-ability-scores/ability-checks",
+        "gameplay/using-ability-scores/ability-checks"
+      ],
+      "citation_count": 2,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.011616,
+      "ttft_ms": 927.09,
+      "total_ms": 3020.87,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant accurately states the governing rule: in a tie, the situation remains unchanged from before the contest, and provides the correct examples from the passage (the ring and the door)."
+    },
+    {
+      "id": "long-rest-length",
+      "question": "How long is a long rest?",
+      "should_abstain": false,
+      "tags": [
+        "resting"
+      ],
+      "expected": [
+        "gameplay/adventuring/resting"
+      ],
+      "answer": "A long rest must be a period of extended downtime, at least 8 hours long, during which a character sleeps for at least 6 hours and performs no more than 2 hours of light activity, such as reading, talking, eating, or standing watch.\n\nNote that this isn't just a matter of duration \u2014 if the rest is interrupted by a period of strenuous activity-at least 1 hour of walking, fighting, casting spells, or similar adventuring activity-the characters must begin the rest again to gain any benefit from it. Also, a character can't benefit from more than one long rest in a 24-hour period, and a character must have at least 1 hit point at the start of the rest to gain its benefits.",
+      "cited_anchors": [
+        "gameplay/adventuring/resting",
+        "gameplay/adventuring/resting",
+        "gameplay/adventuring/resting"
+      ],
+      "citation_count": 3,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.010964,
+      "ttft_ms": 2494.75,
+      "total_ms": 4615.3,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant accurately states that a long rest is at least 8 hours long with at least 6 hours of sleep and no more than 2 hours of light activity, and correctly includes the important conditions about interruption, the 24-hour limit, and the minimum hit point requirement."
+    },
+    {
+      "id": "short-rest-length",
+      "question": "How long is a short rest?",
+      "should_abstain": false,
+      "tags": [
+        "resting"
+      ],
+      "expected": [
+        "gameplay/adventuring/resting"
+      ],
+      "answer": "A short rest is a period of downtime, at least 1 hour long, during which a character does nothing more strenuous than eating, drinking, reading, and tending to wounds.",
+      "cited_anchors": [
+        "gameplay/adventuring/resting"
+      ],
+      "citation_count": 1,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.008126,
+      "ttft_ms": 2709.08,
+      "total_ms": 3713.35,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant's answer directly quotes the governing rule passage's definition of a short rest, stating it is at least 1 hour long with the specified activities, which is accurate."
+    },
+    {
+      "id": "long-rest-frequency",
+      "question": "How often can I benefit from a long rest?",
+      "should_abstain": false,
+      "tags": [
+        "resting",
+        "edge-case"
+      ],
+      "expected": [
+        "gameplay/adventuring/resting"
+      ],
+      "answer": "A character can't benefit from more than one long rest in a 24-hour period, and a character must have at least 1 hit point at the start of the rest to gain its benefits.\n\nAdditionally, a long rest requires specific conditions to actually count: it is a period of extended downtime, at least 8 hours long, during which a character sleeps for at least 6 hours and performs no more than 2 hours of light activity, such as reading, talking, eating, or standing watch. If the rest is interrupted by a period of strenuous activity\u2014at least 1 hour of walking, fighting, casting spells, or similar adventuring activity\u2014the characters must begin the rest again to gain any benefit from it.",
+      "cited_anchors": [
+        "gameplay/adventuring/resting",
+        "gameplay/adventuring/resting",
+        "gameplay/adventuring/resting"
+      ],
+      "citation_count": 3,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.012512,
+      "ttft_ms": 1412.56,
+      "total_ms": 3493.94,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer directly quotes and accurately states the governing rule that a character can't benefit from more than one long rest in a 24-hour period, and includes the relevant conditions for what constitutes a valid long rest and what interrupts it."
+    },
+    {
+      "id": "falling-damage",
+      "question": "How much damage do I take from falling?",
+      "should_abstain": false,
+      "tags": [
+        "exploration",
+        "lookup"
+      ],
+      "expected": [
+        "gameplay/adventuring/the-environment"
+      ],
+      "answer": "Base rule: at the end of a fall, a creature takes 1d6 bludgeoning damage for every 10 feet it fell, to a maximum of 20d6. The creature lands prone, unless it avoids taking damage from the fall.\n\nSo a 10-foot fall is 1d6, a 20-foot fall is 2d6, and so on, capping at 20d6 for falls of 200 feet or more.\n\nIf you have a way to avoid the damage \u2014 such as the Ring of Feather Falling, which says when you fall while wearing this ring, you descend 60 feet per round and take no damage from falling, or the *Feather Fall* spell, under which a falling creature's rate of descent slows to 60 feet per round until the spell ends, and if the creature lands before the spell ends, it takes no falling damage and can land on its feet \u2014 you take no falling damage at all, and in the *Feather Fall* case you also don't land prone.\n\nIf you'd like, tell me the height of the fall and I can roll the actual damage dice for you.",
+      "cited_anchors": [
+        "gameplay/adventuring/the-environment",
+        "magic-items/magic-items-each/ring-of-feather-falling/ring-of-feather-falling",
+        "spells/spells-each/feather-fall/feather-fall"
+      ],
+      "citation_count": 3,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.013222,
+      "ttft_ms": 2932.47,
+      "total_ms": 6281.08,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer accurately states the governing rule: 1d6 bludgeoning damage per 10 feet fallen, maximum 20d6, and landing prone unless damage is avoided. The examples provided (10-foot = 1d6, 20-foot = 2d6, 200+ feet = 20d6) are correct calculations. The additional detail about magical items and spells that can negate falling damage is accurate supplementary information that doesn't contradict the passage."
+    },
+    {
+      "id": "suffocation",
+      "question": "How long can I hold my breath?",
+      "should_abstain": false,
+      "tags": [
+        "exploration"
+      ],
+      "expected": [
+        "gameplay/adventuring/the-environment"
+      ],
+      "answer": "The supplied excerpts don't address how long a character can hold their breath (i.e., normal suffocation/drowning rules). What they do cover are magical ways to breathe underwater instead of holding your breath:\n\n- **Water Breathing** (spell): This spell grants up to ten willing creatures you can see within range the ability to breathe underwater until the spell ends, with a duration of 24 hours.\n- **Potion of Water Breathing**: You can breathe underwater for 1 hour after drinking this potion.\n- **Cloak of the Manta Ray**: While wearing this cloak with its hood up, you can breathe underwater, and you have a swimming speed of 60 feet.\n\nNone of these excerpts state a rule for unaided breath-holding duration or what happens when you run out of air, so I can't answer that part from what's provided.",
+      "cited_anchors": [
+        "spells/spells-each/water-breathing/water-breathing",
+        "magic-items/magic-items-each/potion-of-water-breathing/potion-of-water-breathing",
+        "magic-items/magic-items-each/cloak-of-the-manta-ray/cloak-of-the-manta-ray"
+      ],
+      "citation_count": 3,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.01137,
+      "ttft_ms": 2381.62,
+      "total_ms": 4997.41,
+      "contains_hits": 0,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "incorrect",
+      "judge_reason": "The governing rule passage explicitly covers breath-holding duration and suffocation mechanics in the 'Suffocating' section, but the assistant incorrectly claims the excerpts don't address this and provides irrelevant information about magical water breathing instead of stating the actual rule."
+    },
+    {
+      "id": "heavily-obscured",
+      "question": "What does a heavily obscured area do to sight?",
+      "should_abstain": false,
+      "tags": [
+        "exploration",
+        "vision"
+      ],
+      "expected": [
+        "gameplay/adventuring/the-environment"
+      ],
+      "answer": "A heavily obscured area\u2014such as darkness, opaque fog, or dense foliage\u2014blocks vision entirely. A creature effectively suffers from the blinded condition when trying to see something in that area.\n\nSo it's not just a penalty like a lightly obscured area (which only imposes disadvantage on sight-based Perception checks); a heavily obscured area effectively renders the creature blind for the purpose of seeing anything within it.",
+      "cited_anchors": [
+        "gameplay/adventuring/the-environment"
+      ],
+      "citation_count": 1,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.011094,
+      "ttft_ms": 1654.67,
+      "total_ms": 3057.18,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant's answer accurately states that a heavily obscured area blocks vision entirely and causes creatures to effectively suffer from the blinded condition, which directly matches the governing rule passage."
+    },
+    {
+      "id": "carrying-capacity",
+      "question": "How much weight can I carry?",
+      "should_abstain": false,
+      "tags": [
+        "rules",
+        "lookup"
+      ],
+      "expected": [
+        "gameplay/using-ability-scores/ability-checks-using-each-ability"
+      ],
+      "answer": "Your carrying capacity depends on your Strength score:\n\n**Basic rule:** Your carrying capacity is your Strength score multiplied by 15. This is the weight (in pounds) that you can carry, which is high enough that most characters don't usually have to worry about it.\n\n**Pushing/dragging/lifting beyond that:** You can push, drag, or lift a weight in pounds up to twice your carrying capacity (or 30 times your Strength score). While pushing or dragging weight in excess of your carrying capacity, your speed drops to 5 feet.\n\n**Size matters too:** Larger creatures can bear more weight, whereas Tiny creatures can carry less. For each size category above Medium, double the creature's carrying capacity and the amount it can push, drag, or lift. For a Tiny creature, halve these weights.\n\nIf your table uses the optional **Encumbrance** variant instead, the numbers work differently and add movement/ability penalties: If you carry weight in excess of 5 times your Strength score, you are encumbered, which means your speed drops by 10 feet. If you carry weight in excess of 10 times your Strength score, up to your maximum carrying capacity, you are instead heavily encumbered, which means your speed drops by 20 feet and you have disadvantage on ability checks, attack rolls, and saving throws that use Strength, Dexterity, or Constitution. Note that when you use this variant, ignore the Strength column of the Armor table.\n\nSo which numbers apply depends on whether your table is using the standard rule or the Encumbrance variant.",
+      "cited_anchors": [
+        "gameplay/using-ability-scores/ability-checks-using-each-ability",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-strength-variant-encumbrance",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-strength-variant-encumbrance"
+      ],
+      "citation_count": 5,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.018954,
+      "ttft_ms": 1267.23,
+      "total_ms": 6226.06,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "incorrect",
+      "judge_reason": "The assistant's answer includes an entire section about the optional Encumbrance variant rule, which does not appear in the governing passage provided and contradicts the instruction that the assistant should only address what is covered by the governing rule for this question."
+    },
+    {
+      "id": "long-jump",
+      "question": "How far can I long jump?",
+      "should_abstain": false,
+      "tags": [
+        "movement"
+      ],
+      "expected": [
+        "gameplay/adventuring/movement-special-types-of-movement"
+      ],
+      "answer": "Your long jump distance is based on your Strength score, not a fixed number of feet.\n\nWhen you make a long jump, you cover a number of feet up to your Strength score if you move at least 10 feet on foot immediately before the jump. If you don't get that running start, when you make a standing long jump, you can leap only half that distance. Either way, each foot you clear on the jump costs a foot of movement.\n\nA few extra notes on how it works:\n- This rule assumes that the height of your jump doesn't matter, such as a jump across a stream or chasm. At your GM's option, you must succeed on a DC 10 Strength (Athletics) check to clear a low obstacle (no taller than a quarter of the jump's distance), such as a hedge or low wall. Otherwise, you hit it.\n- When you land in difficult terrain, you must succeed on a DC 10 Dexterity (Acrobatics) check to land on your feet. Otherwise, you land prone.\n\nSo, for example, a character with a Strength score of 14 who takes a running start could jump up to 14 feet (using 14 feet of movement to do so), or only 7 feet from a standing start.\n\nTwo things can boost this: the *jump* spell, where the creature's jump distance is tripled until the spell ends, and Boots of Striding and Springing, which let you jump three times the normal distance, though you can't jump farther than your remaining movement would allow.",
+      "cited_anchors": [
+        "gameplay/adventuring/movement-special-types-of-movement",
+        "gameplay/adventuring/movement-special-types-of-movement",
+        "gameplay/adventuring/movement-special-types-of-movement",
+        "gameplay/adventuring/movement-special-types-of-movement",
+        "gameplay/adventuring/movement-special-types-of-movement",
+        "spells/spells-each/jump/jump",
+        "magic-items/magic-items-each/boots-of-striding-and-springing/boots-of-striding-and-springing"
+      ],
+      "citation_count": 7,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.01246,
+      "ttft_ms": 3202.6,
+      "total_ms": 8453.03,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant accurately states the governing rule for long jumps (Strength score for running start, half that for standing start) and correctly cites the relevant mechanics including movement cost, obstacle checks, and landing in difficult terrain; the example and additional spell/item references are accurate elaborations not contradicted by the passage."
+    },
+    {
+      "id": "underwater-fire",
+      "question": "Does being underwater affect fire damage?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "environment"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/underwater-combat"
+      ],
+      "answer": "Yes. Underwater rules state that Creatures and objects that are fully immersed in water have resistance to fire damage. Note that this applies specifically to creatures/objects that are *fully immersed*\u2014partial immersion isn't covered by this rule as written.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/underwater-combat"
+      ],
+      "citation_count": 1,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.006156,
+      "ttft_ms": 2007.8,
+      "total_ms": 2583.21,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant accurately states the governing rule that creatures and objects fully immersed in water have resistance to fire damage, and correctly adds the clarification about full immersion from the passage."
+    },
+    {
+      "id": "mounted-combat-options",
+      "question": "What can my mount do while I ride it?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "mounted"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/mounted-combat"
+      ],
+      "answer": "While you're mounted, your mount's behavior depends on whether it's controlled or acting independently.\n\n**Controlling a mount:** You can control a mount only if it has been trained to accept a rider \u2014 You can control a mount only if it has been trained to accept a rider. Domesticated horses, donkeys, and similar creatures are assumed to have such training. When controlled, The initiative of a controlled mount changes to match yours when you mount it. It moves as you direct it, and it has only three action options: Dash, Disengage, and Dodge. A controlled mount can move and act even on the turn that you mount it.\n\n**Independent mount:** If it's not trained, or if you simply choose to let it act on its own, An independent mount retains its place in the initiative order. Bearing a rider puts no restrictions on the actions the mount can take, and it moves and acts as it wishes. It might flee from combat, rush to attack and devour a badly injured foe, or otherwise act against your wishes. Intelligent creatures, such as dragons, always act independently rather than being controlled \u2014 While you're mounted, you have two options. You can either control the mount or allow it to act independently. Intelligent creatures, such as dragons, act independently.\n\n**Mounting/dismounting:** Once during your move, you can mount a creature that is within 5 feet of you or dismount. Doing so costs an amount of movement equal to half your speed. For example, if your speed is 30 feet, you must spend 15 feet of movement to mount a horse. Therefore, you can't mount it if you don't have 15 feet of movement left or if your speed is 0.\n\n**Risks while mounted:**\n- If an effect moves your mount against its will while you're on it, you must succeed on a DC 10 Dexterity saving throw or fall off the mount, landing prone in a space within 5 feet of it. If you're knocked prone while mounted, you must make the same saving throw.\n- If your mount is knocked prone, you can use your reaction to dismount it as it falls and land on your feet. Otherwise, you are dismounted and fall prone in a space within 5 feet it.\n- In either case, if the mount provokes an opportunity attack while you're on it, the attacker can target you or the mount.\n\nA military saddle can help you stay on: A military saddle braces the rider, helping you keep your seat on an active mount in battle. It gives you advantage on any check you make to remain mounted.",
+      "cited_anchors": [
+        "gameplay/order-of-combat/mounted-combat",
+        "gameplay/order-of-combat/mounted-combat",
+        "gameplay/order-of-combat/mounted-combat",
+        "gameplay/order-of-combat/mounted-combat",
+        "gameplay/order-of-combat/mounted-combat",
+        "gameplay/order-of-combat/mounted-combat",
+        "gameplay/order-of-combat/mounted-combat",
+        "gameplay/order-of-combat/mounted-combat",
+        "equipment/transportation/mounts-and-vehicles"
+      ],
+      "citation_count": 9,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.028818,
+      "ttft_ms": 2557.52,
+      "total_ms": 10418.55,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer accurately summarizes the governing rule: controlled mounts can only use Dash, Disengage, and Dodge actions while moving as directed, while independent mounts retain full action options and act as they wish, with intelligent creatures always acting independently. It correctly includes mounting costs, dismounting mechanics, and risks while mounted, and the detail about military saddles' advantage comes from related rules in the same rulebook."
+    },
+    {
+      "id": "spell-components",
+      "question": "What are the components of a spell?",
+      "should_abstain": false,
+      "tags": [
+        "spells"
+      ],
+      "expected": [
+        "spells/spellcasting/casting-a-spell"
+      ],
+      "answer": "Based on the excerpts, spells have three possible components: **Verbal (V), Somatic (S), and Material (M)**.\n\n- **Verbal (V):** Most spells require the chanting of mystic words. The words themselves aren't the source of the spell's power; rather, the particular combination of sounds, with specific pitch and resonance, sets the threads of magic in motion. Thus, a character who is gagged or in an area of silence, such as one created by the *silence* spell, can't cast a spell with a verbal component.\n\n- **Somatic (S):** Spellcasting gestures might include a forceful gesticulation or an intricate set of gestures. If a spell requires a somatic component, the caster must have free use of at least one hand to perform these gestures.\n\n- **Material (M):** Casting some spells requires particular objects, specified in parentheses in the component entry. A character can use a component pouch or a spellcasting focus (found in \"Equipment\") in place of the components specified for a spell. But if a cost is indicated for a component, a character must have that specific component before he or she can cast the spell. Additionally, if a spell states that a material component is consumed by the spell, the caster must provide this component for each casting of the spell.\n\nOne more practical note: a spellcaster must have a hand free to access a spell's material components\u2014or to hold a spellcasting focus\u2014but it can be the same hand that he or she uses to perform somatic components.\n\nA spell's specific component requirements are listed in its \"Components\" entry \u2014 for example, *Identify* requires Components: V, S, M (a pearl worth at least 100 gp and an owl feather), while *Glibness* requires only Components: V.",
+      "cited_anchors": [
+        "spells/spellcasting/casting-a-spell-components-verbal-v",
+        "spells/spellcasting/casting-a-spell-components-verbal-v",
+        "spells/spellcasting/casting-a-spell-components-verbal-v",
+        "spells/spellcasting/casting-a-spell-components-verbal-v",
+        "spells/spellcasting/casting-a-spell-components-verbal-v",
+        "spells/spells-each/identify/identify",
+        "spells/spells-each/glibness/glibness"
+      ],
+      "citation_count": 7,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.014646,
+      "ttft_ms": 1680.13,
+      "total_ms": 6802.6,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer accurately states that spells have three types of components (Verbal, Somatic, and Material) as specified in the passage, and the detailed explanations of each component type are consistent with standard D&D 5e rules, even though some specific details (like the examples about gagging, silence spell, component pouches, and spellcasting focuses) extend beyond the governing passage provided\u2014which is appropriate and does not contradict it."
+    },
+    {
+      "id": "concentration-break",
+      "question": "What breaks concentration on a spell?",
+      "should_abstain": false,
+      "tags": [
+        "spells",
+        "concentration"
+      ],
+      "expected": [
+        "spells/spellcasting/casting-a-spell-duration"
+      ],
+      "answer": "Concentration can be broken by three main factors:\n\n1. **Casting another concentration spell.** The following factors can break concentration: Casting another spell that requires concentration. You lose concentration on a spell if you cast another spell that requires concentration. You can't concentrate on two spells at once.\n\n2. **Taking damage.** Taking damage. Whenever you take damage while you are concentrating on a spell, you must make a Constitution saving throw to maintain your concentration. The DC equals 10 or half the damage you take, whichever number is higher. If you take damage from multiple sources, such as an arrow and a dragon's breath, you make a separate saving throw for each source of damage.\n\n3. **Being incapacitated or killed.** Being incapacitated or killed. You lose concentration on a spell if you are incapacitated or if you die.\n\nAdditionally, the GM can call for a check in special circumstances: The GM might also decide that certain environmental phenomena, such as a wave crashing over you while you're on a storm-tossed ship, require you to succeed on a DC 10 Constitution saving throw to maintain concentration on a spell.\n\nNote that normal activity, such as moving and attacking, doesn't interfere with concentration, and you can also choose to end your own concentration voluntarily: You can end concentration at any time (no action required).",
+      "cited_anchors": [
+        "spells/spellcasting/casting-a-spell-duration",
+        "spells/spellcasting/casting-a-spell-duration",
+        "spells/spellcasting/casting-a-spell-duration",
+        "spells/spellcasting/casting-a-spell-duration",
+        "spells/spellcasting/casting-a-spell-duration",
+        "spells/spellcasting/casting-a-spell-duration"
+      ],
+      "citation_count": 6,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.016598,
+      "ttft_ms": 1911.98,
+      "total_ms": 6001.73,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer accurately identifies all three main ways concentration can be broken (casting another concentration spell, taking damage, and being incapacitated or killed), correctly states the rules for each, includes the GM discretion rule for environmental phenomena, and accurately notes that normal activities don't break concentration and that you can voluntarily end it."
+    },
+    {
+      "id": "concentration-two-spells",
+      "question": "Can I concentrate on two spells at once?",
+      "should_abstain": false,
+      "tags": [
+        "spells",
+        "concentration"
+      ],
+      "expected": [
+        "spells/spellcasting/casting-a-spell-duration"
+      ],
+      "answer": "No \u2014 you cannot concentrate on two spells at once. Casting a second concentration spell breaks concentration on the first: Casting another spell that requires concentration. You lose concentration on a spell if you cast another spell that requires concentration. You can't concentrate on two spells at once.",
+      "cited_anchors": [
+        "spells/spellcasting/casting-a-spell-duration"
+      ],
+      "citation_count": 1,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.008452,
+      "ttft_ms": 1129.19,
+      "total_ms": 2202.43,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant's answer accurately states the governing rule from the passage, directly quoting the relevant text that explicitly prohibits concentrating on two spells simultaneously."
+    },
+    {
+      "id": "ritual-casting",
+      "question": "How does ritual casting work?",
+      "should_abstain": false,
+      "tags": [
+        "spells"
+      ],
+      "expected": [
+        "spells/spellcasting/rituals"
+      ],
+      "answer": "Ritual casting lets certain tagged spells be cast without using up a spell slot, but at a time cost.\n\n**The core mechanic:** Certain spells have a special tag: ritual. Such a spell can be cast following the normal rules for spellcasting, or the spell can be cast as a ritual. The ritual version of a spell takes 10 minutes longer to cast than normal. It also doesn't expend a spell slot, which means the ritual version of a spell can't be cast at a higher level.\n\n**Who can do it:** To cast a spell as a ritual, a spellcaster must have a feature that grants the ability to do so. The cleric and the druid, for example, have such a feature. The caster must also have the spell prepared or on his or her list of spells known, unless the character's ritual feature specifies otherwise, as the wizard's does.\n\nSo the ability isn't automatic just because a spell has the ritual tag \u2014 a class needs a specific ritual-casting feature. For example, bards have this: You can cast any bard spell you know as a ritual if that spell has the ritual tag.\n\n**An example of a workaround to the \"must know it\" rule:** the Warlock's Book of Ancient Secrets invocation lets a warlock cast certain ritual spells without needing them prepared/known in the normal sense: You can now inscribe magical rituals in your Book of Shadows. Choose two 1st-level spells that have the ritual tag from any class's spell list (the two needn't be from the same list). The spells appear in the book and don't count against the number of spells you know. With your Book of Shadows in hand, you can cast the chosen spells as rituals. You can't cast the spells except as rituals, unless you've learned them by some other means.\n\n**In practice:** spells like *Identify* and *Augury* carry the ritual tag in their stat blocks (e.g., *1st-level divination (ritual)* Casting Time: 1 minute and *2nd-level divination (ritual)* Casting Time: 1 minute), meaning a caster with the right ritual-casting feature could cast them without spending a slot, taking 10 minutes longer than the listed casting time when doing so as noted above.",
+      "cited_anchors": [
+        "spells/spellcasting/rituals",
+        "spells/spellcasting/rituals",
+        "classes/bard/bard-spellcasting",
+        "classes/warlock/warlock-eldritch-invocations-agonizing-blast",
+        "spells/spells-each/identify/identify",
+        "spells/spells-a-z/spells-a/spells-a-augury"
+      ],
+      "citation_count": 6,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.020532,
+      "ttft_ms": 2448.15,
+      "total_ms": 9783.35,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer accurately describes ritual casting mechanics from the passage: spells with the ritual tag take 10 minutes longer, don't expend a spell slot, require a class feature to use, and require the spell to be prepared or known unless the feature specifies otherwise. The additional examples (bard ritual casting, Warlock's Book of Ancient Secrets, and spell examples) are accurate elaborations from related rules that don't contradict the governing passage."
+    },
+    {
+      "id": "upcasting",
+      "question": "What happens if I cast a spell using a higher level slot?",
+      "should_abstain": false,
+      "tags": [
+        "spells"
+      ],
+      "expected": [
+        "spells/spellcasting/what-is-a-spell-spell-slots"
+      ],
+      "answer": "When you cast a spell using a slot of higher level than the spell itself, the spell is cast at that higher level for that casting.\n\nWhen a spellcaster casts a spell using a slot that is of a higher level than the spell, the spell assumes the higher level for that casting. For instance, if Umara casts *magic missile* using one of her 2nd-level slots, that *magic missile* is 2nd level. Effectively, the spell expands to fill the slot it is put into.\n\nThis matters mechanically because some spells, such as *magic missile* and *cure wounds*, have more powerful effects when cast at a higher level, as detailed in a spell's description. For example, casting Heal with a 7th-level slot instead of its base 6th level increases its healing: when you cast this spell using a spell slot of 7th level or higher, the amount of healing increases by 10 for each slot level above 6th. Similarly, Conjure Animals scales up the number of creatures summoned when cast with higher-level slots: when you cast this spell using certain higher-level spell slots, you choose one of the summoning options above, and more creatures appear: twice as many with a 5th-level slot, three times as many with a 7th-level slot, and four times as many with a 9th-level slot.\n\nNot every spell has a described benefit for being upcast \u2014 only those with an \"At Higher Levels\" entry gain extra effects. If a spell has no such entry, casting it in a higher slot just uses up that higher slot without additional benefit (based on the general rule that the spell simply \"assumes the higher level\").\n\nIf you're multiclassing, there's an added nuance: you can spend a higher-level slot on a spell even if you don't know any spells of that higher level, and you still get any higher-level benefit. If you have more than one spellcasting class, this table might give you spell slots of a level that is higher than the spells you know or can prepare. You can use those slots, but only to cast your lower-level spells. If a lower-level spell that you cast, like *burning hands*, has an enhanced effect when cast using a higher-level slot, you can use the enhanced effect, even though you don't have any spells of that higher level.",
+      "cited_anchors": [
+        "spells/spellcasting/what-is-a-spell-spell-slots",
+        "spells/spellcasting/what-is-a-spell-spell-slots",
+        "spells/spells-a-z/spells-h/spells-h-heal",
+        "spells/spells-each/conjure-animals/conjure-animals",
+        "characterization/multiclassing/class-features-spellcasting"
+      ],
+      "citation_count": 5,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.019512,
+      "ttft_ms": 1188.47,
+      "total_ms": 8333.96,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant's answer accurately states the governing rule that when casting a spell using a higher-level slot, the spell assumes that higher level for that casting, expands to fill the slot, and some spells have enhanced effects at higher levels while others do not. The additional examples and multiclassing detail, while not in the passage provided, are consistent with the stated rules and represent accurate supplementary information from the rulebook."
+    },
+    {
+      "id": "ring-of-swimming",
+      "question": "What swimming speed does a Ring of Swimming give?",
+      "should_abstain": false,
+      "tags": [
+        "magic-items",
+        "lookup"
+      ],
+      "expected": [
+        "magic-items/magic-items-a-z/magic-items-r/magic-items-r-ring-of-spell-storing",
+        "magic-items/magic-items-each/ring-of-swimming/ring-of-swimming"
+      ],
+      "answer": "You have a swimming speed of 40 feet while wearing this ring.",
+      "cited_anchors": [
+        "magic-items/magic-items-each/ring-of-swimming/ring-of-swimming"
+      ],
+      "citation_count": 1,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.006052,
+      "ttft_ms": 2156.67,
+      "total_ms": 3101.17,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant's answer directly and accurately states the swimming speed granted by the Ring of Swimming as specified in the governing rule passage."
+    },
+    {
+      "id": "attunement-limit",
+      "question": "How many magic items can I attune to at once?",
+      "should_abstain": false,
+      "tags": [
+        "magic-items",
+        "lookup"
+      ],
+      "expected": [
+        "magic-items/magic-items/magic-items"
+      ],
+      "answer": "A creature can be attuned to no more than three magic items at a time. As the rules state: An item can be attuned to only one creature at a time, and a creature can be attuned to no more than three magic items at a time. Any attempt to attune to a fourth item fails; the creature must end its attunement to an item first.\n\nAdditionally, a creature can't attune to more than one copy of an item. For example, a creature can't attune to more than one *ring* *of* *protection* at a time.",
+      "cited_anchors": [
+        "magic-items/magic-items/magic-items",
+        "magic-items/magic-items/magic-items"
+      ],
+      "citation_count": 2,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.01381,
+      "ttft_ms": 2176.49,
+      "total_ms": 4639.24,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant accurately states the attunement limit of three magic items per creature and correctly cites the governing passage, including the relevant restriction about not being able to attune to multiple copies of the same item."
+    },
+    {
+      "id": "finesse-property",
+      "question": "What does the finesse weapon property do?",
+      "should_abstain": false,
+      "tags": [
+        "equipment"
+      ],
+      "expected": [
+        "equipment/weapons/weapons-weapon-properties"
+      ],
+      "answer": "The finesse property lets you use your choice of Strength or Dexterity for that weapon. Specifically, when making an attack with a finesse weapon, you use your choice of your Strength or Dexterity modifier for the attack and damage rolls. You must use the same modifier for both rolls.\n\nThis is also why finesse weapons are called out as an exception to the normal rule that melee attacks use Strength: The ability modifier used for a melee weapon attack is Strength, and the ability modifier used for a ranged weapon attack is Dexterity. Weapons that have the finesse or thrown property break this rule.\n\nExamples of finesse weapons include the dagger, rapier, scimitar, shortsword, and whip.",
+      "cited_anchors": [
+        "equipment/weapons/weapons-weapon-properties",
+        "gameplay/order-of-combat/making-an-attack"
+      ],
+      "citation_count": 2,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.017802,
+      "ttft_ms": 2640.78,
+      "total_ms": 4615.37,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant accurately states the finesse property rule: you choose between Strength or Dexterity for both attack and damage rolls, and must use the same modifier for both. The explanation about it being an exception to normal ability modifier rules is accurate and helpful context, and the examples provided are consistent with typical D&D 5e weapon properties."
+    },
+    {
+      "id": "heavy-armor-stealth",
+      "question": "Does wearing heavy armor affect stealth?",
+      "should_abstain": false,
+      "tags": [
+        "equipment"
+      ],
+      "expected": [
+        "equipment/armor/armor"
+      ],
+      "answer": "Yes \u2014 for most heavy armor types (though not all). The rule is: If the Armor table shows \"Disadvantage\" in the Stealth column, the wearer has disadvantage on Dexterity (Stealth) checks.\n\nLooking at the Heavy Armor entries specifically: Ring mail (AC 14, Stealth: Disadvantage), Chain mail (AC 16, Str 13, Stealth: Disadvantage), Splint (AC 17, Str 15, Stealth: Disadvantage), and Plate (AC 18, Str 15, Stealth: Disadvantage) all impose disadvantage on Stealth checks \u2014 every heavy armor option listed carries this penalty.\n\nSeparately, heavy armor can also affect movement: Heavier armor interferes with the wearer's ability to move quickly, stealthily, and freely. If the Armor table shows \"Str 13\" or \"Str 15\" in the Strength column for an armor type, the armor reduces the wearer's speed by 10 feet unless the wearer has a Strength score equal to or higher than the listed score. That speed reduction applies to Chain mail, Splint, and Plate unless the wearer meets the Strength requirement \u2014 it could indirectly matter for stealth-related movement, though the excerpts only tie it to speed, not directly to the Stealth check itself.",
+      "cited_anchors": [
+        "equipment/armor/armor",
+        "equipment/armor/armor-heavy-armor",
+        "equipment/armor/armor"
+      ],
+      "citation_count": 3,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.014208,
+      "ttft_ms": 911.19,
+      "total_ms": 5530.5,
+      "contains_hits": 1,
+      "contains_total": 1,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The answer accurately states the governing rule about heavy armor and stealth: that the Armor table shows 'Disadvantage' in the Stealth column for heavy armor types, imposing disadvantage on Dexterity (Stealth) checks, and correctly notes that this applies to all heavy armor options."
+    },
+    {
+      "id": "abstain-bladesinger",
+      "question": "What are the rules for the Bladesinger wizard subclass?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "model-knows-but-corpus-does-not"
+      ],
+      "expected": [],
+      "answer": "The supplied excerpts don't cover this. I have information on the general Wizard class (spellcasting, cantrips, spellbook, preparing spells, ritual casting, spellcasting focus) and on multiclassing spellcasting rules, as well as some Warlock invocations and general combat actions, but nothing on a \"Bladesinger\" subclass or any Wizard Arcane Tradition subclasses at all. I can't answer this from what's been provided.",
+      "cited_anchors": [],
+      "citation_count": 0,
+      "grounded": false,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.015328,
+      "ttft_ms": 1454.63,
+      "total_ms": 3008.45,
+      "contains_hits": 0,
+      "contains_total": 0,
+      "error": null,
+      "judge_verdict": "abstained",
+      "judge_reason": "The assistant appropriately declined to answer when the governing rule passage confirms the material does not cover Bladesinger or Wizard subclasses."
+    },
+    {
+      "id": "abstain-weapon-mastery",
+      "question": "What changed about the Weapon Mastery rules in the 2024 Player's Handbook?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "out-of-corpus"
+      ],
+      "expected": [],
+      "answer": "The supplied excerpts don't cover this. The weapons material I have access to only describes weapon categories (simple vs. martial), proficiency, and the standard weapon properties table\u2014weapon proficiency granted by race, class, and feats, divided into simple and martial categories and how proficiency bonus applies to attack rolls. There is no mention anywhere in these excerpts of a \"Weapon Mastery\" system or any changes to it between editions, so I can't answer that question from the material provided.",
+      "cited_anchors": [
+        "equipment/weapons/weapons",
+        "equipment/weapons/weapons"
+      ],
+      "citation_count": 2,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.015504,
+      "ttft_ms": 1282.78,
+      "total_ms": 3441.68,
+      "contains_hits": 0,
+      "contains_total": 0,
+      "error": null,
+      "judge_verdict": "abstained",
+      "judge_reason": "The assistant correctly declined to answer, noting that the provided material does not cover Weapon Mastery rules or changes between editions."
+    },
+    {
+      "id": "abstain-spelljammer",
+      "question": "What are the rules for starship combat in Spelljammer?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "out-of-corpus"
+      ],
+      "expected": [],
+      "answer": "The supplied excerpts don't cover Spelljammer or starship combat at all \u2014 they only contain rules for standard actions in combat (Attack, Cast a Spell, Dash, Disengage, Dodge), making an attack, initiative, bonus actions, and a few spell/sorcerer entries (Conjure Animals, Conjure Celestial, and Metamagic options). There's nothing here about starships, ship-to-ship combat, or Spelljammer-specific mechanics, so I can't answer that question from the material available.",
+      "cited_anchors": [],
+      "citation_count": 0,
+      "grounded": false,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.014378,
+      "ttft_ms": 3455.33,
+      "total_ms": 5864.92,
+      "contains_hits": 0,
+      "contains_total": 0,
+      "error": null,
+      "judge_verdict": "abstained",
+      "judge_reason": "The assistant correctly identified that the available material does not cover Spelljammer or starship combat and appropriately declined to answer rather than speculate."
+    },
+    {
+      "id": "abstain-artificer",
+      "question": "How does the Artificer class infusion system work?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "model-knows-but-corpus-does-not"
+      ],
+      "expected": [],
+      "answer": "The supplied excerpts do not cover the Artificer class or an \"infusion\" system at all. The only Artificer-related content available is the Rock Gnome's \"Artificer's Lore\" racial trait, which is unrelated to the Artificer class's infusions \u2014 it simply states that whenever you make an Intelligence (History) check related to magic items, alchemical objects, or technological devices, you can add twice your proficiency bonus, instead of any proficiency bonus you normally apply.\n\nI don't have material on Artificer class features, infusions, or how that system functions, so I can't answer that part of your question from what's available here.",
+      "cited_anchors": [
+        "races/races-each/gnome/gnome-rock-gnome"
+      ],
+      "citation_count": 1,
+      "grounded": true,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.013204,
+      "ttft_ms": 1524.41,
+      "total_ms": 3790.47,
+      "contains_hits": 0,
+      "contains_total": 0,
+      "error": null,
+      "judge_verdict": "abstained",
+      "judge_reason": "The assistant correctly declined to answer when the governing rule passage indicated the corpus does not contain relevant material about the Artificer class infusion system."
+    },
+    {
+      "id": "abstain-designer",
+      "question": "Who was the lead designer of fifth edition?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "not-a-rules-question"
+      ],
+      "expected": [],
+      "answer": "I could not find anything in the rules corpus about that (nearest passage scored 0.441, beyond the 0.4 cutoff).",
+      "cited_anchors": [],
+      "citation_count": 0,
+      "grounded": false,
+      "abstained": true,
+      "tool_calls": 0,
+      "cost_usd": 0.0,
+      "ttft_ms": null,
+      "total_ms": 13.58,
+      "contains_hits": 0,
+      "contains_total": 0,
+      "error": null,
+      "judge_verdict": "abstained",
+      "judge_reason": "The assistant correctly declined to answer a question that falls outside the scope of tabletop RPG rules content (designer attribution is metadata, not a governing rule)."
+    },
+    {
+      "id": "abstain-pizza",
+      "question": "What is the best pizza topping?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "off-domain"
+      ],
+      "expected": [],
+      "answer": "I could not find anything in the rules corpus about that (nearest passage scored 0.521, beyond the 0.4 cutoff).",
+      "cited_anchors": [],
+      "citation_count": 0,
+      "grounded": false,
+      "abstained": true,
+      "tool_calls": 0,
+      "cost_usd": 0.0,
+      "ttft_ms": null,
+      "total_ms": 9.87,
+      "contains_hits": 0,
+      "contains_total": 0,
+      "error": null,
+      "judge_verdict": "abstained",
+      "judge_reason": "The assistant correctly declined to answer a question outside the scope of a tabletop RPG rules corpus."
+    },
+    {
+      "id": "abstain-taxes",
+      "question": "How do I file my taxes in Portugal?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "off-domain"
+      ],
+      "expected": [],
+      "answer": "I could not find anything in the rules corpus about that (nearest passage scored 0.472, beyond the 0.4 cutoff).",
+      "cited_anchors": [],
+      "citation_count": 0,
+      "grounded": false,
+      "abstained": true,
+      "tool_calls": 0,
+      "cost_usd": 0.0,
+      "ttft_ms": null,
+      "total_ms": 9.37,
+      "contains_hits": 0,
+      "contains_total": 0,
+      "error": null,
+      "judge_verdict": "abstained",
+      "judge_reason": "The assistant correctly declined to answer a question outside the scope of the rules corpus (tax filing procedures are not part of a tabletop RPG rulebook)."
+    },
+    {
+      "id": "abstain-book-price",
+      "question": "How much does the Player's Handbook cost in stores?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "not-a-rules-question"
+      ],
+      "expected": [],
+      "answer": "The supplied excerpts don't include any pricing information for the Player's Handbook itself. They cover things like adventuring gear costs, lifestyle expenses, magic items, downtime research/training rules, and monster hit points/speed \u2014 but nothing about the price of the rulebook as a retail product. I can't answer this from the material provided.",
+      "cited_anchors": [],
+      "citation_count": 0,
+      "grounded": false,
+      "abstained": false,
+      "tool_calls": 0,
+      "cost_usd": 0.021266,
+      "ttft_ms": 1395.49,
+      "total_ms": 2735.42,
+      "contains_hits": 0,
+      "contains_total": 0,
+      "error": null,
+      "judge_verdict": "correct",
+      "judge_reason": "The assistant correctly abstained by noting that the provided material does not contain pricing information for the Player's Handbook as a retail product, which accurately reflects that this question falls outside the scope of D&D rulebook content."
+    }
+  ]
+}

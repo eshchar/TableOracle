@@ -1,0 +1,1523 @@
+{
+  "generated_utc": "2026-09-02T08:18:47+00:00",
+  "embed_model": "bge-small-en-v1.5",
+  "answer_model": "claude-sonnet-5",
+  "questions": 56,
+  "retrieval": {
+    "questions": 56,
+    "answerable": 48,
+    "abstention": 8,
+    "retrieval_at_1": 0.625,
+    "retrieval_at_3": 0.7708,
+    "retrieval_at_5": 0.8542,
+    "retrieval_at_10": 0.8958,
+    "mrr": 0.7134,
+    "misses_at_5": [
+      "avoid-opportunity-attack",
+      "death-save-damage",
+      "two-weapon-fighting",
+      "unconscious-at-zero",
+      "prone-attack-penalty",
+      "suffocation",
+      "spell-components"
+    ],
+    "latency_ms": {
+      "mean": 9.08,
+      "p50": 8.31,
+      "p95": 14.05
+    },
+    "distance": {
+      "answerable_max": 0.392,
+      "abstention_min": 0.2856,
+      "separable": false,
+      "threshold": 0.4
+    }
+  },
+  "retrieval_rows": [
+    {
+      "id": "disengage-and-cast",
+      "question": "Can I cast a spell and disengage in the same turn?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "actions",
+        "multi-hop"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/actions-in-combat"
+      ],
+      "retrieved": [
+        "spells/spellcasting/combining-magical-effects",
+        "spells/spellcasting/casting-a-spell",
+        "spells/spells-a-z/spells-f/spells-f-forbiddance",
+        "spells/spells-each/forbiddance/forbiddance",
+        "gameplay/order-of-combat/actions-in-combat",
+        "spells/spells-a-z/spells-d/spells-d-dispel-magic",
+        "classes/monk/monk-ki-flurry-of-blows",
+        "spells/spells-each/confusion/confusion",
+        "spells/spells-each/haste/haste",
+        "spells/spells-a-z/spells-c/spells-c-confusion"
+      ],
+      "best_distance": 0.28789299726486206,
+      "rank": 5,
+      "latency_ms": 14.049199991859496
+    },
+    {
+      "id": "opportunity-attack-trigger",
+      "question": "What triggers an opportunity attack?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "reactions"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/reactions",
+        "gameplay/order-of-combat/actions-in-combat-help",
+        "gamemastering/traps/traps",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks",
+        "gameplay/order-of-combat/actions-in-combat",
+        "gamemastering/traps/traps-sample-traps-poison-darts",
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets",
+        "spells/spells-each/glyph-of-warding/glyph-of-warding",
+        "spells/spells-a-z/spells-g/spells-g-glyph-of-warding",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling"
+      ],
+      "best_distance": 0.3335614502429962,
+      "rank": 4,
+      "latency_ms": 7.766299997456372
+    },
+    {
+      "id": "avoid-opportunity-attack",
+      "question": "How do I move away from an enemy without getting hit?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "paraphrase"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/movement-and-position-being-prone",
+        "gameplay/adventuring/movement",
+        "classes/ranger/ranger-favored-enemy",
+        "gameplay/order-of-combat/actions-in-combat-help",
+        "magic-items/magic-items-each/dancing-sword/dancing-sword",
+        "gameplay/order-of-combat/movement-and-position",
+        "characterization/alignment/alignment",
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling",
+        "spells/spells-each/command/command"
+      ],
+      "best_distance": 0.28145894408226013,
+      "rank": null,
+      "latency_ms": 10.320100001990795
+    },
+    {
+      "id": "death-saves-count",
+      "question": "How many death saving throws do I need to fail before I die?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "death"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws",
+        "magic-items/magic-items-each/deck-of-many-things/deck-of-many-things-avatar-of-death-actions",
+        "magic-items/magic-items-a-z/magic-items-d/magic-items-d-deck-of-many-things-avatar-of-death-actions",
+        "spells/spells-each/resistance/resistance",
+        "gameplay/adventuring/between-adventures",
+        "gameplay/using-ability-scores/saving-throws",
+        "classes/bard/bard-bard-colleges-college-of-lore",
+        "magic-items/magic-items-each/pipes-of-haunting/pipes-of-haunting",
+        "spells/spellcasting/spell-saving-throws",
+        "spells/spells-a-z/spells-c/spells-c-color-spray"
+      ],
+      "best_distance": 0.22108784317970276,
+      "rank": 1,
+      "latency_ms": 15.356399992015213
+    },
+    {
+      "id": "death-save-nat-20",
+      "question": "What happens if I roll a 20 on a death saving throw?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "death",
+        "edge-case"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws"
+      ],
+      "retrieved": [
+        "spells/spellcasting/spell-saving-throws",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws",
+        "gamemastering/traps/traps-traps-in-play-trap-effects",
+        "gameplay/using-ability-scores/advantage-and-disadvantage",
+        "magic-items/magic-items-each/deck-of-many-things/deck-of-many-things--2",
+        "gameplay/using-ability-scores/saving-throws",
+        "magic-items/magic-items-each/wand-of-wonder/wand-of-wonder",
+        "magic-items/magic-items-a-z/magic-items-w/magic-items-w-wand-of-wonder",
+        "magic-items/magic-items-each/ring-of-spell-turning/ring-of-spell-turning",
+        "spells/spells-each/harm/harm"
+      ],
+      "best_distance": 0.21301700174808502,
+      "rank": 2,
+      "latency_ms": 14.781499994569458
+    },
+    {
+      "id": "death-save-damage",
+      "question": "What happens if I take damage while at 0 hit points?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "death"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws"
+      ],
+      "retrieved": [
+        "gamemastering/traps/traps-traps-in-play-trap-effects",
+        "gameplay/order-of-combat/making-an-attack-knocking-a-creature-out",
+        "spells/spellcasting/spell-saving-throws",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-hit-points",
+        "magic-items/magic-items-each/wand-of-wonder/wand-of-wonder",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-damage-resistance-and-vulnerability",
+        "magic-items/magic-items-a-z/magic-items-w/magic-items-w-wand-of-wonder",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws",
+        "spells/spells-each/speak-with-dead/speak-with-dead",
+        "magic-items/magic-items-each/efreeti-bottle/efreeti-bottle"
+      ],
+      "best_distance": 0.22363340854644775,
+      "rank": 8,
+      "latency_ms": 12.639199994737282
+    },
+    {
+      "id": "half-cover",
+      "question": "How much does half cover add to AC?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "lookup"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-cover"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/making-an-attack-cover",
+        "spells/spells-each/blade-barrier/blade-barrier",
+        "equipment/armor/armor-medium-armor",
+        "magic-items/magic-items-each/armor/armor-1-2-or-3",
+        "gameplay/order-of-combat/making-an-attack",
+        "magic-items/magic-items-each/shield/shield-1-2-or-3",
+        "equipment/armor/armor-heavy-armor",
+        "magic-items/magic-items-each/cube-of-force/cube-of-force",
+        "races/races-each/halfling/halfling",
+        "monsters/monsters-a-z/npcs/bandit-captain"
+      ],
+      "best_distance": 0.32242000102996826,
+      "rank": 1,
+      "latency_ms": 11.156699998537078
+    },
+    {
+      "id": "three-quarters-cover",
+      "question": "What bonus does three-quarters cover give?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "lookup"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-cover"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/making-an-attack-cover",
+        "magic-items/magic-items-each/wand-of-the-war-mage/wand-of-the-war-mage-1-2-or-3",
+        "feats/feats/feats",
+        "gameplay/using-ability-scores/proficiency-bonus",
+        "spells/spells-each/blade-barrier/blade-barrier",
+        "magic-items/magic-items-each/shield/shield-1-2-or-3",
+        "characterization/inspiration/inspiration",
+        "equipment/coinage/coinage",
+        "magic-items/magic-items-each/bag-of-tricks/bag-of-tricks",
+        "magic-items/magic-items-each/staff-of-striking/staff-of-striking"
+      ],
+      "best_distance": 0.33033493161201477,
+      "rank": 1,
+      "latency_ms": 9.35709998884704
+    },
+    {
+      "id": "total-cover-targeting",
+      "question": "Can I target a creature behind total cover?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "spells"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-cover"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/making-an-attack-cover",
+        "spells/spellcasting/casting-a-spell-targets-a-clear-path-to-the-target",
+        "monsters/monsters-a-z/creatures-g-i/creatures-g-i-giant-toad",
+        "monsters/monsters-each/giant-toad-creature/giant-toad",
+        "monsters/monsters-a-z/monsters-r/monsters-r-remorhaz",
+        "classes/paladin/paladin-divine-sense",
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets",
+        "gameplay/using-ability-scores/using-ability-scores",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-dexterity-initiative",
+        "magic-items/magic-items-each/marvelous-pigments/marvelous-pigments"
+      ],
+      "best_distance": 0.2136872112751007,
+      "rank": 1,
+      "latency_ms": 12.957800005096942
+    },
+    {
+      "id": "grapple-escape",
+      "question": "How does a creature escape a grapple?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "contests"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling",
+        "monsters/monsters-a-z/creatures-g-i/creatures-g-i-giant-crocodile-actions",
+        "monsters/monsters-a-z/monsters-r/monsters-r-remorhaz",
+        "monsters/monsters-each/kraken/kraken-actions",
+        "monsters/monsters-a-z/monsters-k/monsters-k-kraken-actions",
+        "monsters/monsters-a-z/creatures-a-c/creatures-a-c-crocodile",
+        "monsters/monsters-each/remorhaz/remorhaz",
+        "monsters/monsters-a-z/creatures-g-i/creatures-g-i-giant-octopus-actions",
+        "monsters/monsters-a-z/creatures-g-i/creatures-g-i-giant-frog-actions",
+        "spells/spells-each/maze/maze"
+      ],
+      "best_distance": 0.2247496396303177,
+      "rank": 1,
+      "latency_ms": 8.489400002872571
+    },
+    {
+      "id": "shove-options",
+      "question": "What can I do with a shove?",
+      "should_abstain": false,
+      "tags": [
+        "combat"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling",
+        "gameplay/order-of-combat/actions-in-combat-help",
+        "gameplay/order-of-combat/actions-in-combat",
+        "characterization/alignment/alignment",
+        "gameplay/order-of-combat/movement-and-position-being-prone",
+        "gameplay/adventuring/between-adventures",
+        "magic-items/magic-items-each/wand-of-binding/wand-of-binding",
+        "spells/spells-each/suggestion/suggestion",
+        "magic-items/magic-items-a-z/magic-items-i/magic-items-i-iron-bands-of-binding",
+        "characterization/backgrounds/backgrounds"
+      ],
+      "best_distance": 0.3392784893512726,
+      "rank": 1,
+      "latency_ms": 9.817199999815784
+    },
+    {
+      "id": "two-weapon-fighting",
+      "question": "How does two-weapon fighting work?",
+      "should_abstain": false,
+      "tags": [
+        "combat"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-melee-attacks"
+      ],
+      "retrieved": [
+        "classes/ranger/ranger-fighting-style-archery",
+        "classes/fighter/fighter-fighting-style",
+        "classes/paladin/paladin-fighting-style-defense",
+        "gameplay/order-of-combat/order-of-combat",
+        "gameplay/order-of-combat/underwater-combat",
+        "gamemastering/diseases/diseases",
+        "monsters/monsters/monster-statistics-type-tags",
+        "gameplay/using-ability-scores/ability-checks-passive-checks",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling",
+        "gameplay/order-of-combat/movement-and-position-creature-size"
+      ],
+      "best_distance": 0.25844627618789673,
+      "rank": null,
+      "latency_ms": 7.821500010322779
+    },
+    {
+      "id": "crit-damage",
+      "question": "How do critical hits work for damage?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "damage"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-hit-points"
+      ],
+      "retrieved": [
+        "magic-items/magic-items-each/vicious-weapon/vicious-weapon",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-hit-points",
+        "gamemastering/objects/objects-statistics-for-objects",
+        "classes/fighter/fighter-martial-archetypes-champion",
+        "gameplay/using-ability-scores/ability-checks-passive-checks",
+        "gameplay/order-of-combat/making-an-attack-knocking-a-creature-out",
+        "gamemastering/diseases/diseases",
+        "characterization/backgrounds/backgrounds",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-damage-types",
+        "classes/barbarian/barbarian-fast-movement"
+      ],
+      "best_distance": 0.24812860786914825,
+      "rank": 2,
+      "latency_ms": 9.965399993234314
+    },
+    {
+      "id": "unconscious-at-zero",
+      "question": "What happens when I drop to 0 hit points?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "death"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-damage-resistance-and-vulnerability"
+      ],
+      "retrieved": [
+        "gamemastering/traps/traps-traps-in-play-trap-effects",
+        "gameplay/order-of-combat/making-an-attack-knocking-a-creature-out",
+        "spells/spellcasting/spell-saving-throws",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-death-saving-throws",
+        "magic-items/magic-items-each/efreeti-bottle/efreeti-bottle",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-hit-points",
+        "magic-items/magic-items-each/wand-of-wonder/wand-of-wonder",
+        "magic-items/magic-items-a-z/magic-items-w/magic-items-w-wand-of-wonder",
+        "monsters/monsters/monster-statistics-hit-points",
+        "characterization/multiclassing/multiclassing-hit-points-and-hit-dice"
+      ],
+      "best_distance": 0.27101701498031616,
+      "rank": null,
+      "latency_ms": 9.016399999381974
+    },
+    {
+      "id": "knock-out",
+      "question": "Can I knock someone out instead of killing them?",
+      "should_abstain": false,
+      "tags": [
+        "combat"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-knocking-a-creature-out"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/making-an-attack-knocking-a-creature-out",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks",
+        "spells/spells-each/knock/knock",
+        "monsters/monsters-a-z/monsters-b/monsters-b-bulette-actions",
+        "spells/spells-a-z/spells-k/spells-k",
+        "races/races-each/half-orc/half-orc",
+        "gamemastering/objects/objects",
+        "spells/spells-a-z/spells-d/spells-d-daylight",
+        "magic-items/magic-items-each/bag-of-devouring/bag-of-devouring"
+      ],
+      "best_distance": 0.34146586060523987,
+      "rank": 1,
+      "latency_ms": 8.096599995042197
+    },
+    {
+      "id": "prone-attack-penalty",
+      "question": "What happens when I attack a prone creature?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "conditions"
+      ],
+      "expected": [
+        "gamemastering/conditions/conditions-frightened"
+      ],
+      "retrieved": [
+        "monsters/monsters-a-z/monsters-g/monsters-g-gibbering-mouther",
+        "gameplay/order-of-combat/movement-and-position-being-prone",
+        "spells/spellcasting/spell-saving-throws",
+        "magic-items/magic-items-each/efreeti-bottle/efreeti-bottle",
+        "monsters/monsters-a-z/creatures-d-f/creatures-d-f-elephant-actions",
+        "magic-items/magic-items-each/wand-of-wonder/wand-of-wonder",
+        "monsters/monsters-a-z/monsters-d/monsters-d-devils-pit-fiend-actions",
+        "magic-items/magic-items-a-z/magic-items-w/magic-items-w-wand-of-wonder",
+        "monsters/monsters/monster-statistics-actions-melee-and-ranged-attacks",
+        "spells/spells-each/speak-with-dead/speak-with-dead"
+      ],
+      "best_distance": 0.23152710497379303,
+      "rank": null,
+      "latency_ms": 9.192199999233708
+    },
+    {
+      "id": "stand-from-prone",
+      "question": "How much movement does standing up from prone cost?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "movement"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/movement-and-position-being-prone"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/movement-and-position-being-prone",
+        "gameplay/adventuring/movement-special-types-of-movement",
+        "gameplay/order-of-combat/movement-and-position",
+        "monsters/monsters-each/bulette/bulette",
+        "gameplay/order-of-combat/mounted-combat",
+        "magic-items/magic-items-each/ring-of-free-action/ring-of-free-action",
+        "spells/spells-a-z/spells-e/spells-e",
+        "spells/spells-each/earthquake/earthquake",
+        "magic-items/magic-items-each/gloves-of-swimming-and-climbing/gloves-of-swimming-and-climbing",
+        "gameplay/order-of-combat/movement-and-position-creature-size"
+      ],
+      "best_distance": 0.2532447576522827,
+      "rank": 1,
+      "latency_ms": 8.291399994050153
+    },
+    {
+      "id": "unseen-attacker",
+      "question": "What happens when I attack a target I can't see?",
+      "should_abstain": false,
+      "tags": [
+        "combat"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets"
+      ],
+      "retrieved": [
+        "gamemastering/traps/traps-traps-in-play-detecting-and-disabling-a-trap",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-dexterity-initiative",
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets",
+        "spells/spellcasting/spell-saving-throws",
+        "spells/spells-each/speak-with-dead/speak-with-dead",
+        "magic-items/magic-items-each/shield-of-missile-attraction/shield-of-missile-attraction",
+        "spells/spellcasting/casting-a-spell-targets-a-clear-path-to-the-target",
+        "magic-items/magic-items-each/efreeti-bottle/efreeti-bottle",
+        "gameplay/order-of-combat/actions-in-combat-help",
+        "magic-items/magic-items-each/wand-of-wonder/wand-of-wonder"
+      ],
+      "best_distance": 0.17497077584266663,
+      "rank": 3,
+      "latency_ms": 7.755000013276003
+    },
+    {
+      "id": "long-range-penalty",
+      "question": "What happens when I shoot at something beyond normal range?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "ranged"
+      ],
+      "expected": [
+        "equipment/weapons/weapons-weapon-properties"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/making-an-attack-ranged-attacks-range",
+        "magic-items/magic-items-each/wand-of-wonder/wand-of-wonder",
+        "magic-items/magic-items-a-z/magic-items-w/magic-items-w-wand-of-wonder",
+        "gamemastering/traps/traps-traps-in-play-trap-effects",
+        "equipment/weapons/weapons-weapon-properties",
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets",
+        "magic-items/magic-items-a-z/magic-items-r/magic-items-r-ring-of-shooting-stars",
+        "magic-items/magic-items-each/ring-of-shooting-stars/ring-of-shooting-stars",
+        "gameplay/adventuring/the-environment-food-and-water",
+        "magic-items/magic-items-a-z/magic-items-g/magic-items-g-gloves-of-missile-snaring"
+      ],
+      "best_distance": 0.32494470477104187,
+      "rank": 5,
+      "latency_ms": 8.18650001019705
+    },
+    {
+      "id": "difficult-terrain-cost",
+      "question": "How does difficult terrain affect movement?",
+      "should_abstain": false,
+      "tags": [
+        "movement"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/movement-and-position"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/movement-and-position",
+        "gameplay/adventuring/movement-speed-difficult-terrain",
+        "gameplay/adventuring/movement-special-types-of-movement",
+        "magic-items/magic-items-each/ring-of-free-action/ring-of-free-action",
+        "spells/spells-each/mirage-arcane/mirage-arcane",
+        "spells/spells-each/move-earth/move-earth",
+        "gameplay/adventuring/movement",
+        "spells/spells-a-z/spells-m/spells-m-move-earth",
+        "gameplay/order-of-combat/movement-and-position-being-prone",
+        "spells/spells-each/freedom-of-movement/freedom-of-movement"
+      ],
+      "best_distance": 0.1975938081741333,
+      "rank": 1,
+      "latency_ms": 6.0757000028388575
+    },
+    {
+      "id": "surprise-rule",
+      "question": "How does surprise work in combat?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "initiative"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/order-of-combat"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/order-of-combat",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-dexterity-initiative",
+        "gameplay/order-of-combat/actions-in-combat-help",
+        "gamemastering/diseases/diseases",
+        "classes/rogue/rogue-roguish-archetypes-thief",
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets",
+        "gameplay/order-of-combat/movement-and-position-creature-size",
+        "spells/spells-each/shocking-grasp/shocking-grasp",
+        "gameplay/using-ability-scores/ability-checks-passive-checks",
+        "magic-items/magic-items-each/wand-of-enemy-detection/wand-of-enemy-detection"
+      ],
+      "best_distance": 0.23824581503868103,
+      "rank": 1,
+      "latency_ms": 6.597400002647191
+    },
+    {
+      "id": "initiative-roll",
+      "question": "What do I roll for initiative?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "initiative"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/order-of-combat-initiative"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/order-of-combat-initiative",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-dexterity-initiative",
+        "gameplay/order-of-combat/order-of-combat",
+        "classes/barbarian/barbarian-fast-movement",
+        "gameplay/order-of-combat/order-of-combat-other-activity-on-your-turn",
+        "spells/spellcasting/spell-attack-rolls",
+        "spells/spells-each/conjure-minor-elementals/conjure-minor-elementals",
+        "spells/spells-a-z/spells-c/spells-c-conjure-animals",
+        "gameplay/order-of-combat/making-an-attack",
+        "spells/spells-each/conjure-woodland-beings/conjure-woodland-beings"
+      ],
+      "best_distance": 0.280022531747818,
+      "rank": 1,
+      "latency_ms": 7.636100010131486
+    },
+    {
+      "id": "bonus-action-rule",
+      "question": "How do bonus actions work?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "actions"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/order-of-combat-initiative"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/order-of-combat-initiative",
+        "gameplay/using-ability-scores/ability-checks-passive-checks",
+        "gameplay/order-of-combat/actions-in-combat-help",
+        "gamemastering/diseases/diseases",
+        "characterization/backgrounds/backgrounds",
+        "gameplay/order-of-combat/actions-in-combat",
+        "classes/monk/monk-ki-flurry-of-blows",
+        "classes/rogue/rogue-roguish-archetypes-thief",
+        "characterization/backgrounds/backgrounds-acolyte-suggested-characteristics",
+        "gameplay/using-ability-scores/proficiency-bonus"
+      ],
+      "best_distance": 0.2704731225967407,
+      "rank": 1,
+      "latency_ms": 6.429300003219396
+    },
+    {
+      "id": "dodge-action",
+      "question": "What does the Dodge action do?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "actions"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/actions-in-combat"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/actions-in-combat",
+        "gameplay/order-of-combat/order-of-combat-initiative",
+        "classes/monk/monk-ki-flurry-of-blows",
+        "classes/rogue/rogue-uncanny-dodge",
+        "classes/ranger/ranger-ranger-archetypes-hunter-superior-hunter-s-defense",
+        "monsters/monsters-a-z/monsters-b/monsters-b-bulette-actions",
+        "classes/monk/monk-evasion",
+        "characterization/alignment/alignment",
+        "gameplay/order-of-combat/actions-in-combat-help",
+        "gameplay/order-of-combat/order-of-combat-other-activity-on-your-turn"
+      ],
+      "best_distance": 0.35302868485450745,
+      "rank": 1,
+      "latency_ms": 7.476299986592494
+    },
+    {
+      "id": "help-action",
+      "question": "What does the Help action do?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "actions"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/actions-in-combat-help"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/actions-in-combat-help",
+        "spells/spells-each/suggestion/suggestion",
+        "spells/spells-a-z/spells-d/spells-d-dominate-monster",
+        "spells/spells-a-z/spells-m/spells-m-mass-suggestion",
+        "spells/spells-each/dominate-monster/dominate-monster",
+        "spells/spells-a-z/spells-d/spells-d-dominate-person",
+        "spells/spells-each/dominate-person/dominate-person",
+        "spells/spells-a-z/spells-d/spells-d-dominate-beast",
+        "spells/spells-each/dominate-beast/dominate-beast",
+        "characterization/alignment/alignment"
+      ],
+      "best_distance": 0.32396411895751953,
+      "rank": 1,
+      "latency_ms": 7.164399998146109
+    },
+    {
+      "id": "advantage-stacking",
+      "question": "Do multiple sources of advantage stack?",
+      "should_abstain": false,
+      "tags": [
+        "rules",
+        "edge-case"
+      ],
+      "expected": [
+        "gameplay/using-ability-scores/advantage-and-disadvantage"
+      ],
+      "retrieved": [
+        "gameplay/using-ability-scores/advantage-and-disadvantage",
+        "gameplay/order-of-combat/making-an-attack-cover",
+        "spells/spellcasting/combining-magical-effects",
+        "characterization/multiclassing/multiclassing",
+        "gamemastering/conditions/conditions",
+        "characterization/backgrounds/backgrounds",
+        "spells/spellcasting/casting-a-spell-duration",
+        "magic-items/magic-items-each/necklace-of-fireballs/necklace-of-fireballs",
+        "gameplay/using-ability-scores/proficiency-bonus",
+        "gameplay/using-ability-scores/ability-checks-skills-variant-skills-with-different-abilities"
+      ],
+      "best_distance": 0.2886667847633362,
+      "rank": 1,
+      "latency_ms": 7.080399998812936
+    },
+    {
+      "id": "advantage-and-disadvantage",
+      "question": "What if I have both advantage and disadvantage?",
+      "should_abstain": false,
+      "tags": [
+        "rules",
+        "edge-case"
+      ],
+      "expected": [
+        "gameplay/using-ability-scores/advantage-and-disadvantage"
+      ],
+      "retrieved": [
+        "gameplay/using-ability-scores/advantage-and-disadvantage",
+        "feats/feats/feats",
+        "gamemastering/conditions/conditions",
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets",
+        "gamemastering/conditions/conditions-frightened",
+        "characterization/backgrounds/backgrounds",
+        "magic-items/magic-items-each/spellguard-shield/spellguard-shield",
+        "gameplay/using-ability-scores/ability-checks-skills-variant-skills-with-different-abilities",
+        "spells/spellcasting/combining-magical-effects",
+        "magic-items/magic-items-a-z/magic-items-c/magic-items-c-cloak-of-arachnida"
+      ],
+      "best_distance": 0.26797181367874146,
+      "rank": 1,
+      "latency_ms": 7.496899997931905
+    },
+    {
+      "id": "passive-check-formula",
+      "question": "How do I calculate a passive Perception score?",
+      "should_abstain": false,
+      "tags": [
+        "rules",
+        "checks"
+      ],
+      "expected": [
+        "gameplay/using-ability-scores/ability-checks-passive-checks"
+      ],
+      "retrieved": [
+        "gameplay/using-ability-scores/ability-checks-passive-checks",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-dexterity-initiative",
+        "gameplay/using-ability-scores/using-ability-scores",
+        "gameplay/adventuring/movement",
+        "gameplay/using-ability-scores/using-ability-scores-ability-scores-and-modifiers",
+        "monsters/monsters/monster-statistics-hit-points",
+        "spells/spells-each/awaken/awaken",
+        "monsters/monsters/monster-statistics-senses-blindsight",
+        "spells/spells-each/detect-thoughts/detect-thoughts",
+        "magic-items/magic-items-each/deck-of-many-things/deck-of-many-things-avatar-of-death-actions"
+      ],
+      "best_distance": 0.2888984978199005,
+      "rank": 1,
+      "latency_ms": 6.1227999976836145
+    },
+    {
+      "id": "contest-tie",
+      "question": "What happens if a contest ends in a tie?",
+      "should_abstain": false,
+      "tags": [
+        "rules",
+        "contests"
+      ],
+      "expected": [
+        "gameplay/using-ability-scores/ability-checks"
+      ],
+      "retrieved": [
+        "gameplay/using-ability-scores/ability-checks",
+        "gameplay/order-of-combat/order-of-combat-initiative",
+        "spells/spellcasting/spell-saving-throws",
+        "gameplay/order-of-combat/making-an-attack-melee-attacks-grappling",
+        "magic-items/magic-items-each/rope-of-entanglement/rope-of-entanglement",
+        "magic-items/magic-items-each/periapt-of-wound-closure/periapt-of-wound-closure",
+        "magic-items/magic-items-each/sphere-of-annihilation/sphere-of-annihilation",
+        "spells/spells-each/rope-trick/rope-trick",
+        "magic-items/magic-items-a-z/magic-items-s/magic-items-s-sphere-of-annihilation",
+        "gameplay/order-of-combat/order-of-combat"
+      ],
+      "best_distance": 0.3919562101364136,
+      "rank": 1,
+      "latency_ms": 7.833299998310395
+    },
+    {
+      "id": "long-rest-length",
+      "question": "How long is a long rest?",
+      "should_abstain": false,
+      "tags": [
+        "resting"
+      ],
+      "expected": [
+        "gameplay/adventuring/resting"
+      ],
+      "retrieved": [
+        "gameplay/adventuring/resting",
+        "gameplay/adventuring/movement",
+        "spells/spells-each/resurrection/resurrection",
+        "monsters/monsters/monster-statistics-reactions",
+        "magic-items/magic-items-each/manual-of-gainful-exercise/manual-of-gainful-exercise",
+        "classes/druid/druid-spellcasting-cantrips",
+        "spells/spells-each/longstrider/longstrider",
+        "classes/fighter/fighter-extra-attack",
+        "gameplay/adventuring/movement-speed-travel-pace",
+        "gamemastering/diseases/diseases-sample-diseases-sight-rot"
+      ],
+      "best_distance": 0.2599010169506073,
+      "rank": 1,
+      "latency_ms": 7.3628999962238595
+    },
+    {
+      "id": "short-rest-length",
+      "question": "How long is a short rest?",
+      "should_abstain": false,
+      "tags": [
+        "resting"
+      ],
+      "expected": [
+        "gameplay/adventuring/resting"
+      ],
+      "retrieved": [
+        "gameplay/adventuring/resting",
+        "spells/spells-each/divination/divination",
+        "monsters/monsters/monster-statistics-reactions",
+        "spells/spells-each/gentle-repose/gentle-repose",
+        "spells/spells-each/passwall/passwall",
+        "magic-items/magic-items/magic-items",
+        "classes/cleric/cleric-divine-domain",
+        "magic-items/magic-items-each/manual-of-gainful-exercise/manual-of-gainful-exercise",
+        "spells/spells-each/tiny-hut/tiny-hut",
+        "monsters/monsters-each/rakshasa/rakshasa"
+      ],
+      "best_distance": 0.24743810296058655,
+      "rank": 1,
+      "latency_ms": 10.74539999535773
+    },
+    {
+      "id": "long-rest-frequency",
+      "question": "How often can I benefit from a long rest?",
+      "should_abstain": false,
+      "tags": [
+        "resting",
+        "edge-case"
+      ],
+      "expected": [
+        "gameplay/adventuring/resting"
+      ],
+      "retrieved": [
+        "gameplay/adventuring/resting",
+        "monsters/monsters/monster-statistics-reactions",
+        "gameplay/adventuring/between-adventures",
+        "gameplay/adventuring/movement-special-types-of-movement",
+        "classes/fighter/fighter-extra-attack",
+        "magic-items/magic-items/magic-items",
+        "magic-items/magic-items-each/manual-of-gainful-exercise/manual-of-gainful-exercise",
+        "magic-items/magic-items-each/manual-of-bodily-health/manual-of-bodily-health",
+        "monsters/monsters-a-z/npcs/knight",
+        "monsters/monsters-each/knight-npc/knight"
+      ],
+      "best_distance": 0.2650662660598755,
+      "rank": 1,
+      "latency_ms": 11.181499998201616
+    },
+    {
+      "id": "falling-damage",
+      "question": "How much damage do I take from falling?",
+      "should_abstain": false,
+      "tags": [
+        "exploration",
+        "lookup"
+      ],
+      "expected": [
+        "gameplay/adventuring/the-environment"
+      ],
+      "retrieved": [
+        "magic-items/magic-items-each/ring-of-feather-falling/ring-of-feather-falling",
+        "gameplay/order-of-combat/movement-and-position-being-prone",
+        "spells/spells-each/feather-fall/feather-fall",
+        "spells/spells-a-z/spells-f/spells-f-feather-fall",
+        "gameplay/adventuring/the-environment",
+        "spells/spells-each/command/command",
+        "gameplay/order-of-combat/making-an-attack-damage-and-healing-damage-resistance-and-vulnerability",
+        "spells/spells-a-z/spells-c/spells-c-color-spray",
+        "gameplay/adventuring/movement-special-types-of-movement",
+        "gameplay/adventuring/between-adventures"
+      ],
+      "best_distance": 0.2644244134426117,
+      "rank": 5,
+      "latency_ms": 10.250999999698251
+    },
+    {
+      "id": "suffocation",
+      "question": "How long can I hold my breath?",
+      "should_abstain": false,
+      "tags": [
+        "exploration"
+      ],
+      "expected": [
+        "gameplay/adventuring/the-environment"
+      ],
+      "retrieved": [
+        "characterization/backgrounds/backgrounds-acolyte-suggested-characteristics",
+        "magic-items/magic-items-each/potion-of-water-breathing/potion-of-water-breathing",
+        "spells/spells-each/water-breathing/water-breathing",
+        "magic-items/magic-items-each/oathbow/oathbow",
+        "magic-items/magic-items-each/cloak-of-the-manta-ray/cloak-of-the-manta-ray",
+        "monsters/monsters-each/octopus-creature/octopus",
+        "magic-items/magic-items-each/bag-of-holding/bag-of-holding",
+        "monsters/monsters-each/giant-octopus-creature/giant-octopus",
+        "spells/spells-each/freedom-of-movement/freedom-of-movement",
+        "monsters/monsters-each/plesiosaurus-dinosaur/plesiosaurus-dinosaur"
+      ],
+      "best_distance": 0.32293301820755005,
+      "rank": null,
+      "latency_ms": 8.917699989979155
+    },
+    {
+      "id": "heavily-obscured",
+      "question": "What does a heavily obscured area do to sight?",
+      "should_abstain": false,
+      "tags": [
+        "exploration",
+        "vision"
+      ],
+      "expected": [
+        "gameplay/adventuring/the-environment"
+      ],
+      "retrieved": [
+        "gameplay/adventuring/the-environment",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-dexterity-initiative",
+        "gameplay/adventuring/the-environment-vision-and-light-blindsight",
+        "magic-items/magic-items-each/eversmoking-bottle/eversmoking-bottle",
+        "monsters/monsters/monster-statistics-senses-blindsight",
+        "gameplay/order-of-combat/making-an-attack-unseen-attackers-and-targets",
+        "magic-items/magic-items-a-z/magic-items-e/magic-items-e-elven-chain",
+        "spells/spells-each/mirage-arcane/mirage-arcane",
+        "monsters/monsters-a-z/creatures-m-o/creatures-m-o-octopus-actions",
+        "spells/spells-a-z/spells-m/spells-m-mirage-arcane"
+      ],
+      "best_distance": 0.31311625242233276,
+      "rank": 1,
+      "latency_ms": 8.310399993206374
+    },
+    {
+      "id": "carrying-capacity",
+      "question": "How much weight can I carry?",
+      "should_abstain": false,
+      "tags": [
+        "rules",
+        "lookup"
+      ],
+      "expected": [
+        "gameplay/using-ability-scores/ability-checks-using-each-ability"
+      ],
+      "retrieved": [
+        "gameplay/using-ability-scores/ability-checks-using-each-ability-strength-variant-encumbrance",
+        "equipment/transportation/mounts-and-vehicles",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability",
+        "equipment/transportation/mounts-and-vehicles--2",
+        "spells/spells-each/enlarge-reduce/enlarge-reduce",
+        "equipment/armor/armor-heavy-armor",
+        "spells/spells-each/dimension-door/dimension-door",
+        "magic-items/magic-items-each/handy-haversack/handy-haversack",
+        "magic-items/magic-items-a-z/magic-items-h/magic-items-h-handy-haversack",
+        "magic-items/magic-items-each/carpet-of-flying/carpet-of-flying"
+      ],
+      "best_distance": 0.2719578146934509,
+      "rank": 3,
+      "latency_ms": 8.018500011530705
+    },
+    {
+      "id": "long-jump",
+      "question": "How far can I long jump?",
+      "should_abstain": false,
+      "tags": [
+        "movement"
+      ],
+      "expected": [
+        "gameplay/adventuring/movement-special-types-of-movement"
+      ],
+      "retrieved": [
+        "gameplay/adventuring/movement-special-types-of-movement",
+        "spells/spells-each/jump/jump",
+        "spells/spells-a-z/spells-j/spells-j",
+        "magic-items/magic-items-each/boots-of-striding-and-springing/boots-of-striding-and-springing",
+        "gameplay/adventuring/movement",
+        "spells/spells-a-z/spells-a/spells-a-arcane-eye",
+        "gameplay/adventuring/movement-speed-travel-pace",
+        "gameplay/order-of-combat/movement-and-position",
+        "spells/spells-each/find-the-path/find-the-path",
+        "spells/spells-each/arcane-eye/arcane-eye"
+      ],
+      "best_distance": 0.23722369968891144,
+      "rank": 1,
+      "latency_ms": 6.634899997152388
+    },
+    {
+      "id": "underwater-fire",
+      "question": "Does being underwater affect fire damage?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "environment"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/underwater-combat"
+      ],
+      "retrieved": [
+        "gameplay/order-of-combat/underwater-combat",
+        "spells/spells-each/freedom-of-movement/freedom-of-movement",
+        "magic-items/magic-items-each/potion-of-water-breathing/potion-of-water-breathing",
+        "magic-items/magic-items-each/cloak-of-the-manta-ray/cloak-of-the-manta-ray",
+        "monsters/monsters-a-z/monsters-a/monsters-a",
+        "spells/spells-each/water-breathing/water-breathing",
+        "spells/spells-each/wall-of-fire/wall-of-fire",
+        "spells/spells-a-z/spells-w/spells-w",
+        "spells/spells-each/confusion/confusion",
+        "spells/spells-a-z/spells-c/spells-c-confusion"
+      ],
+      "best_distance": 0.28222090005874634,
+      "rank": 1,
+      "latency_ms": 7.907499995781109
+    },
+    {
+      "id": "mounted-combat-options",
+      "question": "What can my mount do while I ride it?",
+      "should_abstain": false,
+      "tags": [
+        "combat",
+        "mounted"
+      ],
+      "expected": [
+        "gameplay/order-of-combat/mounted-combat"
+      ],
+      "retrieved": [
+        "equipment/transportation/mounts-and-vehicles",
+        "gameplay/order-of-combat/mounted-combat",
+        "gameplay/adventuring/movement-speed-travel-pace",
+        "magic-items/magic-items-each/figurine-of-wondrous-power/figurine-of-wondrous-power-giant-fly",
+        "magic-items/magic-items-a-z/magic-items-f/magic-items-f-figurine-of-wondrous-power-giant-fly",
+        "monsters/monsters-each/riding-horse-creature/riding-horse",
+        "characterization/backgrounds/backgrounds-acolyte-suggested-characteristics",
+        "magic-items/magic-items-each/cape-of-the-mountebank/cape-of-the-mountebank",
+        "monsters/monsters-a-z/creatures-m-o/creatures-m-o-mastiff-actions",
+        "equipment/adventuring-gear/adventuring-gear--2"
+      ],
+      "best_distance": 0.23272199928760529,
+      "rank": 2,
+      "latency_ms": 7.922600008896552
+    },
+    {
+      "id": "spell-components",
+      "question": "What are the components of a spell?",
+      "should_abstain": false,
+      "tags": [
+        "spells"
+      ],
+      "expected": [
+        "spells/spellcasting/casting-a-spell"
+      ],
+      "retrieved": [
+        "spells/spells-each/identify/identify",
+        "classes/warlock/warlock-pact-magic-cantrips",
+        "spells/spellcasting/casting-a-spell-components-verbal-v",
+        "spells/spellcasting/what-is-a-spell",
+        "spells/spells-each/glibness/glibness",
+        "characterization/alignment/alignment",
+        "spells/spellcasting/what-is-a-spell-spell-slots",
+        "spells/spellcasting/rituals",
+        "spells/spells-each/find-the-path/find-the-path",
+        "spells/spellcasting/casting-a-spell"
+      ],
+      "best_distance": 0.217975914478302,
+      "rank": 10,
+      "latency_ms": 11.347199993906543
+    },
+    {
+      "id": "concentration-break",
+      "question": "What breaks concentration on a spell?",
+      "should_abstain": false,
+      "tags": [
+        "spells",
+        "concentration"
+      ],
+      "expected": [
+        "spells/spellcasting/casting-a-spell-duration"
+      ],
+      "retrieved": [
+        "spells/spellcasting/casting-a-spell-duration",
+        "spells/spells-a-z/spells-r/spells-r-remove-curse",
+        "spells/spells-a-z/spells-m/spells-m-meld-into-stone",
+        "spells/spells-each/mending/mending",
+        "spells/spells-a-z/spells-c/spells-c-conjure-woodland-beings",
+        "spells/spells-a-z/spells-c/spells-c-counterspell",
+        "spells/spells-each/contact-other-plane/contact-other-plane",
+        "gameplay/using-ability-scores/ability-checks-using-each-ability",
+        "spells/spellcasting/what-is-a-spell",
+        "spells/spells-a-z/spells-a/spells-a-arcane-lock"
+      ],
+      "best_distance": 0.21821559965610504,
+      "rank": 1,
+      "latency_ms": 7.471599994460121
+    },
+    {
+      "id": "concentration-two-spells",
+      "question": "Can I concentrate on two spells at once?",
+      "should_abstain": false,
+      "tags": [
+        "spells",
+        "concentration"
+      ],
+      "expected": [
+        "spells/spellcasting/casting-a-spell-duration"
+      ],
+      "retrieved": [
+        "spells/spellcasting/casting-a-spell-duration",
+        "spells/spellcasting/combining-magical-effects",
+        "spells/spells-each/guidance/guidance",
+        "classes/wizard/wizard-arcane-recovery",
+        "classes/wizard/wizard-spellcasting-learning-spells-of-1st-level-and-higher",
+        "spells/spells-each/resistance/resistance",
+        "characterization/multiclassing/class-features-spellcasting",
+        "magic-items/magic-items-each/helm-of-telepathy/helm-of-telepathy",
+        "classes/druid/druid-ritual-casting-spellcasting-focus",
+        "gameplay/using-ability-scores/proficiency-bonus"
+      ],
+      "best_distance": 0.2316230833530426,
+      "rank": 1,
+      "latency_ms": 11.23639999423176
+    },
+    {
+      "id": "ritual-casting",
+      "question": "How does ritual casting work?",
+      "should_abstain": false,
+      "tags": [
+        "spells"
+      ],
+      "expected": [
+        "spells/spellcasting/rituals"
+      ],
+      "retrieved": [
+        "spells/spells-each/identify/identify",
+        "spells/spellcasting/rituals",
+        "classes/warlock/warlock-eldritch-invocations-agonizing-blast",
+        "classes/bard/bard-spellcasting",
+        "spells/spells-a-z/spells-a/spells-a-augury",
+        "gamemastering/diseases/diseases",
+        "spells/spells-each/divination/divination",
+        "magic-items/magic-items/magic-items-activating-an-item-command-word",
+        "spells/spells-each/magic-mouth/magic-mouth",
+        "spells/spells-a-z/spells-i/spells-i"
+      ],
+      "best_distance": 0.19309774041175842,
+      "rank": 2,
+      "latency_ms": 7.809700007783249
+    },
+    {
+      "id": "upcasting",
+      "question": "What happens if I cast a spell using a higher level slot?",
+      "should_abstain": false,
+      "tags": [
+        "spells"
+      ],
+      "expected": [
+        "spells/spellcasting/what-is-a-spell-spell-slots"
+      ],
+      "retrieved": [
+        "spells/spellcasting/what-is-a-spell-spell-slots",
+        "classes/warlock/warlock-pact-magic-cantrips",
+        "characterization/multiclassing/class-features-spellcasting",
+        "spells/spells-a-z/spells-h/spells-h-heal",
+        "spells/spells-each/conjure-animals/conjure-animals",
+        "spells/spells-each/conjure-minor-elementals/conjure-minor-elementals",
+        "magic-items/magic-items-each/ring-of-spell-storing/ring-of-spell-storing",
+        "classes/sorcerer/sorcerer-spellcasting",
+        "spells/spells-each/conjure-woodland-beings/conjure-woodland-beings",
+        "classes/sorcerer/sorcerer-font-of-magic"
+      ],
+      "best_distance": 0.1788349598646164,
+      "rank": 1,
+      "latency_ms": 9.868099994491786
+    },
+    {
+      "id": "ring-of-swimming",
+      "question": "What swimming speed does a Ring of Swimming give?",
+      "should_abstain": false,
+      "tags": [
+        "magic-items",
+        "lookup"
+      ],
+      "expected": [
+        "magic-items/magic-items-a-z/magic-items-r/magic-items-r-ring-of-spell-storing",
+        "magic-items/magic-items-each/ring-of-swimming/ring-of-swimming"
+      ],
+      "retrieved": [
+        "magic-items/magic-items-each/ring-of-swimming/ring-of-swimming",
+        "magic-items/magic-items-a-z/magic-items-r/magic-items-r-ring-of-spell-storing",
+        "magic-items/magic-items-each/gloves-of-swimming-and-climbing/gloves-of-swimming-and-climbing",
+        "magic-items/magic-items-each/cloak-of-the-manta-ray/cloak-of-the-manta-ray",
+        "monsters/monsters/monster-statistics-speed-burrow",
+        "magic-items/magic-items-a-z/magic-items-r/magic-items-r-ring-of-three-wishes",
+        "magic-items/magic-items-each/ring-of-djinni-summoning/ring-of-djinni-summoning",
+        "magic-items/magic-items-each/ring-of-water-walking/ring-of-water-walking",
+        "magic-items/magic-items-a-z/magic-items-r/magic-items-r",
+        "monsters/monsters-each/gibbering-mouther/gibbering-mouther"
+      ],
+      "best_distance": 0.15619365870952606,
+      "rank": 1,
+      "latency_ms": 8.215399997425266
+    },
+    {
+      "id": "attunement-limit",
+      "question": "How many magic items can I attune to at once?",
+      "should_abstain": false,
+      "tags": [
+        "magic-items",
+        "lookup"
+      ],
+      "expected": [
+        "magic-items/magic-items/magic-items"
+      ],
+      "retrieved": [
+        "magic-items/magic-items/magic-items",
+        "magic-items/magic-items-a-z/magic-items-n/magic-items-n",
+        "magic-items/magic-items-each/necklace-of-prayer-beads/necklace-of-prayer-beads",
+        "magic-items/magic-items-a-z/magic-items-r/magic-items-r-rod-of-absorption",
+        "magic-items/magic-items-a-z/magic-items-w/magic-items-w-weapon-1-2-or-3",
+        "spells/spells-each/identify/identify",
+        "magic-items/magic-items-a-z/magic-items-d/magic-items-d-deck-of-many-things",
+        "magic-items/magic-items/magic-items-activating-an-item-command-word",
+        "magic-items/magic-items/magic-items-wearing-and-wielding-items",
+        "magic-items/magic-items-each/rod-of-absorption/rod-of-absorption"
+      ],
+      "best_distance": 0.1988772749900818,
+      "rank": 1,
+      "latency_ms": 8.046000002650544
+    },
+    {
+      "id": "finesse-property",
+      "question": "What does the finesse weapon property do?",
+      "should_abstain": false,
+      "tags": [
+        "equipment"
+      ],
+      "expected": [
+        "equipment/weapons/weapons-weapon-properties"
+      ],
+      "retrieved": [
+        "equipment/weapons/weapons-weapon-properties",
+        "equipment/weapons/weapons-weapon-properties-improvised-weapons-special-weapons--2",
+        "equipment/weapons/weapons-weapon-properties-improvised-weapons",
+        "gameplay/order-of-combat/making-an-attack",
+        "magic-items/magic-items-each/sun-blade/sun-blade",
+        "equipment/weapons/weapons",
+        "spells/spells-each/identify/identify",
+        "equipment/weapons/weapons-weapon-properties-improvised-weapons-special-weapons",
+        "magic-items/magic-items-each/glamoured-studded-leather/glamoured-studded-leather",
+        "characterization/alignment/alignment"
+      ],
+      "best_distance": 0.21968255937099457,
+      "rank": 1,
+      "latency_ms": 7.986799988429993
+    },
+    {
+      "id": "heavy-armor-stealth",
+      "question": "Does wearing heavy armor affect stealth?",
+      "should_abstain": false,
+      "tags": [
+        "equipment"
+      ],
+      "expected": [
+        "equipment/armor/armor"
+      ],
+      "retrieved": [
+        "equipment/armor/armor-heavy-armor",
+        "equipment/armor/armor",
+        "magic-items/magic-items-each/adamantine-armor/adamantine-armor",
+        "magic-items/magic-items-each/mithral-armor/mithral-armor",
+        "magic-items/magic-items-each/armor-of-resistance/armor-of-resistance",
+        "equipment/armor/armor-medium-armor",
+        "magic-items/magic-items-a-z/magic-items-a/magic-items-a-armor-1-2-or-3",
+        "magic-items/magic-items-each/armor/armor-1-2-or-3",
+        "equipment/armor/armor-getting-into-and-out-of-armor",
+        "magic-items/magic-items-each/oil-of-slipperiness/oil-of-slipperiness"
+      ],
+      "best_distance": 0.2680567502975464,
+      "rank": 2,
+      "latency_ms": 8.731499998248182
+    },
+    {
+      "id": "abstain-bladesinger",
+      "question": "What are the rules for the Bladesinger wizard subclass?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "model-knows-but-corpus-does-not"
+      ],
+      "expected": [],
+      "retrieved": [
+        "characterization/multiclassing/class-features-spellcasting",
+        "classes/wizard/wizard-spellcasting",
+        "classes/warlock/warlock-eldritch-invocations-agonizing-blast",
+        "classes/warlock/warlock-eldritch-invocations-eldritch-spear",
+        "gameplay/order-of-combat/actions-in-combat",
+        "classes/warlock/warlock-eldritch-invocations-sign-of-ill-omen",
+        "spells/spellcasting/rituals",
+        "characterization/alignment/alignment",
+        "magic-items/magic-items-a-z/magic-items-s/magic-items-s-stone-of-good-luck-luckstone",
+        "characterization/backgrounds/backgrounds"
+      ],
+      "best_distance": 0.28557494282722473,
+      "rank": null,
+      "latency_ms": 12.044700008118525
+    },
+    {
+      "id": "abstain-weapon-mastery",
+      "question": "What changed about the Weapon Mastery rules in the 2024 Player's Handbook?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "out-of-corpus"
+      ],
+      "expected": [],
+      "retrieved": [
+        "classes/monk/monk-evasion",
+        "equipment/weapons/weapons",
+        "monsters/monsters/monster-statistics-speed-burrow",
+        "equipment/weapons/weapons-weapon-properties-improvised-weapons-special-weapons--2",
+        "monsters/monsters/monster-statistics-special-traits",
+        "equipment/tools/tools--2",
+        "monsters/monsters-a-z/npcs/customizing-npcs",
+        "equipment/weapons/weapons-weapon-properties",
+        "monsters/monsters-each/customizing-npcs-npc/customizing-npcs",
+        "magic-items/magic-items-each/manual-of-quickness-of-action/manual-of-quickness-of-action"
+      ],
+      "best_distance": 0.3192521035671234,
+      "rank": null,
+      "latency_ms": 11.99579999956768
+    },
+    {
+      "id": "abstain-spelljammer",
+      "question": "What are the rules for starship combat in Spelljammer?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "out-of-corpus"
+      ],
+      "expected": [],
+      "retrieved": [
+        "gameplay/order-of-combat/actions-in-combat",
+        "gameplay/order-of-combat/making-an-attack",
+        "spells/spells-a-z/spells-c/spells-c-conjure-animals",
+        "classes/sorcerer/sorcerer-metamagic-careful-spell",
+        "gameplay/order-of-combat/order-of-combat-initiative",
+        "gameplay/order-of-combat/underwater-combat",
+        "monsters/monsters-a-z/monsters-a/monsters-a-angels-planetar",
+        "gameplay/order-of-combat/order-of-combat",
+        "spells/spells-each/command/command",
+        "gameplay/order-of-combat/movement-and-position"
+      ],
+      "best_distance": 0.2985959053039551,
+      "rank": null,
+      "latency_ms": 8.76000001153443
+    },
+    {
+      "id": "abstain-artificer",
+      "question": "How does the Artificer class infusion system work?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "model-knows-but-corpus-does-not"
+      ],
+      "expected": [],
+      "retrieved": [
+        "races/races-each/gnome/gnome-rock-gnome",
+        "classes/rogue/rogue-expertise",
+        "gamemastering/diseases/diseases",
+        "classes/warlock/warlock-class-features-equipment",
+        "magic-items/magic-items/magic-items-activating-an-item-command-word",
+        "classes/rogue/rogue-class-features-equipment",
+        "gameplay/using-ability-scores/ability-checks-passive-checks",
+        "equipment/adventuring-gear/adventuring-gear",
+        "spells/spellcasting/cantrips",
+        "equipment/tools/tools--2"
+      ],
+      "best_distance": 0.3213868737220764,
+      "rank": null,
+      "latency_ms": 7.683100004214793
+    },
+    {
+      "id": "abstain-designer",
+      "question": "Who was the lead designer of fifth edition?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "not-a-rules-question"
+      ],
+      "expected": [],
+      "retrieved": [
+        "spells/spells-each/illusory-script/illusory-script",
+        "magic-items/magic-items-each/wand-of-wonder/wand-of-wonder--2",
+        "characterization/backgrounds/backgrounds-acolyte-suggested-characteristics",
+        "equipment/adventuring-gear/adventuring-gear--9",
+        "equipment/adventuring-gear/adventuring-gear--12",
+        "spells/spells-a-z/spells-i/spells-i",
+        "spells/spells-each/disguise-self/disguise-self",
+        "magic-items/magic-items-each/tome-of-understanding/tome-of-understanding",
+        "gameplay/using-ability-scores/ability-checks-passive-checks",
+        "magic-items/magic-items-each/tome-of-leadership-and-influence/tome-of-leadership-and-influence"
+      ],
+      "best_distance": 0.441071480512619,
+      "rank": null,
+      "latency_ms": 8.781700002145953
+    },
+    {
+      "id": "abstain-pizza",
+      "question": "What is the best pizza topping?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "off-domain"
+      ],
+      "expected": [],
+      "retrieved": [
+        "characterization/alignment/alignment",
+        "magic-items/magic-items-each/stone-of-good-luck/stone-of-good-luck-luckstone",
+        "spells/spells-each/suggestion/suggestion",
+        "magic-items/magic-items-each/stone-of-controlling-earth-elementals/stone-of-controlling-earth-elementals",
+        "spells/spells-each/reverse-gravity/reverse-gravity",
+        "magic-items/magic-items-each/potion-of-climbing/potion-of-climbing",
+        "magic-items/magic-items-each/potion-of-flying/potion-of-flying",
+        "monsters/monsters-each/gelatinous-cube-ooze/gelatinous-cube-ooze-actions",
+        "spells/spells-each/mass-suggestion/mass-suggestion",
+        "monsters/monsters-each/black-pudding-ooze/black-pudding-ooze"
+      ],
+      "best_distance": 0.5209313631057739,
+      "rank": null,
+      "latency_ms": 8.067400005529635
+    },
+    {
+      "id": "abstain-taxes",
+      "question": "How do I file my taxes in Portugal?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "off-domain"
+      ],
+      "expected": [],
+      "retrieved": [
+        "equipment/trade-goods/trade-goods",
+        "magic-items/magic-items-a-z/magic-items-d/magic-items-d-deck-of-many-things-avatar-of-death-actions",
+        "classes/wizard/wizard-arcane-traditions-school-of-evocation-overchannel",
+        "characterization/backgrounds/backgrounds-acolyte-suggested-characteristics",
+        "equipment/expenses/expenses-lifestyle-expenses",
+        "equipment/expenses/expenses-spellcasting-services",
+        "spells/spells-a-z/spells-r/spells-r-resurrection",
+        "characterization/backgrounds/backgrounds-acolyte",
+        "spells/spellcasting/what-is-a-spell-spell-slots",
+        "magic-items/magic-items-each/oathbow/oathbow"
+      ],
+      "best_distance": 0.4720472991466522,
+      "rank": null,
+      "latency_ms": 8.594899991294369
+    },
+    {
+      "id": "abstain-book-price",
+      "question": "How much does the Player's Handbook cost in stores?",
+      "should_abstain": true,
+      "tags": [
+        "abstention",
+        "not-a-rules-question"
+      ],
+      "expected": [],
+      "retrieved": [
+        "magic-items/magic-items-a-z/magic-items-m/magic-items-m-manual-of-gainful-exercise",
+        "gameplay/adventuring/between-adventures-downtime-activities-researching",
+        "equipment/expenses/expenses-lifestyle-expenses",
+        "monsters/monsters/monster-statistics-hit-points",
+        "equipment/adventuring-gear/adventuring-gear--11",
+        "monsters/monsters/monster-statistics",
+        "equipment/expenses/expenses-food-drink-and-lodging",
+        "magic-items/magic-items-each/ring-of-spell-storing/ring-of-spell-storing",
+        "equipment/adventuring-gear/adventuring-gear--9",
+        "monsters/monsters/monster-statistics-ability-scores"
+      ],
+      "best_distance": 0.34454283118247986,
+      "rank": null,
+      "latency_ms": 9.473400001297705
+    }
+  ]
+}

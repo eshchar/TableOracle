@@ -11,17 +11,18 @@ endif
 
 Q ?= Can I cast a spell and disengage in the same turn?
 
-.PHONY: help venv install ingest search ask dev status test eval clean
+.PHONY: help venv install ingest search ask dev status test eval eval-retrieval clean
 
 help:
 	@echo "make install  - create .venv and install dependencies"
-	@echo "make ingest   - build the search index from corpus/ (needs OPENAI_API_KEY)"
+	@echo "make ingest   - build the search index from corpus/ (no API key needed)"
 	@echo "make status   - show what is currently indexed"
 	@echo "make search Q=\"...\"  - retrieval only, no model call"
-	@echo "make ask    Q=\"...\"  - streamed, cited answer (needs both keys)"
+	@echo "make ask    Q=\"...\"  - streamed, cited answer (needs ANTHROPIC_API_KEY)"
 	@echo "make dev      - run the API at http://127.0.0.1:8000"
 	@echo "make test     - run the unit tests (no API keys required)"
-	@echo "make eval     - M3; not implemented yet"
+	@echo "make eval     - full eval: retrieval + answers + judge (costs money)"
+	@echo "make eval-retrieval - retrieval scoring only (free, no API key)"
 
 venv:
 	python -m venv .venv
@@ -49,8 +50,10 @@ test:
 	$(PY) -m pytest -q
 
 eval:
-	@echo "The eval harness lands in M3. evals/questions.yaml defines the format."
-	@exit 1
+	$(PY) -m tableoracle.evals.run
+
+eval-retrieval:
+	$(PY) -m tableoracle.evals.run --retrieval-only
 
 clean:
 	rm -rf data/*.db data/*.sqlite data/usage.jsonl
