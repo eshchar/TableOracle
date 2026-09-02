@@ -7,12 +7,14 @@ from collections.abc import Iterator
 from dataclasses import dataclass
 from typing import Any
 
-from tableoracle.answer.citations import CitationResolver, ResolvedCitation
+from tableoracle.answer.citations import CitationIndex
 from tableoracle.answer.prompt import SYSTEM_PROMPT, build_user_content
 from tableoracle.config import Settings, get_settings
 from tableoracle.ingest.embed import EmbeddingProvider, get_provider
 from tableoracle.obs.usage import RequestRecord, Stopwatch, append_record, price_request
 from tableoracle.store import db, search
+from tableoracle.tools.definitions import TOOLS
+from tableoracle.tools.dispatch import dispatch, split_into_blocks
 
 
 # Claude 5 models accept adaptive thinking and output_config.effort; earlier
@@ -45,6 +47,9 @@ class AnswerService:
         self.settings = settings or get_settings()
         self._provider = provider
         self._client = client
+        # Held for the duration of one answer so lookup_rule can search
+        # mid-stream without opening a second connection.
+        self._conn = None
 
     # -- lazily built so importing this module never requires credentials --
 
@@ -104,6 +109,7 @@ class AnswerService:
 
         try:
             conn = db.connect(settings)
+            self._conn = conn
             db.assert_index_usable(conn, settings)
 
             retrieval_timer = Stopwatch()
@@ -123,12 +129,26 @@ class AnswerService:
                 },
             )
 
-            if not retrieval.results:
-                # Nothing retrieved at all: there is nothing to ground an answer in.
+            distance = retrieval.best_vector_distance
+            too_far = distance is not None and distance > settings.abstain_distance
+
+            if not retrieval.results or too_far:
+                # Tier 1 abstention: nothing retrieved, or nothing within reach
+                # of the corpus at all. Declining here costs no model call.
                 record.abstained = True
+                record.grounded = False
+                detail = (
+                    f" (nearest passage scored {distance:.3f}, beyond the "
+                    f"{settings.abstain_distance} cutoff)"
+                    if too_far
+                    else ""
+                )
                 yield StreamEvent(
                     "token",
-                    {"text": "I could not find anything in the rules corpus about that."},
+                    {
+                        "text": "I could not find anything in the rules corpus "
+                        f"about that{detail}."
+                    },
                 )
             else:
                 yield from self._stream_answer(retrieval, question, record)
@@ -147,6 +167,8 @@ class AnswerService:
                     "total_ms": round(record.total_ms, 2),
                     "citations": record.citations_emitted,
                     "abstained": record.abstained,
+                    "grounded": record.grounded,
+                    "tool_calls": record.tool_calls,
                 },
             )
             yield StreamEvent("done", {"request_id": record.request_id})
@@ -156,6 +178,7 @@ class AnswerService:
             record.total_ms = total_timer.elapsed_ms()
             yield StreamEvent("error", {"request_id": record.request_id, "message": str(exc)})
         finally:
+            self._conn = None
             if conn is not None:
                 conn.close()
             append_record(record, settings.usage_log_path)
@@ -163,12 +186,18 @@ class AnswerService:
     def _stream_answer(
         self, retrieval: search.Retrieval, question: str, record: RequestRecord
     ) -> Iterator[StreamEvent]:
+        """Run the tool-use loop until the model stops asking for tools."""
         settings = self.settings
-        resolver = CitationResolver(retrieval.results)
+        index = CitationIndex(retrieval.results)
         ttft = Stopwatch()
         seen_chunks: set[int] = set()
+        first_token_seen = False
 
-        request: dict[str, Any] = {
+        messages: list[dict[str, Any]] = [
+            {"role": "user", "content": build_user_content(retrieval.results, question)}
+        ]
+
+        base: dict[str, Any] = {
             "model": settings.answer_model,
             "max_tokens": settings.answer_max_tokens,
             # Below the streaming default on purpose: rules answers are short,
@@ -183,24 +212,23 @@ class AnswerService:
                     "cache_control": {"type": "ephemeral"},
                 }
             ],
-            "messages": [
-                {"role": "user", "content": build_user_content(retrieval.results, question)}
-            ],
+            "tools": TOOLS,
         }
         # Adaptive thinking and effort are Claude 5 features; sending either to
         # an older model is a hard 400, not a silent no-op. M3 compares models
         # against the eval set, so the request has to shape itself to whichever
         # model is configured rather than assume the default's capabilities.
         if supports_claude5_controls(settings.answer_model):
-            request["thinking"] = {"type": "adaptive"}
-            request["output_config"] = {"effort": settings.answer_effort}
+            base["thinking"] = {"type": "adaptive"}
+            base["output_config"] = {"effort": settings.answer_effort}
 
-        first_token_seen = False
-        with self.client.messages.stream(**request) as stream:
-            for event in stream:
-                etype = getattr(event, "type", None)
-
-                if etype == "content_block_delta":
+        final = None
+        exhausted = True
+        for _turn in range(settings.max_tool_turns):
+            with self.client.messages.stream(**base, messages=messages) as stream:
+                for event in stream:
+                    if getattr(event, "type", None) != "content_block_delta":
+                        continue
                     delta = event.delta
                     dtype = getattr(delta, "type", None)
 
@@ -211,31 +239,63 @@ class AnswerService:
                         yield StreamEvent("token", {"text": delta.text})
 
                     elif dtype == "citations_delta":
-                        resolved = resolver.resolve(delta.citation)
+                        resolved = index.resolve(delta.citation)
                         if resolved is not None:
                             record.citations_emitted += 1
                             seen_chunks.add(resolved.chunk_id)
                             yield StreamEvent("citation", resolved.to_dict())
 
-            final = stream.get_final_message()
+                final = stream.get_final_message()
+
+            self._account(final, record)
+
+            if getattr(final, "stop_reason", None) != "tool_use":
+                exhausted = False
+                break
+
+            tool_uses = [b for b in final.content if getattr(b, "type", None) == "tool_use"]
+            messages.append({"role": "assistant", "content": final.content})
+
+            results: list[dict[str, Any]] = []
+            for block in tool_uses:
+                record.tool_calls += 1
+                outcome = dispatch(block.name, dict(block.input), conn=self._conn, service=self)
+                if outcome.chunks:
+                    # Order matters: search_result_index counts across the whole
+                    # request, so the index must grow exactly as blocks are sent.
+                    index.add_search_results(
+                        outcome.chunks, [split_into_blocks(c.text) for c in outcome.chunks]
+                    )
+                yield StreamEvent(
+                    "tool",
+                    {
+                        "name": block.name,
+                        "input": dict(block.input),
+                        "summary": outcome.summary or ("error" if outcome.is_error else ""),
+                        "is_error": outcome.is_error,
+                    },
+                )
+                results.append(
+                    {
+                        "type": "tool_result",
+                        "tool_use_id": block.id,
+                        "content": outcome.content,
+                        "is_error": outcome.is_error,
+                    }
+                )
+            messages.append({"role": "user", "content": results})
+
+        if exhausted:
+            yield StreamEvent(
+                "warning",
+                {"message": f"Stopped after {settings.max_tool_turns} tool turns."},
+            )
 
         record.distinct_chunks_cited = len(seen_chunks)
-        usage = final.usage
-        record.input_tokens = getattr(usage, "input_tokens", 0) or 0
-        record.output_tokens = getattr(usage, "output_tokens", 0) or 0
-        record.cache_read_tokens = getattr(usage, "cache_read_input_tokens", 0) or 0
-        record.cache_write_tokens = getattr(usage, "cache_creation_input_tokens", 0) or 0
-        record.answer_cost_usd = price_request(
-            settings.answer_model,
-            input_tokens=record.input_tokens,
-            output_tokens=record.output_tokens,
-            cache_read_tokens=record.cache_read_tokens,
-            cache_write_tokens=record.cache_write_tokens,
-        )
 
         # A refusal arrives as a normal 200 with stop_reason set; it is not an
         # exception, so it has to be checked explicitly or it looks like success.
-        if getattr(final, "stop_reason", None) == "refusal":
+        if final is not None and getattr(final, "stop_reason", None) == "refusal":
             record.abstained = True
             details = getattr(final, "stop_details", None)
             yield StreamEvent(
@@ -247,15 +307,36 @@ class AnswerService:
             )
 
         if record.citations_emitted == 0 and not record.abstained:
-            # No citation means nothing tied the answer to the corpus. Say so
-            # rather than presenting an ungrounded answer as a sourced one.
+            # Tier 2 abstention. A retrieval-score threshold cannot catch an
+            # in-domain question the corpus happens not to cover (see
+            # abstain_distance in config for the measurements), but an answer
+            # that cited nothing is not grounded whatever its score was. This
+            # check is what actually catches that case.
+            record.grounded = False
             yield StreamEvent(
                 "warning",
                 {
-                    "message": "This answer returned no citations, so it is not "
-                    "grounded in a retrieved passage. Treat it with suspicion.",
+                    "message": "This answer cited no passage, so it is not grounded "
+                    "in the corpus. Treat it as unsupported.",
                 },
             )
+
+    def _account(self, final, record: RequestRecord) -> None:
+        """Accumulate usage across every turn of the tool loop."""
+        usage = getattr(final, "usage", None)
+        if usage is None:
+            return
+        record.input_tokens += getattr(usage, "input_tokens", 0) or 0
+        record.output_tokens += getattr(usage, "output_tokens", 0) or 0
+        record.cache_read_tokens += getattr(usage, "cache_read_input_tokens", 0) or 0
+        record.cache_write_tokens += getattr(usage, "cache_creation_input_tokens", 0) or 0
+        record.answer_cost_usd = price_request(
+            self.settings.answer_model,
+            input_tokens=record.input_tokens,
+            output_tokens=record.output_tokens,
+            cache_read_tokens=record.cache_read_tokens,
+            cache_write_tokens=record.cache_write_tokens,
+        )
 
 
 def resolve_source(anchor: str, settings: Settings | None = None) -> dict | None:

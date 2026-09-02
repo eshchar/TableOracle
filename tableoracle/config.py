@@ -77,6 +77,29 @@ class Settings(BaseSettings):
     answer_effort: str = "medium"
     answer_max_tokens: int = 4096
 
+    # --- tools and abstention ---
+    max_tool_turns: int = 6
+
+    # Tier 1 abstention: refuse before calling the model when the corpus has
+    # nothing semantically near the question.
+    #
+    # Measured on 12 questions (6 answerable, 6 not), best cosine distance:
+    #     answerable    0.2281 - 0.3224
+    #     not in corpus 0.2856 - 0.5209
+    # The ranges OVERLAP, so no threshold separates them. The three
+    # unanswerable questions that scored best -- Bladesinger (0.2856),
+    # Spelljammer (0.2986), 2024 Weapon Mastery (0.3103) -- are all D&D-shaped,
+    # so retrieval happily returns plenty of adjacent wizard and combat text
+    # that does not answer them.
+    #
+    # This threshold is therefore deliberately loose: it only catches questions
+    # from another domain entirely (pizza 0.5209, Portuguese taxes 0.4720),
+    # where refusing without spending a model call is safe and free. Everything
+    # inside the overlap is left to the model and to the tier 2 no-citation
+    # check in service.py, which is what actually catches "in-domain but not in
+    # the corpus". M3 re-derives this number against the full eval set.
+    abstain_distance: float = 0.40
+
     # --- retrieval ---
     top_k: int = 5
     candidate_k: int = 30          # per-leg depth before fusion

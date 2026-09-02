@@ -38,14 +38,14 @@ committed file, and that the system is built to say "I don't know."
 
 ## Status
 
-**M1 (retrieval spine) is complete.** Ingest → chunk → embed → hybrid search →
-streaming answers with resolved citations, plus per-request cost and latency
-logging.
+**M1 and M2 are complete.** Ingest → chunk → embed → hybrid search → streaming
+answers with resolved citations, three tools the model calls mid-answer, and
+abstention that is enforced structurally rather than merely requested.
 
 | Milestone | What it adds | State |
 |---|---|---|
 | **M1** | Retrieval spine, citations, cost/latency logging | **done** |
-| M2 | Tool calling (`roll_dice`, `lookup_rule`), calibrated abstention | not started |
+| **M2** | Tool calling, mid-answer search, two-tier abstention | **done** |
 | M3 | 60-question eval suite, `make eval`, README metrics table | not started |
 
 **There are no quality numbers in this README yet, and that is deliberate.**
@@ -178,12 +178,81 @@ on every read.
 
 ---
 
+## Tools
+
+The model calls three tools mid-answer. Each does something it cannot do
+reliably alone:
+
+| tool | why the model can't just do it |
+|---|---|
+| `lookup_rule` | Reaches the corpus again. Without it, an answer is limited to whatever the first search happened to return. |
+| `roll_dice` | Produces real randomness. A model asked to "roll a d20" emits a plausible number, and plausible is exactly what a die must not be. |
+| `dice_probability` | Computes **exact** odds by enumerating the distribution. Unaided, models estimate "about 60%" for questions with an exact arithmetic answer. |
+
+A real run, showing both a mid-answer search and exact probability:
+
+```
+$ tableoracle ask "If I'm grappled, what can I do to escape,
+                   and what are my odds with a +5 Athletics against their +3?"
+
+  [> lookup_rule('contested check ties') -> 5 passages]
+  [> dice_probability(1d20-1d20+2) -> P(total >= 1) = 0.5725 (57.25%)]
+
+To escape a grapple, you use your action to make a Strength (Athletics) or
+Dexterity (Acrobatics) check, contested by your grappler's check... ties don't
+favor either side, so a tie means you *stay* grappled.
+
+**Your odds of escaping are 57.25%**
+```
+
+Two things worth noticing. The tie rule was **not** in the opening retrieval —
+the model went and found it. And it modelled a contested check as
+`1d20-1d20+2` needing `>= 1`, which is the correct formulation; 57.25% checks
+out by brute force over all 400 die pairs.
+
+The dice grammar (`4d6kh3`, `2d20kh1`, `8d6>=5`, `2d6!`, `1d6r1`,
+`4d{-1,0,1}`) follows the sibling `DiceRoller` project, reimplemented here so
+this repo stands alone. Probabilities are exact by enumeration, never sampled —
+a tool that cites its sources should not then estimate its odds.
+
+## Abstention: measured, then designed
+
+The obvious design is a retrieval-score threshold. **It does not work**, and
+the measurement says why. Best cosine distance over 12 questions:
+
+| | range |
+|---|---|
+| Answerable from the corpus | 0.2281 – **0.3224** |
+| Not in the corpus | **0.2856** – 0.5209 |
+
+The ranges overlap, and the overlap is where the danger lives. Bladesinger
+(0.2856), Spelljammer (0.2986), and 2024 Weapon Mastery (0.3103) all score
+*better* than the easiest answerable question, because they are D&D-shaped:
+retrieval cheerfully returns adjacent wizard and combat text that does not
+answer them. Only questions from another domain separate cleanly (pizza 0.5209,
+Portuguese taxes 0.4720).
+
+So abstention is two tiers:
+
+1. **Before the model** — distance beyond `abstain_distance` (0.40, set above
+   the answerable range) refuses outright. Off-domain questions cost
+   **$0.00 and ~14 ms**, with no model call.
+2. **After the model** — an answer that cited *nothing* is marked ungrounded,
+   whatever its retrieval score was. This is what actually catches the overlap
+   cases, and it is structural: it does not depend on the model admitting
+   anything.
+
+Asked about Bladesinger — a subclass absent from the SRD that the model plainly
+knows from training — it declines, and the no-citation check flags it.
+
+---
+
 ## API
 
 | Endpoint | Purpose |
 |---|---|
 | `POST /search` | retrieval only, no model call. Returns RRF, vector, and BM25 scores per result |
-| `POST /ask` | SSE stream: `retrieval`, `token`, `citation`, `warning`, `usage`, `done` |
+| `POST /ask` | SSE stream: `retrieval`, `token`, `tool`, `citation`, `warning`, `usage`, `done` |
 | `GET /source/{anchor}` | the cited passage, re-read from disk, with `matches_disk` |
 | `GET /healthz` | chunk/vector counts, configured models, index readiness |
 
@@ -262,11 +331,12 @@ corpus/srd-5.1/       SRD 5.1 markdown, CC-BY-4.0, with provenance + license
 tableoracle/
   ingest/             load, chunk, embed, pipeline
   store/              schema, sqlite-vec connection, hybrid search
-  answer/             prompt, citation resolution, streaming service
+  answer/             prompt, citation resolution, streaming service + tool loop
+  tools/              dice engine, tool schemas, dispatch
   api/                FastAPI app, SSE, single-page UI
   obs/                cost and latency logging
 evals/questions.yaml  eval format, seeded (scorer lands in M3)
-tests/                52 tests, no API keys required
+tests/                117 tests, no API keys required
 ```
 
 ---
@@ -286,11 +356,9 @@ tests/                52 tests, no API keys required
   return the packed parent for context. Deferred deliberately until M3 can
   measure whether it helps, rather than tuned now against a handful of
   questions chosen by the person doing the tuning.
-- **Abstention is not calibrated.** The prompt instructs the model to decline
-  when the excerpts do not cover the question, and `best_vector_distance` is
-  logged and returned on every request — but no threshold acts on it yet. That
-  is M2, and it needs the eval set to calibrate against; a number guessed now
-  would be a number nobody should trust.
+- **The abstention threshold rests on 12 questions.** The two-tier design is
+  sound and the overlap finding is real, but 0.40 is derived from a small
+  hand-picked set. M3 re-derives it against the full eval suite.
 - **`/ask` runs the synchronous SDK stream inside an async endpoint.** Fine for
   local single-user use; it would need the async client to serve concurrent
   traffic.

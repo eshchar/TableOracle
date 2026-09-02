@@ -121,6 +121,12 @@ def cmd_ask(args: argparse.Namespace) -> int:
                 f"{event.data['retrieval_ms']}ms, best distance "
                 f"{'n/a' if best is None else f'{best:.4f}'}]\n"
             )
+        elif event.type == "tool":
+            # Tool use is a headline feature, so show it rather than letting it
+            # happen invisibly between tokens.
+            data = event.data
+            mark = "!" if data["is_error"] else ">"
+            print(f"\n  [{mark} {data['summary'] or data['name']}]\n", flush=True)
         elif event.type == "warning":
             print(f"\n\n[warning] {event.data['message']}", file=sys.stderr)
         elif event.type == "error":

@@ -71,6 +71,10 @@ class RequestRecord:
     distinct_chunks_cited: int = 0
     best_vector_distance: float | None = None
     abstained: bool = False
+    # False when the answer cited nothing: it may read well and still rest
+    # on nothing in the corpus, which is the failure this project targets.
+    grounded: bool = True
+    tool_calls: int = 0
     error: str | None = None
 
     @property
