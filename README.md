@@ -61,16 +61,23 @@ per-question failures are committed under `evals/results/`.
 Embeddings run locally, so this half needs no key and no credit:
 `make eval-retrieval`.
 
-| metric | before small-to-big | **now** |
+![Retrieval before and after small-to-big indexing](docs/retrieval-improvement.svg)
+
+<details>
+<summary>Same numbers as a table</summary>
+
+| metric | before small-to-big | now |
 |---|---|---|
 | retrieval@1 | 62.5% | **72.9%** |
 | retrieval@3 | 77.1% | **91.7%** |
-| **retrieval@5** | 85.4% | **93.8%** |
+| retrieval@5 | 85.4% | **93.8%** |
 | retrieval@10 | 89.6% | **97.9%** |
 | MRR | 0.713 | **0.820** |
 | p95 latency | 10 ms | 20 ms |
 
-The "before" column is not decoration — it is the measurement that justified
+</details>
+
+The "before" series is not decoration — it is the measurement that justified
 the change. See [Small-to-big retrieval](#small-to-big-retrieval) below.
 
 Latency excludes the one-off ~1.4 s load of the local embedding model on the
@@ -83,6 +90,11 @@ first query of a process; every query after that is single-digit milliseconds.
 > current system; they are left in place rather than quietly restated, because
 > a number that was not measured should not be printed. Re-run with
 > `make eval`.
+
+![Sonnet 5 versus Haiku 4.5 on quality metrics](docs/model-comparison.svg)
+
+Cost and latency are different units, so they get a table rather than a second
+y-axis:
 
 | metric | Sonnet 5 | Haiku 4.5 |
 |---|---|---|
@@ -179,28 +191,39 @@ passage measurably costs recall, which is why the protocol separates
 
 ## How it works
 
+```mermaid
+flowchart TD
+    corpus["corpus/srd-5.1/*.md<br/><small>1,019 files, CC-BY-4.0</small>"]
+    chunk["<b>chunk</b><br/>follow the heading tree,<br/>pack related sections to ~600 tokens"]
+    parts["<b>index the parts</b><br/>one vector per constituent section<br/><small>1,883 chunks → 5,369 vectors</small>"]
+
+    vec[("chunk_vec<br/><small>sqlite-vec · cosine · 384d</small>")]
+    fts[("chunks_fts<br/><small>FTS5 · BM25</small>")]
+
+    fuse["<b>Reciprocal Rank Fusion</b><br/>30 candidates per leg<br/><small>dedupe on chunk id, keep the closest section</small>"]
+    gate{"nearest passage<br/>within 0.40?"}
+    refuse["refuse<br/><small>no model call · $0.00</small>"]
+
+    docs["<b>return the whole</b><br/>top 5 parent chunks as document blocks,<br/>citations enabled"]
+    model["Claude Sonnet 5<br/><small>streams text + citations_delta</small>"]
+    tools["tools<br/><small>lookup_rule · roll_dice · dice_probability</small>"]
+    cite["<b>char offsets in a committed file</b><br/><small>re-readable via GET /source/{anchor}</small>"]
+
+    corpus --> chunk --> parts
+    parts --> vec
+    chunk --> fts
+    vec --> fuse
+    fts --> fuse
+    fuse --> gate
+    gate -- no --> refuse
+    gate -- yes --> docs --> model
+    model <-. "mid-answer search<br/>returns citable results" .-> tools
+    model --> cite
 ```
-corpus/srd-5.1/*.md
-      │
-      │  parse heading tree; pack related sections to ~600 tokens
-      ▼
-   chunks ── text (verbatim span) ──────────────► cited & displayed
-      │   └─ embed_text (breadcrumb + text) ───► embedded
-      │      source_file + [start:end] ────────► how a citation is checked
-      ▼
-  SQLite ├── chunk_vec  (sqlite-vec, cosine, 384d)
-         └── chunks_fts (FTS5, BM25)
-      │
-      │  query ── both legs, 30 candidates each ── Reciprocal Rank Fusion
-      ▼
-   top 5 chunks ──► one `document` block each, citations enabled
-      │
-      ▼
-   Claude Sonnet 5 ─► streamed text + `citations_delta` events
-      │
-      ▼
-   char offsets in the answer ──► offsets in a file you can open
-```
+
+Every chunk keeps `source_file` plus `[start:end]`, and `text` is the verbatim
+slice at those offsets — which is what turns a citation into something you can
+check rather than something you have to trust.
 
 ### The design decisions that matter
 
@@ -323,23 +346,32 @@ a tool that cites its sources should not then estimate its odds.
 ## Abstention: measured, then designed
 
 The obvious design is a retrieval-score threshold. **It does not work**, and
-the measurement says why. Best cosine distance across all 56 eval questions:
+the measurement says why — one dot per question:
+
+![Distance ranges for answerable and unanswerable questions overlap](docs/abstention-overlap.svg)
 
 | | range |
 |---|---|
-| Answerable from the corpus | 0.2281 – **0.3920** |
+| Answerable from the corpus | 0.1492 – **0.3303** |
 | Not in the corpus | **0.2856** – 0.5209 |
 
-The ranges overlap, and the overlap is where the danger lives. Five of the
+The ranges overlap, and the overlap is where the danger lives. Four of the
 eight unanswerable questions — Bladesinger (0.2856), Spelljammer (0.2986),
-2024 Weapon Mastery (0.3103), Artificer (0.3214), book price (0.3445) — score
-*better* than the furthest answerable question (0.3920), because they are
-D&D-shaped: retrieval cheerfully returns adjacent text that does not answer
-them. Only questions from another domain separate cleanly.
+2024 Weapon Mastery (0.3193), Artificer (0.3214) — score *better* than the
+furthest answerable question (0.3303), because they are D&D-shaped: retrieval
+cheerfully returns adjacent text that does not answer them. Only questions from
+another domain separate cleanly.
 
-At the chosen threshold of 0.40, measured across all 56 questions: **0 of 48
-answerable questions are wrongly refused**, and 3 of 8 unanswerable ones are
-caught before any model call. The other 5 are unreachable by any threshold.
+At the chosen threshold of 0.40: **0 of 48 answerable questions are wrongly
+refused**, and 2 of 8 unanswerable ones are caught before any model call. The
+other 6 are unreachable by any threshold, which is exactly what the
+no-citation check is for.
+
+Small-to-big retrieval improved this too, in a way worth naming: pulling every
+answerable question closer (max 0.3920 → 0.3303) widened the safety margin
+under the cutoff from 0.008 to 0.070. It also pulled one unanswerable question
+below the line, so the threshold now catches 2 rather than 3 — a real trade,
+recorded rather than glossed.
 
 So abstention is two tiers:
 
@@ -447,6 +479,7 @@ tableoracle/
   evals/              harness, LLM judge, reporting
 tests/                117 tests, no API keys required
 evals/                56 questions, scorer, committed results
+docs/                 README charts, generated by scripts/make_charts.py
 ```
 
 ---

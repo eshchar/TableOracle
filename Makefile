@@ -11,7 +11,7 @@ endif
 
 Q ?= Can I cast a spell and disengage in the same turn?
 
-.PHONY: help venv install ingest search ask dev status test eval eval-retrieval clean
+.PHONY: help venv install ingest search ask dev status test eval eval-retrieval charts clean
 
 help:
 	@echo "make install  - create .venv and install dependencies"
@@ -23,6 +23,7 @@ help:
 	@echo "make test     - run the unit tests (no API keys required)"
 	@echo "make eval     - full eval: retrieval + answers + judge (costs money)"
 	@echo "make eval-retrieval - retrieval scoring only (free, no API key)"
+	@echo "make charts   - regenerate the README charts from evals/results/"
 
 venv:
 	python -m venv .venv
@@ -54,6 +55,9 @@ eval:
 
 eval-retrieval:
 	$(PY) -m tableoracle.evals.run --retrieval-only
+
+charts:
+	$(PY) scripts/make_charts.py
 
 clean:
 	rm -rf data/*.db data/*.sqlite data/usage.jsonl

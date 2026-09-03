@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 402" width="720" height="402" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" role="img" aria-label="Small-to-big retrieval. Same 56 questions, same corpus, no other change.">
+<style>
+  .bg    { fill: #fcfcfb; }
+  .ink   { fill: #0b0b0b; }
+  .ink2  { fill: #52514e; }
+  .ink3  { fill: #78766f; }
+  .s1    { fill: #2a78d6; }
+  .s2    { fill: #eb6834; }
+  .s1s   { stroke: #2a78d6; }
+  .s2s   { stroke: #eb6834; }
+  .grid  { stroke: #e5e4e0; }
+  .rule  { stroke: #b8b6ae; }
+  @media (prefers-color-scheme: dark) {
+    .bg   { fill: #1a1a19; }
+    .ink  { fill: #ffffff; }
+    .ink2 { fill: #c3c2b7; }
+    .ink3 { fill: #96948a; }
+    .s1   { fill: #3987e5; }
+    .s2   { fill: #d95926; }
+    .s1s  { stroke: #3987e5; }
+    .s2s  { stroke: #d95926; }
+    .grid { stroke: #33322f; }
+    .rule { stroke: #5c5a54; }
+  }
+</style>
+<rect width="720" height="402" rx="6" class="bg"/>
+<text x="24" y="30" class="ink" font-size="15" font-weight="600">Small-to-big retrieval</text>
+<text x="24" y="50" class="ink2" font-size="12">Same 56 questions, same corpus, no other change.</text>
+<rect x="132" y="54" width="10" height="10" rx="2" class="s1"/>
+<text x="147" y="62" class="ink2" font-size="11.5">one vector per chunk</text>
+<rect x="286" y="54" width="10" height="10" rx="2" class="s2"/>
+<text x="301" y="62" class="ink2" font-size="11.5">one vector per section</text>
+<line x1="256.0" y1="72" x2="256.0" y2="314" class="grid" stroke-width="1"/>
+<text x="256.0" y="334" class="ink3" font-size="10" text-anchor="middle">25%</text>
+<line x1="380.0" y1="72" x2="380.0" y2="314" class="grid" stroke-width="1"/>
+<text x="380.0" y="334" class="ink3" font-size="10" text-anchor="middle">50%</text>
+<line x1="504.0" y1="72" x2="504.0" y2="314" class="grid" stroke-width="1"/>
+<text x="504.0" y="334" class="ink3" font-size="10" text-anchor="middle">75%</text>
+<line x1="628.0" y1="72" x2="628.0" y2="314" class="grid" stroke-width="1"/>
+<text x="628.0" y="334" class="ink3" font-size="10" text-anchor="middle">100%</text>
+<text x="122" y="99" class="ink2" font-size="12" text-anchor="end">retrieval@1</text>
+<path class="s1" d="M132.0,78.0 H438.0 A4.0,4.0 0 0 1 442.0,82.0 V90.0 A4.0,4.0 0 0 1 438.0,94.0 H132.0 Z"/>
+<path class="s2" d="M132.0,96.0 H489.7 A4.0,4.0 0 0 1 493.7,100.0 V108.0 A4.0,4.0 0 0 1 489.7,112.0 H132.0 Z"/>
+<text x="450.0" y="90.0" class="ink3" font-size="11">62.5%</text>
+<text x="501.7" y="110.0" class="ink" font-size="11" font-weight="600">72.9%</text>
+<text x="122" y="149" class="ink2" font-size="12" text-anchor="end">retrieval@3</text>
+<path class="s1" d="M132.0,128.0 H510.3 A4.0,4.0 0 0 1 514.3,132.0 V140.0 A4.0,4.0 0 0 1 510.3,144.0 H132.0 Z"/>
+<path class="s2" d="M132.0,146.0 H582.7 A4.0,4.0 0 0 1 586.7,150.0 V158.0 A4.0,4.0 0 0 1 582.7,162.0 H132.0 Z"/>
+<text x="522.3" y="140.0" class="ink3" font-size="11">77.1%</text>
+<text x="594.7" y="160.0" class="ink" font-size="11" font-weight="600">91.7%</text>
+<text x="122" y="199" class="ink2" font-size="12" text-anchor="end">retrieval@5</text>
+<path class="s1" d="M132.0,178.0 H551.7 A4.0,4.0 0 0 1 555.7,182.0 V190.0 A4.0,4.0 0 0 1 551.7,194.0 H132.0 Z"/>
+<path class="s2" d="M132.0,196.0 H593.0 A4.0,4.0 0 0 1 597.0,200.0 V208.0 A4.0,4.0 0 0 1 593.0,212.0 H132.0 Z"/>
+<text x="563.7" y="190.0" class="ink3" font-size="11">85.4%</text>
+<text x="605.0" y="210.0" class="ink" font-size="11" font-weight="600">93.8%</text>
+<text x="122" y="249" class="ink2" font-size="12" text-anchor="end">retrieval@10</text>
+<path class="s1" d="M132.0,228.0 H572.3 A4.0,4.0 0 0 1 576.3,232.0 V240.0 A4.0,4.0 0 0 1 572.3,244.0 H132.0 Z"/>
+<path class="s2" d="M132.0,246.0 H613.7 A4.0,4.0 0 0 1 617.7,250.0 V258.0 A4.0,4.0 0 0 1 613.7,262.0 H132.0 Z"/>
+<text x="584.3" y="240.0" class="ink3" font-size="11">89.6%</text>
+<text x="625.7" y="260.0" class="ink" font-size="11" font-weight="600">97.9%</text>
+<text x="122" y="299" class="ink2" font-size="12" text-anchor="end">MRR</text>
+<path class="s1" d="M132.0,278.0 H481.8 A4.0,4.0 0 0 1 485.8,282.0 V290.0 A4.0,4.0 0 0 1 481.8,294.0 H132.0 Z"/>
+<path class="s2" d="M132.0,296.0 H534.9 A4.0,4.0 0 0 1 538.9,300.0 V308.0 A4.0,4.0 0 0 1 534.9,312.0 H132.0 Z"/>
+<text x="493.8" y="290.0" class="ink3" font-size="11">71.3%</text>
+<text x="546.9" y="310.0" class="ink" font-size="11" font-weight="600">82.0%</text>
+<text x="24" y="384" class="ink3" font-size="11">Four previously-missed questions became findable. None regressed.</text>
+</svg>
