@@ -192,32 +192,43 @@ passage measurably costs recall, which is why the protocol separates
 ## How it works
 
 ```mermaid
-flowchart TD
-    corpus["corpus/srd-5.1/*.md<br/><small>1,019 files, CC-BY-4.0</small>"]
-    chunk["<b>chunk</b><br/>follow the heading tree,<br/>pack related sections to ~600 tokens"]
-    parts["<b>index the parts</b><br/>one vector per constituent section<br/><small>1,883 chunks → 5,369 vectors</small>"]
+flowchart TB
+    corpus["corpus/srd-5.1/*.md<br/>1,019 files · CC-BY-4.0"]
 
-    vec[("chunk_vec<br/><small>sqlite-vec · cosine · 384d</small>")]
-    fts[("chunks_fts<br/><small>FTS5 · BM25</small>")]
+    subgraph ingest ["Ingest"]
+        chunk["chunk<br/>follow the heading tree<br/>pack sections to ~600 tokens"]
+        parts["index the parts<br/>one vector per section<br/>1,883 chunks → 5,369 vectors"]
+        chunk --> parts
+    end
 
-    fuse["<b>Reciprocal Rank Fusion</b><br/>30 candidates per leg<br/><small>dedupe on chunk id, keep the closest section</small>"]
-    gate{"nearest passage<br/>within 0.40?"}
-    refuse["refuse<br/><small>no model call · $0.00</small>"]
+    vec[("chunk_vec<br/>sqlite-vec · cosine · 384d")]
+    fts[("chunks_fts<br/>FTS5 · BM25")]
 
-    docs["<b>return the whole</b><br/>top 5 parent chunks as document blocks,<br/>citations enabled"]
-    model["Claude Sonnet 5<br/><small>streams text + citations_delta</small>"]
-    tools["tools<br/><small>lookup_rule · roll_dice · dice_probability</small>"]
-    cite["<b>char offsets in a committed file</b><br/><small>re-readable via GET /source/{anchor}</small>"]
+    subgraph retrieve ["Retrieve"]
+        fuse["Reciprocal Rank Fusion<br/>30 candidates per leg<br/>dedupe on chunk id"]
+        gate{"nearest passage<br/>within 0.40?"}
+        fuse --> gate
+    end
 
-    corpus --> chunk --> parts
+    refuse["refuse<br/>no model call · $0.00"]
+    docs["return the whole<br/>top 5 parent chunks<br/>as document blocks"]
+
+    subgraph answer ["Answer"]
+        model["Claude Sonnet 5<br/>streams text + citations"]
+        tools["tools<br/>lookup_rule<br/>roll_dice<br/>dice_probability"]
+        model <--> tools
+    end
+
+    cite["char offsets in a committed file<br/>GET /source/anchor re-reads them"]
+
+    corpus --> chunk
     parts --> vec
     chunk --> fts
     vec --> fuse
     fts --> fuse
-    fuse --> gate
     gate -- no --> refuse
-    gate -- yes --> docs --> model
-    model <-. "mid-answer search<br/>returns citable results" .-> tools
+    gate -- yes --> docs
+    docs --> model
     model --> cite
 ```
 
